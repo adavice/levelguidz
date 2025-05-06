@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo_dark.svg" alt="Logo" height="30">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-light">Login</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-banner position-relative">
+        <div class="circle-1 hero-decorative-circle"></div>
+        <div class="circle-2 hero-decorative-circle"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="display-4 fw-bold">Leading TFT Coaching Platform</h1>
+                <p class="lead">Become a better gamer! Get TFT coaching to raise to Challenger tier!</p>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <button class="btn btn-hero-cta">
+                        <span>Find Your Coach</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-2" viewBox="0 0 16 16">
+                            <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="game-selector-wrapper mt-5">
+                <select id="gameSelector" class="form-select game-select border-0 shadow">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <main class="container my-4">
+        <section class="features-section py-5">
+            <div class="row g-4 features-flow">
+                <div class="col-lg-4 position-relative">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-controller"></i>
+                        </div>
+                        <h3>Choose Your Arena</h3>
+                        <p>Select from our curated collection of popular competitive games. Each game features a dedicated team of elite coaches ready to guide you to victory.</p>
+                    </div>
+                    <div class="flow-arrow d-none d-lg-flex">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="col-lg-4 position-relative">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-search-heart"></i>
+                        </div>
+                        <h3>Match with Your Mentor</h3>
+                        <p>Our sophisticated matching system analyzes your playstyle and goals to connect you with coaches who perfectly fit your needs and schedule.</p>
+                    </div>
+                    <div class="flow-arrow d-none d-lg-flex">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-trophy"></i>
+                        </div>
+                        <h3>Master Your Game</h3>
+                        <p>Transform your potential into professional-level performance. Our expert coaches will guide you through personalized training to achieve your competitive gaming goals.</p>
+                        <a href="#" class="btn btn-primary mt-3">Start Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-coaches py-5">
+            <h2 class="text-center mb-2">Featured Coaches</h2>
+            <p class="text-center text-muted mb-5">Learn from the best players in the industry</p>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="coach-card">
+                        <img src="img/coach-1.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Alex "ProMaster" Chen</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.9</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 98%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">Top Rated</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
+                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
+                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
+                            </ul>
+                        </div>
+                        <div class="coach-card-footer">
+                            <a href="#" class="btn btn-primary btn-sm w-100">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="coach-card">
+                        <img src="img/coach-2.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Sarah "EliteGuide" Williams</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.7</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 94%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">Expert</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
+                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
+                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
+                            </ul>
+                        </div>
+                        <div class="coach-card-footer">
+                            <a href="#" class="btn btn-primary btn-sm w-100">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="coach-card">
+                        <img src="img/coach-3.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Marcus "StratoKing" Johnson</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">5.0</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 100%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">Pro Player</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-stars"></i> Professional esports player</li>
+                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
+                                <li><i class="bi bi-trophy"></i> Regional champion</li>
+                            </ul>
+                        </div>
+                        <div class="coach-card-footer">
+                            <a href="#" class="btn btn-primary btn-sm w-100">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works py-5">
+            <h2 class="text-center mb-5">How it Works</h2>
+            
+            <div class="row gy-5 align-items-center">
+                <!-- Block 1 - Image Left -->
+                <div class="col-lg-6">
+                    <div class="auth-wrapper">
+                        <div class="auth-flipper">
+                            <!-- Login Form -->
+                            <div class="auth-form front p-4">
+                                <h4 class="text-center mb-4">Sign In</h4>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" placeholder="Enter your email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <div class="password-field">
+                                            <input type="password" class="form-control" placeholder="Enter your password">
+                                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="remember">
+                                            <label class="form-check-label" for="remember">Remember me</label>
+                                        </div>
+                                        <a href="#" class="text-primary forgot-trigger">Forgot Password?</a>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                                    <p class="text-center mb-0">Don't have an account? <a href="#" class="text-primary flip-trigger">Sign Up</a></p>
+                                </form>
+                            </div>
+
+                            <!-- Sign Up Form -->
+                            <div class="auth-form back p-4">
+                                <h4 class="text-center mb-4">Create Account</h4>
+                                <form>
+                                    <!-- Username and Email in one line -->
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control" placeholder="Choose a username">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" placeholder="Enter your email">
+                                        </div>
+                                    </div>
+                                    <!-- Password fields in one line -->
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <label class="form-label">Password</label>
+                                            <div class="password-field">
+                                                <input type="password" class="form-control signup-password" placeholder="Create password">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label">Confirm Password</label>
+                                            <div class="password-field">
+                                                <input type="password" class="form-control signup-password" placeholder="Confirm password">
+                                                <button type="button" class="password-toggle" id="signup-password-toggle">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                                    <p class="text-center mb-0">Already have an account? <a href="#" class="text-primary flip-trigger">Sign In</a></p>
+                                </form>
+                            </div>
+
+                            <!-- Forgot Password Form -->
+                            <div class="auth-form forgot p-4 back">
+                                <h4 class="text-center mb-4">Reset Password</h4>
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" placeholder="Enter your email">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">Send Reset Link</button>
+                                    <p class="text-center mb-0">
+                                        <a href="#" class="text-primary back-to-login">Back to Sign In</a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="numbered-content">
+                        <h3 class="mb-4">Start Your Gaming Journey</h3>
+                        <div class="steps-list">
+                            <div class="step-item">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="step-number">1</span>
+                                    <h4 class="h6 mb-0">Upgrade your Membership to Premium</h4>
+                                </div>
+                                <p>Unlock the full potential of our platform with premium membership. Get priority access to top coaches, exclusive resources, and advanced features to accelerate your progress.</p>
+                            </div>
+                            <div class="step-item">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="step-number">2</span>
+                                    <h4 class="h6 mb-0">Define games for yourself and choose your perfect coach</h4>
+                                </div>
+                                <p>Select your preferred games and explore our extensive roster of specialized coaches. Our platform helps you find the perfect mentor based on your skill level, goals, and playing style.</p>
+                            </div>
+                            <div class="step-item">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="step-number">3</span>
+                                    <h4 class="h6 mb-0">Start your 1-1 unlimited session with a professional player</h4>
+                                </div>
+                                <p>Enjoy unlimited one-on-one coaching sessions with your chosen professional player. Get personalized attention, real-time feedback, and tailored strategies to maximize your improvement.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Block 2 - Image Left -->
+                <div class="col-lg-6">
+                    <div class="image-container shadow-lg">
+                        <img src="img/progress.jpg" alt="Better Gamer" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="content-block">
+                        <h3>Level Up Your Gaming Skills</h3>
+                        <p>Ready to transform your gaming passion into professional-level expertise? Whether you're aiming for tournament success or streaming stardom, our coaching platform is your gateway to excellence. With personalized guidance from top-tier coaches, you'll master advanced strategies and techniques that separate casual players from champions. Take control of your gaming future and unlock your full potential today.</p>
+                    </div>
+                </div>
+
+                <!-- Block 3 - Image Right -->
+                <div class="col-lg-6">
+                    <div class="content-block">
+                        <h3>Learn from Elite Players</h3>
+                        <p>Connect with championship-caliber coaches who've proven themselves at the highest levels of competitive gaming. Our rigorous selection process ensures you're learning from verified experts who excel at both playing and teaching. With real-time scheduling and personalized feedback, you'll get the focused attention needed to rapidly improve your gameplay and decision-making skills.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="image-container shadow-lg">
+                        <img src="img/esport.jpg" alt="Pro Players" class="img-fluid">
+                    </div>
+                </div>
+
+                <!-- Block 4 - Image Left -->
+                <div class="col-lg-6">
+                    <div class="image-container shadow-lg">
+                        <img src="img/how-4.jpg" alt="Results" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="content-block">
+                        <h3>See Rapid Progress</h3>
+                        <p>Experience measurable improvement in your gameplay from day one. Our structured coaching approach combines practical skills training with strategic insight, helping you climb ranks faster than solo practice. We're committed to your success, providing the tools and knowledge you need to compete at higher levels. Start your journey to mastery with coaches who understand what it takes to reach the top.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer py-5 mt-auto">
+        <div class="container">
+            <div class="row justify-content-between mb-4">
+                <div class="col-lg-3 mb-4 mb-lg-0">
+                    <a href="#" class="footer-brand d-inline-block mb-4">
+                        <img src="img/logo_dark.svg" alt="Logo" height="30">
+                    </a>
+                    <p class="text-muted small mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz.<br>All rights reserved.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="text-white mb-3">Company</h5>
+                            <ul class="nav flex-column footer-nav">
+                                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="text-white mb-3">Legal</h5>
+                            <ul class="nav flex-column footer-nav">
+                                <li class="nav-item"><a class="nav-link" href="#">Privacy Policy</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Terms of Service</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Cookie Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
+        </div>
+    </footer>
+
+    <a href="#" class="corner-button" aria-label="Scroll to top">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    const games = {
+        1: {
+            name: "Counter Strike GO",
+            background: "url('img/game1.jpg') center/cover no-repeat"
+        },
+        2: {
+            name: "League of Legends",
+            background: "url('img/game2.jpg') center/cover no-repeat"
+        },
+        3: {
+            name: "Fortnite",
+            background: "url('img/game3.jpg') center/cover no-repeat"
+        },
+        4: {
+            name: "Call of Duty",
+            background: "url('img/game4.jpg') center/cover no-repeat"
+        },
+        5: {
+            name: "FIFA",
+            background: "url('img/game5.jpg') center/cover no-repeat"
+        }
+    };
+
+    const heroBanner = document.querySelector('.hero-banner');
+    const gameSelector = document.getElementById('gameSelector');
+
+    // Set default background
+    heroBanner.style.background = "url('img/hero.jpg') center/cover no-repeat";
+
+    // Add default option first
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select a Game';
+    defaultOption.selected = true;
+    defaultOption.disabled = true;
+    gameSelector.appendChild(defaultOption);
+
+    // Populate game options
+    Object.entries(games).forEach(([key, game]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = game.name;
+        gameSelector.appendChild(option);
+    });
+
+    // Handle background change
+    gameSelector.addEventListener('change', function() {
+        const selectedGame = games[this.value];
+        heroBanner.style.background = selectedGame ? selectedGame.background : "url('img/hero.jpg') center/cover no-repeat";
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle handlers
+            const signupToggle = document.getElementById('signup-password-toggle');
+            if (signupToggle) {
+                signupToggle.addEventListener('click', function() {
+                    document.querySelectorAll('.signup-password').forEach(input => {
+                        const type = input.type === 'password' ? 'text' : 'password';
+                        input.type = type;
+                        const icon = signupToggle.querySelector('i');
+                        icon.classList.toggle('bi-eye');
+                        icon.classList.toggle('bi-eye-slash');
+                    });
+                });
+            }
+
+            document.querySelectorAll('.password-toggle:not(#signup-password-toggle)').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+                    input.type = input.type === 'password' ? 'text' : 'password';
+                    icon.classList.toggle('bi-eye');
+                    icon.classList.toggle('bi-eye-slash');
+                });
+            });
+
+            // Form flip handlers
+            document.querySelectorAll('.flip-trigger').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector('.auth-flipper').classList.toggle('flipped');
+                    document.querySelector('.auth-form.forgot').style.display = 'none';
+                    document.querySelector('.auth-form.back').style.display = '';
+                });
+            });
+
+            document.querySelectorAll('.forgot-trigger').forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const flipper = document.querySelector('.auth-flipper');
+                    flipper.classList.add('flipped');
+                    document.querySelector('.auth-form.back').style.display = 'none';
+                    document.querySelector('.auth-form.forgot').style.display = 'block';
+                });
+            });
+
+            document.querySelectorAll('.back-to-login').forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('.auth-flipper').classList.remove('flipped');
+                    document.querySelector('.auth-form.forgot').style.display = 'none';
+                    document.querySelector('.auth-form.back').style.display = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
