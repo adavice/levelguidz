@@ -769,3 +769,88 @@ hr {
         display: none;
     }
 }
+
+/* Decorative Elements for How It Works */
+.highlight-text {
+    color: var(--primary-color);
+    position: relative;
+}
+
+.content-separator {
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    position: relative;
+}
+
+.content-separator::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    background: var(--primary-color);
+    right: -40px;
+    opacity: 0.5;
+}
+
+/* Decorative Background Elements */
+.decorative-dots {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    opacity: 0.1;
+    z-index: -1;
+    background-image: radial-gradient(var(--primary-color) 2px, transparent 2px);
+    background-size: 15px 15px;
+}
+
+.decorative-circle {
+    position: absolute;
+    border: 2px dashed var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.hero-banner .decorative-dots {
+    right: 5%;
+    top: 15%;
+}
+
+.features-section .decorative-circle {
+    width: 200px;
+    height: 200px;
+    left: -100px;
+    top: 20%;
+}
+
+.featured-coaches .decorative-dots {
+    left: 5%;
+    top: 10%;
+}
+
+.featured-coaches .decorative-circle {
+    width: 150px;
+    height: 150px;
+    right: -75px;
+    bottom: 10%;
+}
+
+.how-it-works .decorative-dots {
+    right: 10%;
+    bottom: 15%;
+}
+
+.how-it-works .decorative-circle {
+    width: 180px;
+    height: 180px;
+    left: -90px;
+    bottom: 20%;
+}
+
+@media (max-width: 991px) {
+    .decorative-dots,
+    .decorative-circle {
+        opacity: 0.05;
+    }
+}
