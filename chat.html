@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LevelGuidz Chat</title>
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+    <style>
+      .chat-window {
+        height: calc(100vh - 220px);
+        background: var(--gradient-bg);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+      }
+
+      .chat-input {
+        padding: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .chat-input textarea {
+        resize: none;
+        height: 60px;
+      }
+
+      .message {
+        margin-bottom: 1rem;
+        max-width: 80%;
+      }
+
+      .message.user {
+        margin-left: auto;
+      }
+
+      .message-content {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .message.user .message-content {
+        background: var(--primary-color);
+      }
+
+      /* Changed: Remove min-height for .chatbot-list so height depends on content */
+      .chatbot-list {
+        /* Remove min-height to make it content-dependent */
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="./index.html">
+          <img src="img/logo_dark.svg" alt="Logo" height="30" />
+        </a>
+        <span class="ms-3">
+          <i class="bi bi-chat-fill text-primary me-2"></i>
+          <span class="text-white">Chat</span>
+        </span>
+      </div>
+    </nav>
+
+    <div class="container my-4" style="margin-top: 80px !important">
+      <div class="row g-4">
+        <!-- Left Panel - Bot List -->
+        <div class="col-lg-3">
+          <div class="feature-card">
+            <div class="card-header bg-transparent border-0">
+              <h5 class="text-white mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-people-fill text-primary"></i>
+                Coach List
+              </h5>
+            </div>
+            <div class="card-body p-0 mt-3">
+              <div class="chatbot-list mb-3">
+                <!-- Bot list items will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel - Chat Window -->
+        <div class="col-lg-9">
+          <div class="chat-window">
+            <div class="chat-messages">
+              <!-- Messages will be populated here -->
+            </div>
+            <div class="chat-input">
+              <div class="d-flex gap-2">
+                <textarea
+                  class="form-control"
+                  placeholder="Type your message..."
+                ></textarea>
+                <button class="btn btn-primary px-4">
+                  <i class="bi bi-send-fill"></i>
+                </button>
+                <button class="btn btn-outline-secondary" id="voiceBtn">
+                  <i class="bi bi-mic-fill"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/chat.js"></script>
+  </body>
+</html>

@@ -209,8 +209,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature-card {
+    margin-top: 5px;
     background: var(--gradient-bg);
-    border-radius: 1.5rem;
+    border-radius: 8px;
     padding: 2rem;
     height: 100%;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -221,9 +222,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
     border-color: var(--primary-color);
-    box-shadow: 0 10px 30px rgba(146, 16, 57, 0.1);
+    box-shadow: 0 5px 10px rgba(146, 16, 57, 0.1);
 }
 
 .feature-icon {
@@ -848,9 +848,215 @@ hr {
     bottom: 20%;
 }
 
+.admin-panel.container  {
+    margin-top: 80px!important;
+}
+
 @media (max-width: 991px) {
     .decorative-dots,
     .decorative-circle {
         opacity: 0.05;
     }
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgb(108, 108, 108)!important;
+}
+
+/* Admin Panel Styles */
+.admin-panel {
+    margin-top: 80px;
+}
+
+.admin-panel .feature-card {
+    padding: 1.5rem;
+}
+
+.admin-panel .card-header {
+    padding: 0;
+}
+
+.admin-panel .card-body {
+    padding: 1.5rem 0 0 0;
+}
+
+.admin-panel .btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.admin-panel .btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: var(--text-color);
+}
+
+.admin-panel .form-control {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+}
+
+.admin-panel textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.admin-panel .form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Admin Panel Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1050;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+}
+
+.admin-panel .auth-form {
+    position: static;
+    height: auto;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1050;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chatbot-list {
+    min-height: 200px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.coach-item {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    background: var(--bg-color);
+}
+
+.coach-item.active {
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border-left: 4px solid var(--primary-color);
+}
+
+.avatar-upload {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin-bottom: 2rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.coach-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-color) !important;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: none !important;
+}
+
+.admin-panel {
+    margin-top: 80px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.bot-item {
+    margin-top: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 1rem !important;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.bot-item:hover {
+    transform: translateY(-2px);
+}
+
+.bot-item.active {
+    border-color: var(--primary-color);
+}
+
+.bot-item.active h6 {
+    color: var(--primary-color);
+}
+
+.bot-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1050;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.hidden {
+    display: none !important;
 }
