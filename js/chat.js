@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadCoachesList() {
         try {
             const coaches = await loadCoaches();
-            
+            if (!Array.isArray(coaches)) {
+                throw new Error('Invalid coaches data');
+            }
             coachList.innerHTML = coaches.map(coach => `
                 <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}">
                     <div class="coach-item-avatar" style="background-image: url('${coach.avatar}')"></div>
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Error loading coaches:', error);
+            coachList.innerHTML = `<div class="text-danger">Failed to load coaches. Please try again later.</div>`;
         }
     }
 
