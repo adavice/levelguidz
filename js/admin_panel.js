@@ -1,3 +1,5 @@
+import { loadCoaches, saveCoaches, saveCoach, deleteCoach } from './clientApi.js';
+
 const DEFAULT_AVATAR = "https://img.vodonet.net/FM4Ek6rlSokBakd.png";
 
 // Dummy bots data (single source of truth)
@@ -182,17 +184,13 @@ function deleteBot() {
   modal.show();
 }
 
-// Load bots from server using GET
+// Replace loadBotsFromServer with loadCoaches
 async function loadBotsFromServer() {
     try {
-        const response = await fetch('/server/chatgpt_api.pl?action=list_bots', {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' }
-        });
-        const serverBots = await response.json();
-        if (Array.isArray(serverBots) && serverBots.length > 0) {
+        const serverCoaches = await loadCoaches();
+        if (Array.isArray(serverCoaches) && serverCoaches.length > 0) {
             bots.length = 0;
-            serverBots.forEach(b => bots.push(b));
+            serverCoaches.forEach(b => bots.push(b));
             return true;
         }
     } catch (e) {
@@ -201,34 +199,19 @@ async function loadBotsFromServer() {
     return false;
 }
 
-// Save all bots to server
+// Replace saveBotsToServer with saveCoaches
 async function saveBotsToServer(botsArray) {
-    const response = await fetch('/server/chatgpt_api.pl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_bots', bots: botsArray })
-    });
-    return response.json();
+    return saveCoaches(botsArray);
 }
 
-// Save single bot to server
+// Replace saveBotToServer with saveCoach
 async function saveBotToServer(bot) {
-    const response = await fetch('/server/chatgpt_api.pl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_bot', bot })
-    });
-    return response.json();
+    return saveCoach(bot);
 }
 
-// Delete bot from server
+// Replace deleteBotFromServer with deleteCoach
 async function deleteBotFromServer(id) {
-    const response = await fetch('/server/chatgpt_api.pl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete_bot', id })
-    });
-    return response.json();
+    return deleteCoach(id);
 }
 
 // Save bot changes

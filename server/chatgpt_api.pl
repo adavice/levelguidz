@@ -118,6 +118,30 @@ if ($data->{action} eq 'chat') {
     exit;
 }
 
+if ($data->{action} eq 'login') {
+    my $email = $data->{email};
+    my $password = $data->{password};
+    # TODO: Implement actual login logic
+    print encode_json({ status => 'ok' });
+    exit;
+}
+
+if ($data->{action} eq 'signup') {
+    my $username = $data->{username};
+    my $email = $data->{email};
+    my $password = $data->{password};
+    # TODO: Implement actual signup logic
+    print encode_json({ status => 'ok' });
+    exit;
+}
+
+if ($data->{action} eq 'forgot_password') {
+    my $email = $data->{email};
+    # TODO: Implement actual password reset logic
+    print encode_json({ status => 'ok' });
+    exit;
+}
+
 if ($cgi->request_method eq 'POST' && $cgi->param('action') && $cgi->param('action') eq 'vision') {
     my $upload = $cgi->upload('image');
     if ($upload) {

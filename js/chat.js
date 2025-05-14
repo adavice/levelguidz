@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (data && data.reply) {
                             addMessage(data.reply, false);
                         } else {
-                            addMessage('<span class="text-danger">Failed to analyze image.</span>', false);
+                            addMessage('<span class="text-danger">Failed to send image.</span>', false);
                         }
                     } catch (err) {
                         addMessage('<span class="text-danger">Error analyzing image.</span>', false);
@@ -112,6 +112,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 break;
             }
+        }
+    });
+
+    // Handle file input change
+    document.getElementById('imageUpload').addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+            
+            addMessage('<i class="bi bi-image"></i> <span class="text-muted">Analyzing image...</span>', true);
+
+            const formData = new FormData();
+            formData.append('action', 'vision');
+            formData.append('image', file);
+
+            try {
+                const res = await fetch('/server/chatgpt_api.pl', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data && data.reply) {
+                    addMessage(data.reply, false);
+                } else {
+                    addMessage('<span class="text-danger">Failed to analyze image.</span>', false);
+                }
+            } catch (err) {
+                addMessage('<span class="text-danger">Error analyzing image.</span>', false);
+            }
+
+            // Clear the input
+            event.target.value = '';
         }
     });
 
