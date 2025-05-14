@@ -1060,3 +1060,41 @@ input::placeholder, textarea::placeholder {
 .modal-overlay.hidden {
     display: none !important;
 }
+
+.audio-message {
+    height: 32px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.audio-message::-webkit-media-controls-panel {
+    background: transparent;
+}
+
+.audio-message::-webkit-media-controls-current-time-display,
+.audio-message::-webkit-media-controls-time-remaining-display {
+    color: var(--text-color);
+}
+
+.delete-message {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.message:hover .delete-message {
+    opacity: 1;
+}
+
+.delete-message:hover {
+    color: var(--primary-color) !important;
+}
+
+.audio-preview {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.audio-preview audio {
+    height: 32px;
+}

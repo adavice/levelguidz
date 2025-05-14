@@ -38,19 +38,44 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.innerHTML = '';
     }
 
-    function addMessage(content, isUser = false) {
+    function addMessage(content, isUser = false, isAudio = false) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
         const now = new Date();
         const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        // Add delete button for user messages
+        const deleteButton = isUser ? `
+            <button class="btn btn-link btn-sm text-muted delete-message p-0 ms-2" title="Delete message">
+                <i class="bi bi-trash"></i>
+            </button>
+        ` : '';
+
         message.innerHTML = `
             <div class="message-content">
-                ${content}
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="flex-grow-1">
+                        ${isAudio ? `
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-mic-fill text-primary"></i>
+                                <audio src="${content}" controls class="audio-message"></audio>
+                            </div>
+                        ` : content}
+                    </div>
+                    ${deleteButton}
+                </div>
                 <div class="text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
                     ${timestamp}
                 </div>
             </div>
         `;
+
+        // Add delete event listener
+        if (isUser) {
+            const deleteBtn = message.querySelector('.delete-message');
+            deleteBtn?.addEventListener('click', () => message.remove());
+        }
+
         chatMessages.appendChild(message);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
@@ -66,16 +91,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function sendMessage() {
         const message = messageInput.value.trim();
-        if (!message) return;
+        const audioPreview = document.querySelector('.audio-preview');
+        
+        if (!message && !audioPreview) return;
 
-        addMessage(message, true);
-        messageInput.value = '';
+        if (audioPreview) {
+            const audio = audioPreview.querySelector('audio');
+            addMessage(audio.src, true, true);
+            
+            // Get the audio blob from source
+            fetch(audio.src)
+                .then(res => res.blob())
+                .then(async audioBlob => {
+                    const formData = new FormData();
+                    formData.append('action', 'transcribe_audio');
+                    formData.append('audio', audioBlob);
 
-        // TODO: Send message to backend and handle response
-        // For now, just simulate a response
-        setTimeout(() => {
-            addMessage("This is a simulated response from the bot.");
-        }, 1000);
+                    try {
+                        const response = await fetch('/server/chatgpt_api.pl', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const data = await response.json();
+                        if (data && data.text) {
+                            addMessage(`<div class="text-muted small">Transcribed: ${data.text}</div>`, true);
+                            if (data.reply) {
+                                addMessage(data.reply, false);
+                            }
+                        } else {
+                            throw new Error('Failed to process audio');
+                        }
+                    } catch (error) {
+                        addMessage('<div class="text-danger">Failed to process voice message</div>', false);
+                    }
+                });
+
+            audioPreview.remove();
+        }
+
+        if (message) {
+            addMessage(message, true);
+            messageInput.value = '';
+            
+            // Handle text message response
+            setTimeout(() => {
+                addMessage("This is a simulated response from the bot.");
+            }, 1000);
+        }
     }
 
     // Handle screenshot paste (Ctrl+V) for vision analysis
@@ -150,37 +213,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const voiceBtn = document.getElementById('voiceBtn');
-    const textarea = document.querySelector('.chat-input textarea');
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
 
-    if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.continuous = false;
+    // Initialize audio recording
+    async function initializeAudioRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = e => {
+                audioChunks.push(e.data);
+            };
 
-        voiceBtn.addEventListener('click', () => {
-            recognition.start();
-            voiceBtn.classList.add('text-danger'); // red mic while recording
-        });
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                // Add preview to textarea area
+                const chatInput = document.querySelector('.chat-input');
+                const existingPreview = chatInput.querySelector('.audio-preview');
+                if (existingPreview) {
+                    existingPreview.remove();
+                }
 
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            textarea.value += transcript;
-            voiceBtn.classList.remove('text-danger');
-        };
+                const previewHtml = `
+                    <div class="audio-preview d-flex align-items-center gap-2 my-2">
+                        <i class="bi bi-mic-fill text-primary"></i>
+                        <audio src="${audioUrl}" controls class="audio-message flex-grow-1"></audio>
+                        <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.audio-preview').remove()">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                chatInput.insertAdjacentHTML('afterbegin', previewHtml);
 
-        recognition.onerror = () => {
-            voiceBtn.classList.remove('text-danger');
-        };
+                // Reset recording state
+                audioChunks = []; 
+            };
 
-        recognition.onend = () => {
-            voiceBtn.classList.remove('text-danger');
-        };
-    } else {
-        voiceBtn.disabled = true;
-        voiceBtn.title = "Voice recognition not supported";
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.addEventListener('click', () => {
+                if (!isRecording) {
+                    // Start recording
+                    audioChunks = [];
+                    mediaRecorder.start();
+                    isRecording = true;
+                    voiceBtn.classList.add('text-danger');
+                    voiceBtn.querySelector('i').classList.replace('bi-mic-fill', 'bi-stop-fill');
+                } else {
+                    // Stop recording
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    voiceBtn.classList.remove('text-danger');
+                    voiceBtn.querySelector('i').classList.replace('bi-stop-fill', 'bi-mic-fill');
+                }
+            });
+
+        } catch (err) {
+            console.error('Error accessing microphone:', err);
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.disabled = true;
+            voiceBtn.title = "Microphone access denied";
+        }
     }
 
     // Initial load
     loadCoachesList();
+    initializeAudioRecording();
 });

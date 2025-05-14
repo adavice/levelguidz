@@ -199,4 +199,44 @@ if ($cgi->request_method eq 'POST' && $cgi->param('action') && $cgi->param('acti
     }
 }
 
+if ($cgi->param('action') && $cgi->param('action') eq 'transcribe_audio') {
+    my $upload = $cgi->upload('audio');
+    if ($upload) {
+        # Save uploaded audio to temp file
+        my ($fh, $filename) = tempfile(SUFFIX => '.webm');
+        binmode $fh;
+        while (my $bytesread = read($upload, my $buffer, 1024)) {
+            print $fh $buffer;
+        }
+        close $fh;
+
+        # Call OpenAI Whisper API
+        my $ua = LWP::UserAgent->new;
+        my $res = $ua->post(
+            'https://api.openai.com/v1/audio/transcriptions',
+            'Authorization' => "Bearer $api_key",
+            'Content-Type' => 'multipart/form-data',
+            'Content' => [
+                file => [$filename],
+                model => 'whisper-1',
+            ]
+        );
+
+        unlink $filename; # Clean up temp file
+
+        if ($res->is_success) {
+            my $resp = decode_json($res->decoded_content);
+            print encode_json({ 
+                text => $resp->{text},
+                reply => "Response to transcribed audio..." # Add AI response logic here
+            });
+        } else {
+            print encode_json({ error => "Failed to transcribe audio" });
+        }
+    } else {
+        print encode_json({ error => "No audio uploaded" });
+    }
+    exit;
+}
+
 print encode_json({ error => "Unknown action" });
