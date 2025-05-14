@@ -991,6 +991,57 @@ input::placeholder, textarea::placeholder {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+    position: relative;
+}
+
+.coach-item h6 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Adjust the spacing as needed */
+}
+
+.coach-status {
+    position: relative; /* Changed from absolute */
+    bottom: auto; /* Remove bottom */
+    right: auto; /* Remove right */
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block; /* Make it inline */
+    margin: 3px 0;
+}
+
+.status-online {
+    background-color: #10b981;
+}
+
+.status-away {
+    background-color: #f59e0b;
+}
+
+.status-offline {
+    background-color: #ef4444;
+}
+
+.status-responding {
+    background-color: #10b981;
+    animation: pulse 2s infinite;
+}
+
+.status-responding::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: inherit;
+    z-index: -1;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .form-control, .form-select {
@@ -1097,4 +1148,53 @@ input::placeholder, textarea::placeholder {
 
 .audio-preview audio {
     height: 32px;
+}
+
+.chat-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chat-header h6 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.chat-header .coach-item-avatar {
+    width: 48px;
+    height: 48px;
+}
+
+/* Chat Coach List Styles */
+.chatbot-list .coach-item {
+    margin-top: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 1rem !important;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    background: var(--gradient-bg);
+}
+
+.chatbot-list .coach-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.chatbot-list .coach-item.active {
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border-color: var(--primary-color);
+}
+
+.chatbot-list .coach-item.active h6 {
+    color: var(--primary-color);
+}
+
+.chatbot-list .coach-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }

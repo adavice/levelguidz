@@ -1,4 +1,4 @@
-import { loadCoaches } from './clientApi.js';
+import { loadCoaches, dummyCoaches } from './clientApi.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
@@ -12,28 +12,84 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!Array.isArray(coaches)) {
                 throw new Error('Invalid coaches data');
             }
-            coachList.innerHTML = coaches.map(coach => `
-                <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}">
-                    <div class="coach-item-avatar" style="background-image: url('${coach.avatar}')"></div>
+            renderCoaches(coaches);
+        } catch (error) {
+            console.error('Error loading coaches, using dummy data:', error);
+            renderCoaches(dummyCoaches);
+        }
+    }
+
+    function getRandomStatus() {
+        const statuses = ['online', 'away', 'offline'];
+        return statuses[Math.floor(Math.random() * statuses.length)];
+    }
+
+    function renderCoaches(coaches) {
+        coachList.innerHTML = coaches.map(coach => {
+            const status = coach.status || getRandomStatus();
+            return `
+                <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}" data-status="${status}">
+                    <div class="coach-item-avatar" style="background-image: url('${coach.avatar}')">
+                    </div>
                     <div>
-                        <h6 class="mb-0">${coach.name}</h6>
+                        <h6 class="mb-0">${coach.name} <div class="coach-status status-${status}"></div></h6>
                         <small class="text-muted">${coach.role}</small>
                     </div>
                 </div>
-            `).join('');
+            `;
+        }).join('');
 
-            document.querySelectorAll('.coach-item').forEach(item => {
-                item.addEventListener('click', () => selectCoach(item));
-            });
-        } catch (error) {
-            console.error('Error loading coaches:', error);
-            coachList.innerHTML = `<div class="text-danger">Failed to load coaches. Please try again later.</div>`;
+        document.querySelectorAll('.coach-item').forEach(item => {
+            item.addEventListener('click', () => selectCoach(item));
+        });
+    }
+
+    function setCoachStatus(coachId, status, force = false) {
+        const coachItem = document.querySelector(`.coach-item[data-id="${coachId}"]`);
+        if (coachItem) {
+            const statusDot = coachItem.querySelector('.coach-status');
+            const currentStatus = coachItem.dataset.status;
+
+            if (status === 'responding') {
+                // Keep original status color but add pulse animation
+                statusDot.className = `coach-status status-${currentStatus} status-responding`;
+            } else {
+                // Remove responding animation and update status if needed
+                statusDot.classList.remove('status-responding');
+                if (status !== currentStatus || force) {
+                    coachItem.dataset.status = status;
+                    statusDot.className = `coach-status status-${status}`;
+                }
+            }
+
+            // Update header status to match
+            if (coachItem.classList.contains('active')) {
+                const headerName = document.getElementById('chatCoachName');
+                const headerStatus = headerName.querySelector('.coach-status'); // Select status inside h6
+                if (status === 'responding') {
+                    headerStatus.className = `coach-status status-${currentStatus} status-responding`;
+                } else {
+                    headerStatus.className = `coach-status status-${status}`;
+                }
+            }
         }
     }
 
     function selectCoach(coachItem) {
         document.querySelectorAll('.coach-item').forEach(item => item.classList.remove('active'));
         coachItem.classList.add('active');
+
+        // Update chat header with selected coach info
+        const coachId = coachItem.dataset.id;
+        const status = coachItem.dataset.status;
+        const avatar = coachItem.querySelector('.coach-item-avatar').style.backgroundImage;
+        const name = coachItem.querySelector('h6').textContent;
+        const role = coachItem.querySelector('small').textContent;
+
+        document.getElementById('chatCoachAvatar').style.backgroundImage = avatar;
+        document.getElementById('chatCoachName').innerHTML = `${name} <div class="coach-status status-${status}"></div>`;
+        document.getElementById('chatCoachRole').textContent = role;
+        
         // Clear chat messages when switching coaches
         chatMessages.innerHTML = '';
     }
@@ -80,6 +136,19 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function getResponseDelay(status) {
+        switch (status) {
+            case 'online':
+                return Math.random() * 1000 + 500; // 0.5-1.5 seconds
+            case 'away':
+                return Math.random() * 3000 + 2000; // 2-5 seconds
+            case 'offline':
+                return Math.random() * 5000 + 10000; // 10-15 seconds
+            default:
+                return 1000;
+        }
+    }
+
     // Handle sending messages
     sendButton.addEventListener('click', sendMessage);
     messageInput.addEventListener('keypress', (e) => {
@@ -95,49 +164,33 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!message && !audioPreview) return;
 
-        if (audioPreview) {
-            const audio = audioPreview.querySelector('audio');
-            addMessage(audio.src, true, true);
-            
-            // Get the audio blob from source
-            fetch(audio.src)
-                .then(res => res.blob())
-                .then(async audioBlob => {
-                    const formData = new FormData();
-                    formData.append('action', 'transcribe_audio');
-                    formData.append('audio', audioBlob);
-
-                    try {
-                        const response = await fetch('/server/chatgpt_api.pl', {
-                            method: 'POST',
-                            body: formData
-                        });
-
-                        const data = await response.json();
-                        if (data && data.text) {
-                            addMessage(`<div class="text-muted small">Transcribed: ${data.text}</div>`, true);
-                            if (data.reply) {
-                                addMessage(data.reply, false);
-                            }
-                        } else {
-                            throw new Error('Failed to process audio');
-                        }
-                    } catch (error) {
-                        addMessage('<div class="text-danger">Failed to process voice message</div>', false);
-                    }
-                });
-
-            audioPreview.remove();
+        const activeCoach = document.querySelector('.coach-item.active');
+        if (!activeCoach) {
+            addMessage('<div class="text-danger">Please select a coach first</div>', false);
+            return;
         }
 
         if (message) {
+            const originalStatus = activeCoach.dataset.status;
             addMessage(message, true);
             messageInput.value = '';
-            
-            // Handle text message response
+
+            // Add responding animation (pulse) but keep the original color
+            const statusDot = activeCoach.querySelector('.coach-status');
+
+            // Simulate bot response after delay
             setTimeout(() => {
                 addMessage("This is a simulated response from the bot.");
-            }, 1000);
+
+                // Remove responding animation
+                statusDot.classList.remove('status-responding');
+
+                // Only now change to online after bot responds, if was away/offline
+                if (originalStatus === 'away' || originalStatus === 'offline') {
+                    setCoachStatus(activeCoach.dataset.id, 'online');
+                }
+                // If already online, keep it green
+            }, getResponseDelay(originalStatus));
         }
     }
 

@@ -1,111 +1,71 @@
-import { loadCoaches, saveCoaches, saveCoach, deleteCoach } from './clientApi.js';
+import { loadCoaches, saveCoaches, saveCoach as saveCoachApi, deleteCoach as deleteCoachApi, dummyCoaches } from './clientApi.js';
 
 const DEFAULT_AVATAR = "https://img.vodonet.net/FM4Ek6rlSokBakd.png";
 
-// Dummy bots data (single source of truth)
-const dummyBots = [
-  {
-    id: 1,
-    name: "JungleHeart",
-    persona: "JungleHeart is a grizzled MOBA veteran and strategic coach with over a decade of experience in games like League of Legends and Dota 2. He speaks like a real person, often pausing to think before responding. His tone is calm, experienced, and slightly blunt — never toxic, but not afraid to call out mistakes. He uses phrases like 'Back in Season 3...' or 'classic -3 tempo swing' and often refers to past metas or pro matches. He responds with deliberate timing, taking 2–5 seconds before answering to simulate real thought, and uses ellipses or short phrases like 'hmm...', 'hold on...', or 'let’s rewind that...' to mimic natural hesitation. His focus is on coaching, analyzing gameplay decisions, and helping the user improve with realistic, scenario-based feedback. Never replies instantly — always sounds like he's mentally reviewing a VOD before speaking.",
-    role: "MOBA Coach",
-    avatar: "https://img.vodonet.net/gTt20tRkcKcdVwz.jpg",
-    greeting: "Hello! I'm ready to help you improve in League of Legends and DOTA!"
-  },
-  {
-    id: 2,
-    name: "Coach 2",
-    persona: " Expert in FPS Coach (e.g., Counter-Strike: Global Offensive, Call of Duty, Overwatch etc.)",
-    role: "FPS Coach",
-    avatar: DEFAULT_AVATAR,
-    greeting: ""
-  },
-  {
-    id: 3,
-    name: "Coach 3",
-    persona: "Expert in Racing/Simulation Coach (e.g., Forza, Gran Turismo, iRacing etc.)",
-    role: "Racing/Simulation Coach",
-    avatar: DEFAULT_AVATAR,
-    greeting: ""
-  },
-  {
-    id: 4,
-    name: "Coach 4",
-    persona: "Expert in Battle Royale Coach (e.g., Fortnite, Apex Legends, PUBG etc.)",
-    role: "Battle Royale Coach",
-    avatar: DEFAULT_AVATAR,
-    greeting: ""
-  },
-  {
-    id: 5,
-    name: "Coach 5",
-    persona: "Expert in Sandbox/Survival Games Coach (e.g., Minecraft, Terraria, Ark: Survival Evolved etc.)",
-    role: "Sandbox/Survival Coach",
-    avatar: DEFAULT_AVATAR,
-    greeting: ""
-  },
-];
-
-// Use bots as the working array, but always clone from dummyBots if needed
-let bots = dummyBots.map(b => ({ ...b }));
-
-let selectedBot = null;
+// Use coaches as the working array, but always clone from dummyCoaches if needed
+let coaches = dummyCoaches.map(c => ({ ...c })); // Initialize with dummy data
+let selectedCoach = null;
 let hasUnsavedChanges = false;
 let pendingAction = null;
 
-// Render bot list
-function renderBots() {
-  const botList = document.querySelector(".chatbot-list");
-  if (!botList) return;
+// Render coach list
+function renderCoaches() {
+  const coachList = document.querySelector(".chatbot-list");
+  if (!coachList) return;
   
-  botList.innerHTML = bots
+  coachList.innerHTML = coaches
     .map(
-      (bot) => `
-          <div class="bot-item p-3 mb-2 ${
-            selectedBot?.id === bot.id ? "active" : ""
-          }" onclick="selectBot(${bot.id})">
+      (coach) => `
+          <div class="coach-item p-3 mb-2 ${
+            selectedCoach?.id === coach.id ? "active" : ""
+          }" data-id="${coach.id}">
               <div class="d-flex align-items-center">
-                  <div class="bot-item-avatar me-3" style="background-image: url('${bot.avatar || DEFAULT_AVATAR}')"></div>
+                  <div class="coach-item-avatar me-3" style="background-image: url('${coach.avatar || DEFAULT_AVATAR}')"></div>
                   <div>
-                      <h6 class="mb-1 fw-semibold">${bot.name}</h6>
-                      <p class="text-muted small mb-0">${bot.role}</p>
+                      <h6 class="mb-1 fw-semibold">${coach.name}</h6>
+                      <p class="text-muted small mb-0">${coach.role}</p>
                   </div>
               </div>
           </div>
       `
     )
     .join("");
+
+  // Add click listeners after rendering
+  document.querySelectorAll('.coach-item').forEach(item => {
+    item.addEventListener('click', () => selectCoach(parseInt(item.dataset.id)));
+  });
 }
 
-// Select bot and populate edit form
-function selectBot(id) {
-  if (selectedBot?.id === id) return;
+// Select coach and populate edit form
+function selectCoach(id) {
+  if (selectedCoach?.id === id) return;
   
-  const selectNewBot = () => {
-      const targetBot = bots.find((bot) => bot.id === id);
-      if (targetBot) {
-          // If current bot is new and unchanged, remove it
-          if (selectedBot?.name === "New Coach" && selectedBot?.persona === "Untitled") {
-              const index = bots.findIndex(b => b.id === selectedBot.id);
+  const selectNewCoach = () => {
+      const targetCoach = coaches.find((coach) => coach.id === id);
+      if (targetCoach) {
+          // If current coach is new and unchanged, remove it
+          if (selectedCoach?.name === "New Coach" && selectedCoach?.persona === "Untitled") {
+              const index = coaches.findIndex(c => c.id === selectedCoach.id);
               if (index > -1) {
-                  bots.splice(index, 1);
+                  coaches.splice(index, 1);
               }
           }
-          selectedBot = targetBot;
-          document.querySelector(".avatar-upload").style.backgroundImage = `url('${selectedBot.avatar}')`;
-          document.querySelector('#profile-name-input').value = selectedBot.name;
-          document.querySelector('#profile-description-input').value = selectedBot.persona;
-          document.querySelector('#profile-role-input').value = selectedBot.role;
-          document.querySelector('#profile-greeting-input').value = selectedBot.greeting;
+          selectedCoach = targetCoach;
+          document.querySelector(".avatar-upload").style.backgroundImage = `url('${selectedCoach.avatar}')`;
+          document.querySelector('#profile-name-input').value = selectedCoach.name;
+          document.querySelector('#profile-description-input').value = selectedCoach.persona;
+          document.querySelector('#profile-role-input').value = selectedCoach.role;
+          document.querySelector('#profile-greeting-input').value = selectedCoach.greeting;
           hasUnsavedChanges = false;
-          renderBots();
+          renderCoaches();
       }
   };
 
-  if (selectedBot && hasUnsavedChanges) {
-      checkUnsavedChanges(selectNewBot);
+  if (selectedCoach && hasUnsavedChanges) {
+      checkUnsavedChanges(selectNewCoach);
   } else {
-      selectNewBot();
+      selectNewCoach();
   }
 }
 
@@ -116,11 +76,11 @@ function handleFileUpload() {
   input.accept = "image/*";
   input.onchange = (e) => {
     const file = e.target.files[0];
-    if (file && selectedBot) {
+    if (file && selectedCoach) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        // Update the bot's avatar in data
-        selectedBot.avatar = event.target.result;
+        // Update the coach's avatar in data
+        selectedCoach.avatar = event.target.result;
         
         // Update avatar preview
         const avatarPreview = document.querySelector(".avatar-upload");
@@ -131,8 +91,8 @@ function handleFileUpload() {
         // Mark changes as unsaved
         hasUnsavedChanges = true;
         
-        // Re-render bot list to update avatar there
-        renderBots();
+        // Re-render coach list to update avatar there
+        renderCoaches();
       };
       reader.readAsDataURL(file);
     }
@@ -140,11 +100,11 @@ function handleFileUpload() {
   input.click();
 }
 
-// Add new bot
-function addBot() {
-  const createNewBot = () => {
-      const newId = bots.length > 0 ? Math.max(...bots.map((b) => b.id)) + 1 : 1;
-      const newBot = {
+// Add new coach
+function addCoach() {
+  const createNewCoach = () => {
+      const newId = coaches.length > 0 ? Math.max(...coaches.map((c) => c.id)) + 1 : 1;
+      const newCoach = {
           id: newId,
           name: "New Coach",
           persona: "Untitled",
@@ -152,30 +112,30 @@ function addBot() {
           avatar: DEFAULT_AVATAR,
           greeting: ""
       };
-      bots.push(newBot);
-      selectedBot = newBot;
-      renderBots();
+      coaches.push(newCoach);
+      selectedCoach = newCoach;
+      renderCoaches();
       // Update form fields directly
       document.querySelector(".avatar-upload").style.backgroundImage = `url('${DEFAULT_AVATAR}')`;
-      document.querySelector('#profile-name-input').value = newBot.name;
-      document.querySelector('#profile-description-input').value = newBot.persona;
-      document.querySelector('#profile-role-input').value = newBot.role;
-      document.querySelector('#profile-greeting-input').value = newBot.greeting;
-      hasUnsavedChanges = true; // Mark as unsaved when creating new bot
+      document.querySelector('#profile-name-input').value = newCoach.name;
+      document.querySelector('#profile-description-input').value = newCoach.persona;
+      document.querySelector('#profile-role-input').value = newCoach.role;
+      document.querySelector('#profile-greeting-input').value = newCoach.greeting;
+      hasUnsavedChanges = true; // Mark as unsaved when creating new coach
   };
 
-  if (selectedBot) {
-      checkUnsavedChanges(createNewBot);
+  if (selectedCoach) {
+      checkUnsavedChanges(createNewCoach);
   } else {
-      createNewBot();
+      createNewCoach();
   }
 }
 
-// Delete bot
-function deleteBot() {
-  if (!selectedBot) return;
+// Delete coach button handler
+function handleDeleteCoach() {
+  if (!selectedCoach) return;
   const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
-  document.getElementById('confirmText').textContent = `Are you sure you want to delete ${selectedBot.name}?`;
+  document.getElementById('confirmText').textContent = `Are you sure you want to delete ${selectedCoach.name}?`;
   document.getElementById('confirmDelete').textContent = 'Delete';
   document.getElementById('confirmDelete').classList.remove('btn-primary');
   document.getElementById('confirmDelete').classList.add('btn-danger');
@@ -185,60 +145,56 @@ function deleteBot() {
 }
 
 // Replace loadBotsFromServer with loadCoaches
-async function loadBotsFromServer() {
+async function loadCoachesFromServer() {
     try {
         const serverCoaches = await loadCoaches();
         if (Array.isArray(serverCoaches) && serverCoaches.length > 0) {
-            bots.length = 0;
-            serverCoaches.forEach(b => bots.push(b));
+            coaches.length = 0;
+            serverCoaches.forEach(c => coaches.push(c));
             return true;
         }
     } catch (e) {
-        // Ignore error, fallback will be handled by caller
+        console.error("Failed to load coaches from server, using dummy data", e);
+        return false;
     }
     return false;
 }
 
-// Replace saveBotsToServer with saveCoaches
-async function saveBotsToServer(botsArray) {
-    return saveCoaches(botsArray);
-}
-
 // Replace saveBotToServer with saveCoach
-async function saveBotToServer(bot) {
-    return saveCoach(bot);
+async function saveCoachToServer(coach) {
+    return saveCoachApi(coach);
 }
 
 // Replace deleteBotFromServer with deleteCoach
-async function deleteBotFromServer(id) {
-    return deleteCoach(id);
+async function deleteCoachFromServer(id) {
+    return deleteCoachApi(id);
 }
 
-// Save bot changes
-async function saveBot() {
-  if (!selectedBot) return;
+// Save coach changes
+async function handleSaveCoach() {
+    if (!selectedCoach) return;
 
-  // Update bot data from form
-  selectedBot.name = document.querySelector('#profile-name-input').value;
-  selectedBot.persona = document.querySelector('#profile-description-input').value;
-  selectedBot.role = document.querySelector('#profile-role-input').value;
-  selectedBot.greeting = document.querySelector('#profile-greeting-input').value;
+    // Update coach data from form
+    selectedCoach.name = document.querySelector('#profile-name-input').value;
+    selectedCoach.persona = document.querySelector('#profile-description-input').value;
+    selectedCoach.role = document.querySelector('#profile-role-input').value;
+    selectedCoach.greeting = document.querySelector('#profile-greeting-input').value;
 
-  try {
-      await saveBotsToServer(bots);
-      hasUnsavedChanges = false;
-      renderBots();
-      showModal();
+    try {
+        await saveCoaches(coaches);
+        hasUnsavedChanges = false;
+        renderCoaches();
+        showModal();
 
-      // Execute pending action if exists
-      if (pendingAction) {
-          const action = pendingAction;
-          pendingAction = null;
-          action();
-      }
-  } catch (error) {
-      alert("Error saving bot data");
-  }
+        // Execute pending action if exists
+        if (pendingAction) {
+            const action = pendingAction;
+            pendingAction = null;
+            action();
+        }
+    } catch (error) {
+        alert("Error saving coach data");
+    }
 }
 
 async function confirmDelete() {
@@ -246,17 +202,17 @@ async function confirmDelete() {
       // Handle save confirmation
       const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
       modal.hide();
-      saveBot();
+      handleSaveCoach();
   } else {
       // Handle delete confirmation
-      const index = bots.findIndex((bot) => bot.id === selectedBot.id);
+      const index = coaches.findIndex((coach) => coach.id === selectedCoach.id);
       if (index > -1) {
           try {
-              bots.splice(index, 1);
-              await saveBotsToServer(bots);
-              selectedBot = null;
+              coaches.splice(index, 1);
+              await saveCoaches(coaches);
+              selectedCoach = null;
               hasUnsavedChanges = false;
-              renderBots();
+              renderCoaches();
               // Clear form
               document.querySelector(".avatar-upload").style.backgroundImage = `url('${DEFAULT_AVATAR}')`;
               document.querySelector('#profile-name-input').value = "";
@@ -297,35 +253,35 @@ function checkUnsavedChanges(callback) {
   }
 }
 
-// Reset form to selected bot data
-async function resetFormToSelectedBot() {
-    if (!selectedBot) return;
+// Reset form to selected coach data
+async function resetFormToSelectedCoach() {
+    if (!selectedCoach) return;
 
-    if (selectedBot.name === "New Coach") {
-        const index = bots.findIndex(b => b.id === selectedBot.id);
+    if (selectedCoach.name === "New Coach") {
+        const index = coaches.findIndex(c => c.id === selectedCoach.id);
         if (index > -1) {
-            bots.splice(index, 1);
+            coaches.splice(index, 1);
         }
-        selectedBot = null;
+        selectedCoach = null;
         clearForm();
-        if (bots.length > 0) {
-            selectBot(bots[0].id);
+        if (coaches.length > 0) {
+            selectCoach(coaches[0].id);
         }
     } else {
-        const loaded = await loadBotsFromServer();
+        const loaded = await loadCoachesFromServer();
         if (!loaded) {
-            bots = dummyBots.map(b => ({ ...b }));
+            coaches = dummyCoaches.map(c => ({ ...c }));
         }
-        // Find and select the original bot
-        const originalBot = bots.find(b => b.id === selectedBot.id);
-        if (originalBot) {
-            selectedBot = originalBot;
-            updateFormWithBot(originalBot);
+        // Find and select the original coach
+        const originalCoach = coaches.find(c => c.id === selectedCoach.id);
+        if (originalCoach) {
+            selectedCoach = originalCoach;
+            updateFormWithCoach(originalCoach);
         }
     }
 
     hasUnsavedChanges = false;
-    renderBots();
+    renderCoaches();
 }
 
 function clearForm() {
@@ -336,12 +292,12 @@ function clearForm() {
     document.querySelector('#profile-greeting-input').value = '';
 }
 
-function updateFormWithBot(bot) {
-    document.querySelector(".avatar-upload").style.backgroundImage = `url('${bot.avatar || DEFAULT_AVATAR}')`;
-    document.querySelector('#profile-name-input').value = bot.name || '';
-    document.querySelector('#profile-description-input').value = bot.persona || '';
-    document.querySelector('#profile-role-input').value = bot.role || '';
-    document.querySelector('#profile-greeting-input').value = bot.greeting || '';
+function updateFormWithCoach(coach) {
+    document.querySelector(".avatar-upload").style.backgroundImage = `url('${coach.avatar || DEFAULT_AVATAR}')`;
+    document.querySelector('#profile-name-input').value = coach.name || '';
+    document.querySelector('#profile-description-input').value = coach.persona || '';
+    document.querySelector('#profile-role-input').value = coach.role || '';
+    document.querySelector('#profile-greeting-input').value = coach.greeting || '';
 }
 
 // Track form changes
@@ -350,7 +306,7 @@ function setupFormChangeTracking() {
     const inputs = document.querySelectorAll('#profile-name-input, #profile-role-input, #profile-description-input, #profile-greeting-input');
     inputs.forEach(input => {
         input.addEventListener('input', () => {
-            if (selectedBot) {
+            if (selectedCoach) {
                 hasUnsavedChanges = true;
             }
         });
@@ -360,7 +316,9 @@ function setupFormChangeTracking() {
 // Add event listeners
 document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector(".upload-btn")?.addEventListener("click", handleFileUpload);
-    document.querySelector("button.btn-primary.w-100")?.addEventListener("click", addBot);
+    document.querySelector("button.btn-primary.w-100")?.addEventListener("click", addCoach);
+    document.getElementById("saveBtn")?.addEventListener("click", handleSaveCoach);
+    document.getElementById("deleteBtn")?.addEventListener("click", handleDeleteCoach);
     document.getElementById("closeModal")?.addEventListener("click", () => {
         const modal = bootstrap.Modal.getInstance(document.getElementById("successModal"));
         if (modal) modal.hide();
@@ -372,8 +330,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('confirmDelete').textContent = 'Delete';
         if (pendingAction) {
             pendingAction = null;
-            if (selectedBot) {
-                renderBots();
+            if (selectedCoach) {
+                renderCoaches();
             }
         }
     });
@@ -381,36 +339,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
         if (modal) modal.hide();
         if (pendingAction) {
-            const loaded = await loadBotsFromServer();
+            const loaded = await loadCoachesFromServer();
             if (!loaded) {
-                bots = dummyBots.map(b => ({ ...b }));
+                coaches = dummyCoaches.map(c => ({ ...c }));
             }
-            resetFormToSelectedBot();
+            resetFormToSelectedCoach();
             const action = pendingAction;
             pendingAction = null;
             action();
         }
     });
     
-    let loadedFromServer = await loadBotsFromServer();
+    let loadedFromServer = await loadCoachesFromServer();
     if (!loadedFromServer) {
-        bots = dummyBots.map(b => ({ ...b }));
-        console.log('Using dummy bots array');
+        coaches = dummyCoaches.map(c => ({ ...c }));
+        console.log('Using dummy coaches array');
     }
 
-    renderBots();
+    renderCoaches();
     setupFormChangeTracking();
-    if (bots.length > 0) {
-        selectBot(bots[0].id);
+    if (coaches.length > 0) {
+        selectCoach(coaches[0].id);
     }
 });
 
-// Helper to restore dummy bots array and UI
-function fallbackToDummyBots() {
-    bots = dummyBots.map(b => ({ ...b }));
-    renderBots();
+// Helper to restore dummy coaches array and UI
+function fallbackToDummyCoaches() {
+    coaches = dummyCoaches.map(c => ({ ...c }));
+    renderCoaches();
     clearForm();
-    if (bots.length > 0) {
-        selectBot(bots[0].id);
+    if (coaches.length > 0) {
+        selectCoach(coaches[0].id);
     }
 }
