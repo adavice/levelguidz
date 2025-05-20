@@ -24,9 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return statuses[Math.floor(Math.random() * statuses.length)];
     }
 
+    function getStoredStatus(coachId) {
+        const storedStatuses = JSON.parse(sessionStorage.getItem('coachStatuses') || '{}');
+        return storedStatuses[coachId];
+    }
+
+    function storeStatus(coachId, status) {
+        const storedStatuses = JSON.parse(sessionStorage.getItem('coachStatuses') || '{}');
+        storedStatuses[coachId] = status;
+        sessionStorage.setItem('coachStatuses', JSON.stringify(storedStatuses));
+    }
+
     function renderCoaches(coaches) {
         coachList.innerHTML = coaches.map(coach => {
-            const status = coach.status || getRandomStatus();
+            const storedStatus = getStoredStatus(coach.id);
+            const status = storedStatus || coach.status || getRandomStatus();
+            if (!storedStatus) {
+                storeStatus(coach.id, status);
+            }
             return `
                 <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}" data-status="${status}">
                     <div class="coach-item-avatar" style="background-image: url('${coach.avatar}')">
@@ -71,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     headerStatus.className = `coach-status status-${status}`;
                 }
+            }
+
+            if (status !== 'responding') {
+                storeStatus(coachId, status);
             }
         }
     }
@@ -149,6 +168,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function sendToGPT(message, coachId) {
+        try {
+            const response = await fetch('/server/chatgpt_api.pl', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'chat',
+                    coach_id: coachId,
+                    message: message
+                })
+            });
+            const data = await response.json();
+            return data.reply;
+        } catch (error) {
+            console.error('Error sending message to GPT:', error);
+            throw new Error('Failed to get response from coach');
+        }
+    }
+
+    async function processUserMessage(message) {
+        // Simulate user message processing (typing effect)
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     // Handle sending messages
     sendButton.addEventListener('click', sendMessage);
     messageInput.addEventListener('keypress', (e) => {
@@ -170,28 +213,82 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (message) {
-            const originalStatus = activeCoach.dataset.status;
-            addMessage(message, true);
-            messageInput.value = '';
+        const coachId = activeCoach.dataset.id;
+        const originalStatus = activeCoach.dataset.status;
+        messageInput.value = '';
 
-            // Add responding animation (pulse) but keep the original color
-            const statusDot = activeCoach.querySelector('.coach-status');
-
-            // Simulate bot response after delay
-            setTimeout(() => {
-                addMessage("This is a simulated response from the bot.");
-
-                // Remove responding animation
-                statusDot.classList.remove('status-responding');
-
-                // Only now change to online after bot responds, if was away/offline
-                if (originalStatus === 'away' || originalStatus === 'offline') {
-                    setCoachStatus(activeCoach.dataset.id, 'online');
-                }
-                // If already online, keep it green
-            }, getResponseDelay(originalStatus));
+        if (audioPreview) {
+            handleAudioMessage(audioPreview, coachId, originalStatus);
         }
+
+        if (message) {
+            handleTextMessage(message, coachId, originalStatus);
+        }
+    }
+
+    async function handleTextMessage(message, coachId, originalStatus) {
+        try {
+            // Process user message first
+            await processUserMessage(message);
+            addMessage(message, true);
+
+            // Only show typing indicator if coach is online
+            if (originalStatus === 'online') {
+                setCoachStatus(coachId, 'responding');
+            }
+
+            // Get response after appropriate delay
+            const delay = getResponseDelay(originalStatus);
+            await new Promise(resolve => setTimeout(resolve, delay));
+
+            const reply = await sendToGPT(message, coachId);
+            addMessage(reply, false);
+
+            // Always set status to online after successful response
+            setCoachStatus(coachId, 'online');
+
+        } catch (error) {
+            addMessage(`<span class="text-danger">${error.message}</span>`, false);
+            setCoachStatus(coachId, originalStatus);
+        }
+    }
+
+    async function handleAudioMessage(audioPreview, coachId, originalStatus) {
+        const audio = audioPreview.querySelector('audio');
+        const audioBlob = await fetch(audio.src).then(r => r.blob());
+        
+        try {
+            addMessage(audio.src, true, true);
+            setCoachStatus(coachId, 'responding');
+
+            const formData = new FormData();
+            formData.append('action', 'transcribe_audio');
+            formData.append('audio', audioBlob);
+            formData.append('coach_id', coachId);
+
+            const response = await fetch('/server/chatgpt_api.pl', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.text) {
+                // Add small delay before response
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                const reply = await sendToGPT(data.text, coachId);
+                addMessage(reply, false);
+                // Set to online after successful response
+                setCoachStatus(coachId, 'online');
+            } else {
+                throw new Error('Failed to process audio message');
+            }
+
+            setCoachStatus(coachId, originalStatus);
+        } catch (error) {
+            addMessage(`<span class="text-danger">${error.message}</span>`, false);
+            setCoachStatus(coachId, originalStatus);
+        }
+        audioPreview.remove();
     }
 
     // Handle screenshot paste (Ctrl+V) for vision analysis
