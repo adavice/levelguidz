@@ -35,6 +35,18 @@ export async function deleteCoach(id) {
     return response.json();
 }
 
+export async function sendContactForm(formData) {
+    const response = await fetch('/server/chatgpt_api.pl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'contactus',
+            data: formData
+        })
+    });
+    return response.json();
+}
+
 export const dummyCoaches = [
   {
     id: 1,

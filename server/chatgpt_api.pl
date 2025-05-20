@@ -239,4 +239,14 @@ if ($cgi->param('action') && $cgi->param('action') eq 'transcribe_audio') {
     exit;
 }
 
+if ($data->{action} eq 'contactus') {
+    my $contact_data = $data->{data};
+    
+    # TODO: Add your contact form processing logic here
+    # For example, sending email, saving to database, etc.
+    
+    print encode_json({ status => 'ok' });
+    exit;
+}
+
 print encode_json({ error => "Unknown action" });
