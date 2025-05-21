@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LevelGuidz Chat</title>
     <link rel="icon" type="image/png" href="img/favicon.png" />
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="./css/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./css/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
     <style>
       .chat-window {
@@ -94,67 +94,135 @@
         </div>
       </div>
     </nav>
-
-    <div class="container my-4" style="margin-top: 80px !important">
-      <div class="row g-4">
-        <!-- Left Panel - Bot List -->
-        <div class="col-lg-3">
-          <div class="feature-card">
-            <div class="card-header bg-transparent border-0">
-              <h5 class="text-white mb-0 d-flex align-items-center gap-2">
-                <i class="bi bi-people-fill text-primary"></i>
-                Coach List
-              </h5>
-            </div>
-            <div class="card-body p-0 mt-3">
-              <div class="chatbot-list mb-3">
-                <!-- Bot list items will be populated here -->
+    <section>
+      <div class="container my-4" style="margin-top: 80px !important">
+        <div class="row g-4">
+          <!-- Left Panel - Bot List -->
+          <div class="col-lg-3">
+            <div class="feature-card">
+              <div class="card-header bg-transparent border-0">
+                <h5 class="text-white mb-0 d-flex align-items-center gap-2">
+                  <i class="bi bi-people-fill" style="color: var(--primary-color);"></i>
+                  Coach List
+                </h5>
+              </div>
+              <div class="card-body p-0 mt-3">
+                <div class="chatbot-list mb-3">
+                  <!-- Bot list items will be populated here -->
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Right Panel - Chat Window -->
-        <div class="col-lg-9">
-          <div class="chat-window">
-            <div class="chat-header">
-              <div class="d-flex align-items-center gap-3 p-3 border-bottom border-secondary">
-                <div class="coach-item-avatar" id="chatCoachAvatar">
-                </div>
-                <div>
-                  <h6 class="mb-1 fw-semibold" id="chatCoachName">Select a Coach</h6>
-                  <small class="text-muted" id="chatCoachRole"></small>
+          <!-- Right Panel - Chat Window -->
+          <div class="col-lg-9">
+            <div class="chat-window">
+              <div class="chat-header">
+                <div
+                  class="d-flex align-items-center gap-3 p-3 border-bottom border-secondary"
+                >
+                  <div class="coach-item-avatar" id="chatCoachAvatar"></div>
+                  <div>
+                    <h6 class="mb-1 fw-semibold" id="chatCoachName">
+                      Select a Coach
+                    </h6>
+                    <small class="text-muted" id="chatCoachRole"></small>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="chat-messages">
-              <!-- Messages will be populated here -->
-            </div>
-            <div class="chat-input">
-              <div class="d-flex gap-2">
-                <textarea
-                  class="form-control"
-                  placeholder="Type your message..."
-                ></textarea>
+              <div class="chat-messages">
+                <!-- Messages will be populated here -->
+              </div>
+              <div class="chat-input">
                 <div class="d-flex gap-2">
-                  <button class="btn btn-primary px-4">
-                    <i class="bi bi-send-fill"></i>
-                  </button>
-                  <button class="btn btn-outline-secondary" title="Voice Message" id="voiceBtn">
-                    <i class="bi bi-mic-fill"></i>
-                  </button>
-                  <label class="btn btn-outline-secondary" title="Upload image">
-                    <input type="file" class="d-none" id="imageUpload" accept="image/*">
-                    <i class="bi bi-image"></i>
-                  </label>
+                  <textarea
+                    class="form-control"
+                    placeholder="Type your message..."
+                  ></textarea>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-primary px-4">
+                      <i class="bi bi-send-fill"></i>
+                    </button>
+                    <button
+                      class="btn btn-outline-secondary"
+                      title="Voice Message"
+                      id="voiceBtn"
+                    >
+                      <i class="bi bi-mic-fill"></i>
+                    </button>
+                    <label
+                      class="btn btn-outline-secondary"
+                      title="Upload image"
+                    >
+                      <input
+                        type="file"
+                        class="d-none"
+                        id="imageUpload"
+                        accept="image/*"
+                      />
+                      <i class="bi bi-image"></i>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </section>
+    <footer class="footer py-5 mt-auto">
+      <div class="container">
+        <div class="row justify-content-between mb-4">
+          <div class="col-lg-3 mb-4 mb-lg-0">
+            <a href="#" class="footer-brand d-inline-block mb-4">
+              <img src="img/logo_dark.svg" alt="Logo" height="30" />
+            </a>
+            <p class="text-muted small mb-0">
+              &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              LevelGuidz.<br />All rights reserved.
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="text-white mb-3">Company</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./contact.html">Contact</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./faq.html">F.A.Q.</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h5 class="text-white mb-3">Legal</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./terms.html">Privacy Policy</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./terms.html">Terms of Service</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./refund.html">Refund Policy</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <p class="text-muted small text-center px-lg-5">
+          All brand names, (registered) trademarks, images and product
+          descriptions are the property of their legal owners and are neither
+          sponsor nor partner of this promotion.
+        </p>
+      </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/chat.js"></script>
   </body>
