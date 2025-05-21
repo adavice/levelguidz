@@ -31,6 +31,10 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--title-color);
 }
 
+i {
+    color: var(--primary-color);
+}
+
 .text-muted {
     color: var(--text-muted) !important;
 }
@@ -163,6 +167,12 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--primary-color);
 }
 
+.btn-primary:hover {
+    background-color: var(--text-color);
+    color: var(--primary-color);
+    border-color: var(--text-color);
+}
+
 .btn-hero-cta {
     background: var(--primary-color);
     color: var(--text-color);
@@ -180,6 +190,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(68, 76, 232, 0.4);
+    border-color: var(--text-color);
 }
 
 .btn-hero-cta svg {
@@ -448,8 +459,11 @@ footer {
 }
 
 .coach-card-footer .btn:hover {
+    background: var(--text-color);
+    color: var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(146, 16, 57, 0.2);
+    border-color: var(--text-color);
 }
 
 .card-corner-link {
@@ -524,6 +538,11 @@ hr {
     box-shadow: 0 4px 20px rgba(68, 76, 232, 0.3);
     transition: all 0.3s ease;
     z-index: 1000;
+}
+
+.corner-button i {
+    font-size: 1.5rem;
+    color: var(--text-color);
 }
 
 .corner-button:hover {
@@ -916,23 +935,43 @@ input::placeholder, textarea::placeholder {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1050;
+    display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 1rem;
 }
 
-.modal-overlay.show {
+.modal-overlay.show,
+.modal-overlay:not(.hidden) {
     opacity: 1;
     visibility: visible;
+}
+
+.modal-overlay .feature-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    height: auto;
+    min-height: auto;
 }
 
 .modal-content {
     transform: translateY(-20px);
     transition: transform 0.3s ease;
+    width: auto;
+    height: auto;
+    max-height: 90vh;
+    margin: auto;
+    background: var(--gradient-bg);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: auto;
 }
 
 .modal-overlay.show .modal-content {
@@ -944,18 +983,6 @@ input::placeholder, textarea::placeholder {
     height: auto;
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1050;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 .chatbot-list {
     min-height: 200px;
     max-height: 600px;
@@ -1095,19 +1122,6 @@ input::placeholder, textarea::placeholder {
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1050;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .modal-overlay.hidden {
     display: none !important;
 }
@@ -1197,4 +1211,13 @@ input::placeholder, textarea::placeholder {
     background-size: cover;
     background-position: center;
     border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem;
 }
