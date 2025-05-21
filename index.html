@@ -48,12 +48,12 @@
                 <h1 class="display-4 fw-bold">Leading TFT Coaching Platform</h1>
                 <p class="lead">Become a better gamer! Get TFT coaching to raise to Challenger tier!</p>
                 <div class="d-flex flex-column flex-sm-row gap-3">
-                    <button class="btn btn-hero-cta">
+                    <a href="./chat.html" class="btn btn-hero-cta">
                         <span>Find Your Coach</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-2" viewBox="0 0 16 16">
                             <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="game-selector-wrapper mt-5">
@@ -483,8 +483,13 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const authToast = new bootstrap.Toast(document.getElementById('authToast'));
-            const showToast = (message) => {
-                document.getElementById('toastMessage').textContent = message;
+            const showToast = (message, success = false) => {
+                const toastMessage = document.getElementById('toastMessage');
+                toastMessage.innerHTML = `
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi ${success ? 'bi-check-circle-fill text-success' : 'bi-exclamation-circle-fill text-danger'}"></i>
+                        <span>${message}</span>
+                    </div>`;
                 authToast.show();
             };
 
@@ -499,7 +504,7 @@
                     const response = await login(email, password);
                     if (response.status === 'ok') {
                         form.reset();
-                        showToast('Login successful! Redirecting...');
+                        showToast('Login successful! Redirecting...', true);
                         setTimeout(() => window.location.href = '/chat.html', 1500);
                     } else {
                         throw new Error(response.error || 'Login failed');
@@ -527,7 +532,7 @@
                     const response = await signup(username, email, password);
                     if (response.status === 'ok') {
                         form.reset();
-                        showToast('Account created successfully! Please login.');
+                        showToast('Account created successfully! Please login.', true);
                         document.querySelector('.auth-flipper').classList.remove('flipped');
                     } else {
                         throw new Error(response.error || 'Registration failed');
@@ -547,7 +552,7 @@
                     const response = await forgotPassword(email);
                     if (response.status === 'ok') {
                         form.reset();
-                        showToast('Password reset link has been sent to your email.');
+                        showToast('Password reset link has been sent to your email.', true);
                         document.querySelector('.auth-flipper').classList.remove('flipped');
                     } else {
                         throw new Error(response.error || 'Failed to send reset link');
