@@ -622,6 +622,7 @@ hr {
 .steps-list h4 {
     color: var(--text-color);
     font-weight: 500;
+    max-width: 80%;
 }
 
 .content-block {
