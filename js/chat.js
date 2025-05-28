@@ -1,10 +1,18 @@
 import { loadCoaches, dummyCoaches } from './clientApi.js';
+import { convertToBase64, resizeImage } from './mediaUtils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
     const chatMessages = document.querySelector('.chat-messages');
     const messageInput = document.querySelector('textarea');
     const sendButton = document.querySelector('.chat-input button');
+    const chatInput = document.querySelector('.chat-input');
+    
+    // Add preview container after chat input initialization
+    chatInput.insertAdjacentHTML('afterbegin', `
+        <div class="media-preview-container d-flex flex-wrap gap-2 my-2"></div>
+    `);
+    const previewContainer = chatInput.querySelector('.media-preview-container');
 
     async function loadCoachesList() {
         try {
@@ -113,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.innerHTML = '';
     }
 
-    function addMessage(content, isUser = false, isAudio = false) {
+    function addMessage(content, isUser = false, isAudio = false, isImage = false) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
         const now = new Date();
@@ -126,16 +134,31 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         ` : '';
 
+        let messageContent = content;
+        if (isImage) {
+            messageContent = `
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-image text-primary"></i>
+                    <img src="data:image/jpeg;base64,${content}" class="img-fluid rounded" 
+                        style="max-height: 200px; cursor: pointer" 
+                        onclick="window.open(this.src, '_blank')"
+                        alt="Uploaded image">
+                </div>
+            `;
+        } else if (isAudio) {
+            messageContent = `
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-mic-fill text-primary"></i>
+                    <audio src="${content}" controls class="audio-message"></audio>
+                </div>
+            `;
+        }
+
         message.innerHTML = `
             <div class="message-content">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="flex-grow-1">
-                        ${isAudio ? `
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-mic-fill text-primary"></i>
-                                <audio src="${content}" controls class="audio-message"></audio>
-                            </div>
-                        ` : content}
+                        ${messageContent}
                     </div>
                     ${deleteButton}
                 </div>
@@ -204,8 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendMessage() {
         const message = messageInput.value.trim();
         const audioPreview = document.querySelector('.audio-preview');
+        const imagePreview = document.querySelector('.media-preview img');
         
-        if (!message && !audioPreview) return;
+        if (!message && !audioPreview && !imagePreview) return;
 
         const activeCoach = document.querySelector('.coach-item.active');
         if (!activeCoach) {
@@ -216,6 +240,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const coachId = activeCoach.dataset.id;
         const originalStatus = activeCoach.dataset.status;
         messageInput.value = '';
+
+        // Handle previews in order
+        if (imagePreview) {
+            const base64Image = imagePreview.src.split(',')[1];
+            handleImageMessage(base64Image, coachId, originalStatus);
+            imagePreview.closest('.media-preview').remove();
+        }
 
         if (audioPreview) {
             handleAudioMessage(audioPreview, coachId, originalStatus);
@@ -263,32 +294,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData();
             formData.append('action', 'transcribe_audio');
-            formData.append('audio', audioBlob);
             formData.append('coach_id', coachId);
+            formData.append('audio', audioBlob, 'audio.webm');
 
             const response = await fetch('/server/chatgpt_api.pl', {
                 method: 'POST',
                 body: formData
             });
-            const data = await response.json();
 
-            if (data.text) {
-                // Add small delay before response
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                const reply = await sendToGPT(data.text, coachId);
-                addMessage(reply, false);
-                // Set to online after successful response
-                setCoachStatus(coachId, 'online');
-            } else {
-                throw new Error('Failed to process audio message');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
 
-            setCoachStatus(coachId, originalStatus);
+            const data = await response.json();
+
+            if (!data || !data.text) {
+                throw new Error('Invalid response from server');
+            }
+
+            // Add small delay before response
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            const reply = await sendToGPT(data.text, coachId);
+            addMessage(reply, false);
+            setCoachStatus(coachId, 'online');
+
         } catch (error) {
-            addMessage(`<span class="text-danger">${error.message}</span>`, false);
+            console.error('Audio processing error:', error);
+            addMessage(`<span class="text-danger">Failed to process audio message: ${error.message}</span>`, false);
+            setCoachStatus(coachId, originalStatus);
+        } finally {
+            audioPreview.remove();
+        }
+    }
+
+    // Add new image message handler
+    async function handleImageMessage(base64Image, coachId, originalStatus) {
+        try {
+            addMessage(base64Image, true, false, true);
+            setCoachStatus(coachId, 'responding');
+
+            // Convert base64 to blob
+            const byteString = atob(base64Image);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([ab], { type: 'image/jpeg' });
+
+            const formData = new FormData();
+            formData.append('action', 'vision');
+            formData.append('image', blob, 'image.jpg');
+
+            const res = await fetch('/server/chatgpt_api.pl', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+            }
+
+            let data;
+            try {
+                const text = await res.text(); // Get response as text first
+                data = JSON.parse(text); // Try to parse as JSON
+            } catch (parseError) {
+                console.error('Raw response:', text);
+                throw new Error('Invalid response format from server');
+            }
+
+            if (data && data.reply) {
+                addMessage(data.reply, false);
+            } else {
+                throw new Error('Missing reply in server response');
+            }
+            
+            setCoachStatus(coachId, 'online');
+        } catch (err) {
+            console.error('Error handling image message:', err);
+            addMessage(`<span class="text-danger">Unable to process image right now. Please try again later.</span>`, false);
             setCoachStatus(coachId, originalStatus);
         }
-        audioPreview.remove();
     }
 
     // Handle screenshot paste (Ctrl+V) for vision analysis
@@ -299,27 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (item.type.indexOf('image') !== -1) {
                 const file = item.getAsFile();
                 if (file) {
-                    addMessage('<i class="bi bi-image"></i> <span class="text-muted">Analyzing screenshot...</span>', true);
-
-                    // Prepare form data for backend
-                    const formData = new FormData();
-                    formData.append('action', 'vision');
-                    formData.append('image', file);
-
-                    // Send to backend for vision analysis
                     try {
-                        const res = await fetch('/server/chatgpt_api.pl', {
-                            method: 'POST',
-                            body: formData
-                        });
-                        const data = await res.json();
-                        if (data && data.reply) {
-                            addMessage(data.reply, false);
-                        } else {
-                            addMessage('<span class="text-danger">Failed to send image.</span>', false);
-                        }
+                        const resizedBlob = await resizeImage(file);
+                        const base64Image = await convertToBase64(resizedBlob);
+                        addMediaPreview(base64Image, 'image');
                     } catch (err) {
-                        addMessage('<span class="text-danger">Error analyzing image.</span>', false);
+                        console.error('Error processing pasted image:', err);
                     }
                 }
                 event.preventDefault();
@@ -328,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle file input change
+    // Update file input handler to only show preview
     document.getElementById('imageUpload').addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -336,29 +408,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Please upload an image file');
                 return;
             }
-            
-            addMessage('<i class="bi bi-image"></i> <span class="text-muted">Analyzing image...</span>', true);
-
-            const formData = new FormData();
-            formData.append('action', 'vision');
-            formData.append('image', file);
 
             try {
-                const res = await fetch('/server/chatgpt_api.pl', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await res.json();
-                if (data && data.reply) {
-                    addMessage(data.reply, false);
-                } else {
-                    addMessage('<span class="text-danger">Failed to analyze image.</span>', false);
-                }
+                const resizedBlob = await resizeImage(file);
+                const base64Image = await convertToBase64(resizedBlob);
+                addMediaPreview(base64Image, 'image');
             } catch (err) {
-                addMessage('<span class="text-danger">Error analyzing image.</span>', false);
+                console.error('Error processing uploaded image:', err);
             }
 
-            // Clear the input
             event.target.value = '';
         }
     });
@@ -428,6 +486,26 @@ document.addEventListener('DOMContentLoaded', () => {
             voiceBtn.disabled = true;
             voiceBtn.title = "Microphone access denied";
         }
+    }
+
+    // Add preview handling function
+    function addMediaPreview(base64Data, type = 'image') {
+        const previewId = 'preview_' + Date.now();
+        const previewHtml = `
+            <div class="media-preview d-flex align-items-center gap-2 p-2 border rounded" id="${previewId}">
+                ${type === 'image' ? `
+                    <img src="data:image/jpeg;base64,${base64Data}" 
+                        class="img-fluid rounded" 
+                        style="max-height: 100px; max-width: 150px;"
+                        alt="Preview">
+                ` : ''}
+                <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.media-preview').remove()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+        previewContainer.insertAdjacentHTML('beforeend', previewHtml);
+        return previewId;
     }
 
     // Initial load

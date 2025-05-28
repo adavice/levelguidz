@@ -1,4 +1,14 @@
+import { authService } from './authService.js';
+
 export const DEFAULT_AVATAR = "https://img.vodonet.net/FM4Ek6rlSokBakd.png";
+
+function getAuthHeaders() {
+    const state = authService.getAuthState();
+    return {
+        'Authorization': state?.token ? `Bearer ${state.token}` : '',
+        'Content-Type': 'application/json'
+    };
+}
 
 export async function loadCoaches() {
     const response = await fetch('/server/chatgpt_api.pl?action=list_coaches', {
@@ -35,10 +45,33 @@ export async function deleteCoach(id) {
     return response.json();
 }
 
+export async function login(email, password) {
+    const response = await fetch('/server/chatgpt_api.pl', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+            action: 'login',
+            email,
+            password
+        })
+    });
+    const data = await response.json();
+    
+    if (data.status === 'ok') {
+        authService.login(data.user);
+    }
+    
+    return data;
+}
+
+export async function logout() {
+    authService.logout();
+}
+
 export async function sendContactForm(formData) {
     const response = await fetch('/server/chatgpt_api.pl', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
             action: 'contactus',
             data: formData

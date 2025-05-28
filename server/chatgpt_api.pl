@@ -121,8 +121,21 @@ if ($data->{action} eq 'chat') {
 if ($data->{action} eq 'login') {
     my $email = $data->{email};
     my $password = $data->{password};
-    # TODO: Implement actual login logic
-    print encode_json({ status => 'ok' });
+    
+    # TODO: Implement actual password verification
+    
+    # For demo, consider admin@levelguidz.com as admin
+    my $is_admin = $email eq 'admin@levelguidz.com';
+    
+    print encode_json({
+        status => 'ok',
+        user => {
+            email => $email,
+            isAdmin => $is_admin,
+            token => 'demo-token', # Replace with real JWT
+            name => $email =~ s/\@.*$//r
+        }
+    });
     exit;
 }
 
@@ -142,11 +155,11 @@ if ($data->{action} eq 'forgot_password') {
     exit;
 }
 
-if ($cgi->request_method eq 'POST' && $cgi->param('action') && $cgi->param('action') eq 'vision') {
+if ($cgi->request_method eq 'POST' && $cgi->param('action') eq 'vision') {
     my $upload = $cgi->upload('image');
     if ($upload) {
         # Save uploaded image to temp file
-        my ($fh, $filename) = tempfile(SUFFIX => '.png');
+        my ($fh, $filename) = tempfile(SUFFIX => '.jpg');
         binmode $fh;
         while (my $bytesread = read($upload, my $buffer, 1024)) {
             print $fh $buffer;
@@ -201,40 +214,49 @@ if ($cgi->request_method eq 'POST' && $cgi->param('action') && $cgi->param('acti
 
 if ($cgi->param('action') && $cgi->param('action') eq 'transcribe_audio') {
     my $upload = $cgi->upload('audio');
-    if ($upload) {
-        # Save uploaded audio to temp file
-        my ($fh, $filename) = tempfile(SUFFIX => '.webm');
-        binmode $fh;
-        while (my $bytesread = read($upload, my $buffer, 1024)) {
-            print $fh $buffer;
-        }
-        close $fh;
+    my $coach_id = $cgi->param('coach_id');
+    
+    if (!$upload) {
+        print encode_json({ error => "No audio file uploaded" });
+        exit;
+    }
 
-        # Call OpenAI Whisper API
-        my $ua = LWP::UserAgent->new;
-        my $res = $ua->post(
-            'https://api.openai.com/v1/audio/transcriptions',
-            'Authorization' => "Bearer $api_key",
-            'Content-Type' => 'multipart/form-data',
-            'Content' => [
-                file => [$filename],
-                model => 'whisper-1',
-            ]
-        );
+    if (!$coach_id) {
+        print encode_json({ error => "Coach ID is required" });
+        exit;
+    }
 
-        unlink $filename; # Clean up temp file
+    # Save uploaded audio to temp file
+    my ($fh, $filename) = tempfile(SUFFIX => '.webm');
+    binmode $fh;
+    while (my $bytesread = read($upload, my $buffer, 1024)) {
+        print $fh $buffer;
+    }
+    close $fh;
 
-        if ($res->is_success) {
-            my $resp = decode_json($res->decoded_content);
-            print encode_json({ 
-                text => $resp->{text},
-                reply => "Response to transcribed audio..." # Add AI response logic here
-            });
-        } else {
-            print encode_json({ error => "Failed to transcribe audio" });
-        }
+    # Call OpenAI Whisper API
+    my $ua = LWP::UserAgent->new;
+    my $res = $ua->post(
+        'https://api.openai.com/v1/audio/transcriptions',
+        'Authorization' => "Bearer $api_key",
+        'Content-Type' => 'multipart/form-data',
+        'Content' => [
+            file => [$filename],
+            model => 'whisper-1',
+            response_format => 'json'
+        ]
+    );
+
+    unlink $filename; # Clean up temp file
+
+    if ($res->is_success) {
+        my $whisper_response = decode_json($res->decoded_content);
+        print encode_json({ 
+            status => 'ok',
+            text => $whisper_response->{text} 
+        });
     } else {
-        print encode_json({ error => "No audio uploaded" });
+        print encode_json({ error => "Transcription failed: " . $res->status_line });
     }
     exit;
 }
