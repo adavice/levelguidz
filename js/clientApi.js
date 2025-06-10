@@ -1,6 +1,6 @@
 import { authService } from './authService.js';
 
-export const DEFAULT_AVATAR = "https://img.vodonet.net/FM4Ek6rlSokBakd.png";
+export const DEFAULT_AVATAR = "./img/def_avatar.png";
 
 function getAuthHeaders() {
     const state = authService.getAuthState();

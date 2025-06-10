@@ -47,12 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
         coachList.innerHTML = coaches.map(coach => {
             const storedStatus = getStoredStatus(coach.id);
             const status = storedStatus || coach.status || getRandomStatus();
+            const avatarUrl = coach.avatar || DEFAULT_AVATAR;
             if (!storedStatus) {
                 storeStatus(coach.id, status);
             }
             return `
                 <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}" data-status="${status}">
-                    <div class="coach-item-avatar" style="background-image: url('${coach.avatar}')">
+                    <div class="coach-item-avatar" style="background-image: url('${avatarUrl}')">
                     </div>
                     <div>
                         <h6 class="mb-0">${coach.name} <div class="coach-status status-${status}"></div></h6>
