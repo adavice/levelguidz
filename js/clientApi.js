@@ -80,6 +80,10 @@ export async function sendContactForm(formData) {
     return response.json();
 }
 
+export function getCurrentUser() {
+    return authService.getAuthState()?.user || null;
+}
+
 export const dummyCoaches = [
   {
     id: 1,

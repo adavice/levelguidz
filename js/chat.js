@@ -72,28 +72,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (coachItem) {
             const statusDot = coachItem.querySelector('.coach-status');
             const currentStatus = coachItem.dataset.status;
+            const typingIndicator = document.querySelector('.typing-indicator');
+            const coachName = coachItem.querySelector('h6').textContent.trim();
 
             if (status === 'responding') {
-                // Keep original status color but add pulse animation
-                statusDot.className = `coach-status status-${currentStatus} status-responding`;
+                // Show typing indicator with coach name
+                typingIndicator.querySelector('span').textContent = `${coachName} is typing...`;
+                typingIndicator.classList.remove('d-none');
             } else {
-                // Remove responding animation and update status if needed
-                statusDot.classList.remove('status-responding');
+                // Hide typing indicator
+                typingIndicator.classList.add('d-none');
+                
                 if (status !== currentStatus || force) {
                     coachItem.dataset.status = status;
                     statusDot.className = `coach-status status-${status}`;
                 }
             }
 
-            // Update header status to match
+            // Update header status
             if (coachItem.classList.contains('active')) {
                 const headerName = document.getElementById('chatCoachName');
-                const headerStatus = headerName.querySelector('.coach-status'); // Select status inside h6
-                if (status === 'responding') {
-                    headerStatus.className = `coach-status status-${currentStatus} status-responding`;
-                } else {
-                    headerStatus.className = `coach-status status-${status}`;
-                }
+                const headerStatus = headerName.querySelector('.coach-status');
+                headerStatus.className = `coach-status status-${status === 'responding' ? currentStatus : status}`;
             }
 
             if (status !== 'responding') {
@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function getResponseDelay(status) {
         switch (status) {
             case 'online':
-                return Math.random() * 1000 + 500; // 0.5-1.5 seconds
+                return Math.random() * 1000 + 1500; // 1.5-2.5 seconds
             case 'away':
-                return Math.random() * 3000 + 2000; // 2-5 seconds
+                return Math.random() * 3000 + 4000; // 4-7 seconds
             case 'offline':
                 return Math.random() * 5000 + 10000; // 10-15 seconds
             default:
@@ -191,7 +191,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function calculateTypingDelay(text) {
+        // Average typing speed: ~40 words per minute, or ~300 characters per minute
+        const charactersPerSecond = 300 / 60;
+        const delay = (text.length / charactersPerSecond) * 1000;
+        // Cap the delay between 1 and 10 seconds
+        return Math.min(Math.max(delay, 3000), 15000);
+    }
+
     async function sendToGPT(message, coachId) {
+        // // TEMPORARY TEST CODE - DELETE AFTER TESTING
+        // const dummyResponses = [
+        //     "Ok, I understand.",  // Short response
+        //     "That's an interesting point you bring up. Let me explain in more detail about this topic.", // Medium response
+        //     "I appreciate your question. This is actually a complex topic that requires a detailed explanation. Let me break it down for you step by step. First, we need to consider several important factors. Then, we can analyze how these elements work together. Finally, I'll provide some practical examples to help illustrate the concepts." // Long response
+        // ];
+        // // Randomly select a response
+        // return dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
+        
+        // UNCOMMENT THIS AFTER TESTING
+       
         try {
             const response = await fetch('/server/chatgpt_api.pl', {
                 method: 'POST',
@@ -208,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error sending message to GPT:', error);
             throw new Error('Failed to get response from coach');
         }
+       
     }
 
     async function processUserMessage(message) {
@@ -259,23 +279,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleTextMessage(message, coachId, originalStatus) {
         try {
-            // Process user message first
             await processUserMessage(message);
             addMessage(message, true);
 
             // Only show typing indicator if coach is online
             if (originalStatus === 'online') {
+                // Add 2 seconds delay before showing typing indicator
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 setCoachStatus(coachId, 'responding');
             }
 
-            // Get response after appropriate delay
-            const delay = getResponseDelay(originalStatus);
-            await new Promise(resolve => setTimeout(resolve, delay));
+            // Initial response delay based on status
+            const initialDelay = getResponseDelay(originalStatus);
+            await new Promise(resolve => setTimeout(resolve, initialDelay));
 
             const reply = await sendToGPT(message, coachId);
-            addMessage(reply, false);
+            
+            // Add typing delay based on response length
+            const typingDelay = calculateTypingDelay(reply);
+            await new Promise(resolve => setTimeout(resolve, typingDelay));
 
-            // Always set status to online after successful response
+            addMessage(reply, false);
             setCoachStatus(coachId, 'online');
 
         } catch (error) {

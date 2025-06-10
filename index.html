@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="game-selector-wrapper mt-5">
-                <select id="gameSelector" class="form-select game-select border-0 shadow">
+                <select id="gameSelector" class="form-select game-select border-0 shadow d-none">
                     <option value="1">CS:GO</option>
                     <option value="2">League of Legends</option>
                     <option value="3">Fortnite</option>
@@ -108,81 +108,188 @@
             <div class="decorative-circle"></div>
             <h2 class="text-center mb-2">Featured Coaches</h2>
             <p class="text-center text-muted mb-5">Learn from the best players in the industry</p>
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="coach-card">
-                        <img src="img/coach-1.jpg" alt="Coach Name" class="coach-image">
-                        <div class="coach-info">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h3 class="h5 mb-2">Alex "Wiz" Chen</h3>
-                                    <div class="rating">
-                                        <div class="rating-score">4.9</div>
-                                        <div class="rating-bar">
-                                            <div class="rating-fill" style="width: 98%"></div>
+            
+            <div id="coachCarousel" class="carousel slide overflow-visible w-100" data-bs-ride="false">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#coachCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#coachCarousel" data-bs-slide-to="1"></button>
+                </div>
+                <div class="container-fluid px-0">
+                    <div class="carousel-inner">
+                        <!-- First Slide -->
+                        <div class="carousel-item active">
+                            <div class="row g-4 align-items-stretch">
+                                <!-- Coach 1 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-1.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">Alex "Wiz"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">4.9</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 98%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">Top Rated</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
+                                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
+                                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Top Rated</span>
+                                <!-- Coach 2 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-2.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">Dan "EliteGuide"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">4.7</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 94%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">Expert</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
+                                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
+                                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
+                                            </ul>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <!-- Coach 3 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-3.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">Marcus "Strato"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">5.0</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 100%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">Pro Player</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-stars"></i> Professional esports player</li>
+                                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
+                                                <li><i class="bi bi-trophy"></i> Regional champion</li>
+                                            </ul>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
                             </div>
-                            <ul class="coach-features">
-                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
-                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
-                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
-                            </ul>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="coach-card">
-                        <img src="img/coach-2.jpg" alt="Coach Name" class="coach-image">
-                        <div class="coach-info">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h3 class="h5 mb-2">Dan "EliteGuide" Williams</h3>
-                                    <div class="rating">
-                                        <div class="rating-score">4.7</div>
-                                        <div class="rating-bar">
-                                            <div class="rating-fill" style="width: 94%"></div>
+
+                        <!-- Second Slide -->
+                        <div class="carousel-item">
+                            <div class="row g-4 align-items-stretch">
+                                <!-- Coach 4 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-4.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">Brian "Macro"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">4.8</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 96%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">RTS Specialist</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-controller"></i> Expert in real-time strategy</li>
+                                                <li><i class="bi bi-graph-up"></i> Macro game analysis</li>
+                                                <li><i class="bi bi-trophy"></i> ESL Champion</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Expert</span>
-                            </div>
-                            <ul class="coach-features">
-                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
-                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
-                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="coach-card">
-                        <img src="img/coach-3.jpg" alt="Coach Name" class="coach-image">
-                        <div class="coach-info">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h3 class="h5 mb-2">Marcus "Strato" Johnson</h3>
-                                    <div class="rating">
-                                        <div class="rating-score">5.0</div>
-                                        <div class="rating-bar">
-                                            <div class="rating-fill" style="width: 100%"></div>
+                                <!-- Coach 5 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-5.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">Michael "B-eye"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">4.6</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 92%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">FPS Expert</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-bullseye"></i> Precision aiming techniques</li>
+                                                <li><i class="bi bi-shield"></i> Defensive strategies</li>
+                                                <li><i class="bi bi-trophy"></i> Tournament finalist</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Pro Player</span>
+                                <!-- Coach 6 -->
+                                <div class="col-lg-4 d-flex">
+                                    <div class="coach-card flex-grow-1">
+                                        <img src="img/coach-6.jpg" alt="Coach Name" class="coach-image">
+                                        <div class="coach-info">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h3 class="h5 mb-2">David "SpeedKing"</h3>
+                                                    <div class="rating">
+                                                        <div class="rating-score">4.9</div>
+                                                        <div class="rating-bar">
+                                                            <div class="rating-fill" style="width: 98%"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span class="badge bg-primary">Racing Pro</span>
+                                            </div>
+                                            <ul class="coach-features">
+                                                <li><i class="bi bi-speedometer2"></i> Racing simulation expert</li>
+                                                <li><i class="bi bi-gear"></i> Vehicle setup mastery</li>
+                                                <li><i class="bi bi-trophy"></i> Circuit champion</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <ul class="coach-features">
-                                <li><i class="bi bi-stars"></i> Professional esports player</li>
-                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
-                                <li><i class="bi bi-trophy"></i> Regional champion</li>
-                            </ul>
                         </div>
-                        
                     </div>
                 </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#coachCarousel" data-bs-slide="prev" style="top: 50%; transform: translateY(-50%); left: -50px;">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#coachCarousel" data-bs-slide="next" style="top: 50%; transform: translateY(-50%); right: -50px;">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </section>
 
@@ -198,11 +305,11 @@
                         <div class="auth-flipper">
                             <!-- Login Form -->
                             <div class="auth-form front p-4">
-                                <h4 class="text-center mb-4">Sign In</h4>
+                                <h4 class="text-center mb-4">Log In</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" placeholder="Enter your email">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="phone" class="form-control" placeholder="Enter your phone number">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
@@ -229,15 +336,15 @@
                             <div class="auth-form back p-4" id="login">
                                 <h4 class="text-center mb-4">Create Account</h4>
                                 <form>
-                                    <!-- Username and Email in one line -->
+                                    <!-- Username and Phone in one line -->
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <label class="form-label">Username</label>
                                             <input type="text" class="form-control" placeholder="Choose a username">
                                         </div>
                                         <div class="col-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" placeholder="Enter your email">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="phone" class="form-control" placeholder="Phone Number">
                                         </div>
                                     </div>
                                     <!-- Password fields in one line -->
@@ -268,8 +375,8 @@
                                 <h4 class="text-center mb-4">Reset Password</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" placeholder="Enter your email">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="phone" class="form-control" placeholder="Enter your phone Number">
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100 mb-3">Send Reset Link</button>
                                     <p class="text-center mb-0">
@@ -491,11 +598,11 @@
             document.querySelector('.auth-form.front form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const form = e.target;
-                const email = form.querySelector('input[type="email"]').value;
+                const phone = form.querySelector('input[type="phone"]').value;
                 const password = form.querySelector('input[type="password"]').value;
                 
                 try {
-                    const response = await login(email, password);
+                    const response = await login(phone, password);
                     if (response.status === 'ok') {
                         form.reset();
                         showToast('Login successful! Redirecting...', true);
@@ -513,7 +620,7 @@
                 e.preventDefault();
                 const form = e.target;
                 const username = form.querySelector('input[type="text"]').value;
-                const email = form.querySelector('input[type="email"]').value;
+                const phone = form.querySelector('input[type="phone"]').value;
                 const password = form.querySelectorAll('.signup-password')[0].value;
                 const confirmPassword = form.querySelectorAll('.signup-password')[1].value;
 
@@ -523,7 +630,7 @@
                 }
 
                 try {
-                    const response = await signup(username, email, password);
+                    const response = await signup(username, phone, password);
                     if (response.status === 'ok') {
                         form.reset();
                         showToast('Account created successfully! Please login.', true);
@@ -540,13 +647,13 @@
             document.querySelector('.auth-form.forgot form').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const form = e.target;
-                const email = form.querySelector('input[type="email"]').value;
+                const phone = form.querySelector('input[type="phone"]').value;
 
                 try {
-                    const response = await forgotPassword(email);
+                    const response = await forgotPassword(phone);
                     if (response.status === 'ok') {
                         form.reset();
-                        showToast('Password reset link has been sent to your email.', true);
+                        showToast('Password reset link has been sent to your phone.', true);
                         document.querySelector('.auth-flipper').classList.remove('flipped');
                     } else {
                         throw new Error(response.error || 'Failed to send reset link');

@@ -176,7 +176,7 @@ if ($cgi->request_method eq 'POST' && $cgi->param('action') eq 'vision') {
         require MIME::Base64;
         my $base64 = MIME::Base64::encode_base64($img_data, '');
 
-        # Call OpenAI Vision API (GPT-4-vision-preview)
+        # Call OpenAI Vision API (gpt-4o)
         my $api_key = $ENV{OPENAI_API_KEY} || 'sk-...';
         my $ua = LWP::UserAgent->new;
         my $res = $ua->post(
@@ -184,13 +184,13 @@ if ($cgi->request_method eq 'POST' && $cgi->param('action') eq 'vision') {
             'Content-Type' => 'application/json',
             'Authorization' => "Bearer $api_key",
             Content => encode_json({
-                model => 'gpt-4-vision-preview',
+                model => 'gpt-4o',
                 messages => [
                     {
                         role => 'user',
                         content => [
-                            { type => 'text', content => 'Analyze this screenshot and describe what you see. If it is a game, provide tips or insights.' },
-                            { type => 'image_url', image_url => "data:image/png;base64,$base64" }
+                            { type => 'text', content => 'Analyze this image and describe what you see. If it is a game, provide tips or insights.' },
+                            { type => 'image_url', image_url => "data:image/jpeg;base64,$base64" }
                         ]
                     }
                 ],
@@ -203,7 +203,7 @@ if ($cgi->request_method eq 'POST' && $cgi->param('action') eq 'vision') {
             my $reply = $resp->{choices}[0]{message}{content} || '';
             print encode_json({ reply => $reply });
         } else {
-            print encode_json({ error => "OpenAI Vision API error" });
+            print encode_json({ error => "OpenAI Vision API error: " . $res->status_line });
         }
         exit;
     } else {

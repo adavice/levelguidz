@@ -47,12 +47,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar.scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
+    opacity: 0.8;
 }
-
-.navbar.scrolled .nav-link,
-.navbar.scrolled .navbar-brand {
-    color: #333 !important;
+.navbar.scrolled:hover {
+    opacity: 1;
 }
 
 .hero-banner {
@@ -377,7 +375,6 @@ footer {
 
 .featured-coaches {
     position: relative;
-    overflow: hidden;
 }
 
 .coach-card {
@@ -1028,8 +1025,8 @@ input::placeholder, textarea::placeholder {
     position: relative; /* Changed from absolute */
     bottom: auto; /* Remove bottom */
     right: auto; /* Remove right */
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     display: inline-block; /* Make it inline */
     margin: 3px 0;
@@ -1210,6 +1207,21 @@ input::placeholder, textarea::placeholder {
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+.chat-input .btn {
+    display: flex;
+    align-items: center;
+}
+
+.typing-indicator {
+    animation: blink 1.5s infinite;
+    color: var(--text-muted);
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
 .btn-close {
     background: none;
     border: none;
@@ -1230,4 +1242,115 @@ input::placeholder, textarea::placeholder {
 
 .navbar.scrolled .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Coach Carousel Styles */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+.carousel-control-prev {
+    left: -50px; /* Move outside the container */
+}
+
+.carousel-control-next {
+    right: -50px; /* Move outside the container */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+    background: var(--primary-color);
+}
+
+.carousel-indicators {
+    bottom: -50px;
+}
+
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.5;
+}
+
+.carousel-indicators button.active {
+    opacity: 1;
+}
+
+/* Coach carousel equal height fix */
+#coachCarousel .carousel-item {
+    transition: transform .6s ease-in-out;
+}
+
+#coachCarousel .carousel-item.active,
+#coachCarousel .carousel-item-next,
+#coachCarousel .carousel-item-prev {
+    display: flex;
+}
+
+#coachCarousel .row {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#coachCarousel .coach-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure consistent card width in carousel */
+#coachCarousel .row > .col-lg-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+#coachCarousel .coach-card {
+    flex-grow: 1;
+}
+
+#coachCarousel .coach-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#coachCarousel .coach-image {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Align cards vertically */
+#coachCarousel .align-items-stretch > .col-lg-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+.coach-info h3 {
+    min-height: 48px;
+}
+
+/* Remove overflow: hidden; from .featured-coaches */
+.featured-coaches {
+    position: relative;
+}
+
+#coachCarousel .carousel-inner,
+#coachCarousel .row {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
