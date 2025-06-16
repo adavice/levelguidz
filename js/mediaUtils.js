@@ -36,3 +36,21 @@ export const resizeImage = async (file, maxWidth = 1024, maxHeight = 1024) => {
         };
     });
 };
+
+export const convertImageToBase64 = async (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
+export const convertVoiceToBase64 = async (blob) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+};

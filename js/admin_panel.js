@@ -1,9 +1,6 @@
-import { loadCoaches, saveCoaches, saveCoach as saveCoachApi, deleteCoach as deleteCoachApi, dummyCoaches } from './clientApi.js';
+import { loadCoaches, saveCoaches, saveCoach as saveCoachApi, deleteCoach as deleteCoachApi } from './clientApi.js';
 
-const DEFAULT_AVATAR = "https://img.vodonet.net/FM4Ek6rlSokBakd.png";
-
-// Use coaches as the working array, but always clone from dummyCoaches if needed
-let coaches = dummyCoaches.map(c => ({ ...c })); // Initialize with dummy data
+let coaches = []; // Initialize empty array
 let selectedCoach = null;
 let hasUnsavedChanges = false;
 let pendingAction = null;
@@ -154,7 +151,7 @@ async function loadCoachesFromServer() {
             return true;
         }
     } catch (e) {
-        console.error("Failed to load coaches from server, using dummy data", e);
+        console.error("Failed to load coaches from server", e);
         return false;
     }
     return false;
@@ -268,11 +265,7 @@ async function resetFormToSelectedCoach() {
             selectCoach(coaches[0].id);
         }
     } else {
-        const loaded = await loadCoachesFromServer();
-        if (!loaded) {
-            coaches = dummyCoaches.map(c => ({ ...c }));
-        }
-        // Find and select the original coach
+        await loadCoachesFromServer(); // Just load the data, no need to store result
         const originalCoach = coaches.find(c => c.id === selectedCoach.id);
         if (originalCoach) {
             selectedCoach = originalCoach;
@@ -315,6 +308,26 @@ function setupFormChangeTracking() {
 
 // Add event listeners
 document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const loadedCoaches = await loadCoaches();
+        if (Array.isArray(loadedCoaches)) {
+            coaches = loadedCoaches;
+            renderCoaches();
+            if (coaches.length > 0) {
+                selectCoach(coaches[0].id);
+            }
+        } else {
+            throw new Error('Invalid coaches data');
+        }
+    } catch (error) {
+        console.error('Error loading coaches:', error);
+        document.querySelector('.chatbot-list').innerHTML = `
+            <div class="alert alert-danger">
+                Failed to load coaches. Please try refreshing the page.
+            </div>
+        `;
+    }
+
     document.querySelector(".upload-btn")?.addEventListener("click", handleFileUpload);
     document.querySelector("button.btn-primary.w-100")?.addEventListener("click", addCoach);
     document.getElementById("saveBtn")?.addEventListener("click", handleSaveCoach);
@@ -340,35 +353,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (modal) modal.hide();
         if (pendingAction) {
             const loaded = await loadCoachesFromServer();
-            if (!loaded) {
-                coaches = dummyCoaches.map(c => ({ ...c }));
-            }
             resetFormToSelectedCoach();
             const action = pendingAction;
             pendingAction = null;
             action();
         }
     });
-    
-    let loadedFromServer = await loadCoachesFromServer();
-    if (!loadedFromServer) {
-        coaches = dummyCoaches.map(c => ({ ...c }));
-        console.log('Using dummy coaches array');
-    }
-
-    renderCoaches();
-    setupFormChangeTracking();
-    if (coaches.length > 0) {
-        selectCoach(coaches[0].id);
-    }
 });
-
-// Helper to restore dummy coaches array and UI
-function fallbackToDummyCoaches() {
-    coaches = dummyCoaches.map(c => ({ ...c }));
-    renderCoaches();
-    clearForm();
-    if (coaches.length > 0) {
-        selectCoach(coaches[0].id);
-    }
-}

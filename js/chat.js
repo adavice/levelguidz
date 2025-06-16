@@ -1,5 +1,8 @@
-import { loadCoaches, dummyCoaches } from './clientApi.js';
+import { loadCoaches, loadChatHistory } from './clientApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
+
+let chatHistory = new Map(); // Store chat history by coach ID
+let activeCoachId = null; // Track current active coach
 
 document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
@@ -16,14 +19,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadCoachesList() {
         try {
-            const coaches = await loadCoaches();
+            const [coaches, history] = await Promise.all([
+                loadCoaches(),
+                loadChatHistory()
+            ]);
+            
             if (!Array.isArray(coaches)) {
                 throw new Error('Invalid coaches data');
             }
+
+            // Initialize chat history
+            if (Array.isArray(history)) {
+                history.forEach(item => {
+                    if (!chatHistory.has(item.coachId)) {
+                        chatHistory.set(item.coachId, []);
+                    }
+                    chatHistory.get(item.coachId).push(item);
+                });
+            }
+
             renderCoaches(coaches);
         } catch (error) {
-            console.error('Error loading coaches, using dummy data:', error);
-            renderCoaches(dummyCoaches);
+            console.error('Error loading coaches:', error);
+            chatMessages.innerHTML = `
+                <div class="alert alert-danger">
+                    Failed to load coaches. Please try refreshing the page.
+                </div>
+            `;
         }
     }
 
@@ -47,13 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         coachList.innerHTML = coaches.map(coach => {
             const storedStatus = getStoredStatus(coach.id);
             const status = storedStatus || coach.status || getRandomStatus();
-            const avatarUrl = coach.avatar || DEFAULT_AVATAR;
             if (!storedStatus) {
                 storeStatus(coach.id, status);
             }
             return `
                 <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}" data-status="${status}">
-                    <div class="coach-item-avatar" style="background-image: url('${avatarUrl}')">
+                    <div class="coach-item-avatar" ${coach.avatar ? `style="background-image: url('${coach.avatar}')"` : ''}>
                     </div>
                     <div>
                         <h6 class="mb-0">${coach.name} <div class="coach-status status-${status}"></div></h6>
@@ -104,11 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function selectCoach(coachItem) {
+        const newCoachId = coachItem.dataset.id;
+        
+        // Store current messages for previous coach if any
+        if (activeCoachId) {
+            const messages = Array.from(chatMessages.children).map(msg => ({
+                content: msg.querySelector('.message-content').children[0].innerHTML,
+                isUser: msg.classList.contains('user'),
+                timestamp: parseInt(msg.dataset.timestamp)
+            }));
+            chatHistory.set(activeCoachId, messages);
+        }
+        
         document.querySelectorAll('.coach-item').forEach(item => item.classList.remove('active'));
         coachItem.classList.add('active');
 
         // Update chat header with selected coach info
-        const coachId = coachItem.dataset.id;
         const status = coachItem.dataset.status;
         const avatar = coachItem.querySelector('.coach-item-avatar').style.backgroundImage;
         const name = coachItem.querySelector('h6').textContent;
@@ -118,15 +150,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('chatCoachName').innerHTML = `${name} <div class="coach-status status-${status}"></div>`;
         document.getElementById('chatCoachRole').textContent = role;
         
-        // Clear chat messages when switching coaches
+        // Load chat history for selected coach
+        activeCoachId = newCoachId;
         chatMessages.innerHTML = '';
+        const coachHistory = chatHistory.get(newCoachId) || [];
+        coachHistory.forEach(msg => {
+            addMessage(msg.content, msg.isUser, msg.isAudio, msg.isImage, msg.timestamp);
+        });
     }
 
-    function addMessage(content, isUser = false, isAudio = false, isImage = false) {
+    function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now()) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
-        const now = new Date();
-        const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        message.dataset.timestamp = timestamp; // Store timestamp as data attribute
         
         // Add delete button for user messages
         const deleteButton = isUser ? `
@@ -163,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     ${deleteButton}
                 </div>
-                <div class="text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${timestamp}
+                <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
+                    ${new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
             </div>
         `;
@@ -200,20 +236,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.min(Math.max(delay, 3000), 15000);
     }
 
-    async function sendToGPT(message, coachId) {
-        // // TEMPORARY TEST CODE - DELETE AFTER TESTING
-        // const dummyResponses = [
-        //     "Ok, I understand.",  // Short response
-        //     "That's an interesting point you bring up. Let me explain in more detail about this topic.", // Medium response
-        //     "I appreciate your question. This is actually a complex topic that requires a detailed explanation. Let me break it down for you step by step. First, we need to consider several important factors. Then, we can analyze how these elements work together. Finally, I'll provide some practical examples to help illustrate the concepts." // Long response
-        // ];
-        // // Randomly select a response
-        // return dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
-        
-        // UNCOMMENT THIS AFTER TESTING
-       
+    // Rename sendToGPT to sendToServer
+    async function sendToServer(message, coachId) {
         try {
-            const response = await fetch('/server/chatgpt_api.pl', {
+            const response = await fetch('/server/chat_api', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -223,12 +249,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
             const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
             return data.reply;
         } catch (error) {
-            console.error('Error sending message to GPT:', error);
-            throw new Error('Failed to get response from coach');
+            console.error('Error sending message to server:', error);
+            throw new Error(error.message || 'Failed to get response from coach');
         }
-       
     }
 
     async function processUserMessage(message) {
@@ -279,6 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleTextMessage(message, coachId, originalStatus) {
+        if (coachId !== activeCoachId) {
+            console.warn('Coach switched during message processing');
+            return;
+        }
+
         try {
             await processUserMessage(message);
             addMessage(message, true);
@@ -294,18 +329,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const initialDelay = getResponseDelay(originalStatus);
             await new Promise(resolve => setTimeout(resolve, initialDelay));
 
-            const reply = await sendToGPT(message, coachId);
+            const reply = await sendToServer(message, coachId);
             
-            // Add typing delay based on response length
-            const typingDelay = calculateTypingDelay(reply);
-            await new Promise(resolve => setTimeout(resolve, typingDelay));
-
-            addMessage(reply, false);
-            setCoachStatus(coachId, 'online');
+            // Only add response if still on same coach
+            if (coachId === activeCoachId) {
+                // Add typing delay based on response length
+                const typingDelay = calculateTypingDelay(reply);
+                await new Promise(resolve => setTimeout(resolve, typingDelay));
+                addMessage(reply, false);
+                setCoachStatus(coachId, 'online');
+            }
 
         } catch (error) {
-            addMessage(`<span class="text-danger">${error.message}</span>`, false);
-            setCoachStatus(coachId, originalStatus);
+            if (coachId === activeCoachId) {
+                addMessage(`
+                    <div class="alert alert-danger mb-0">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${error.message}
+                    </div>
+                `, false);
+                setCoachStatus(coachId, originalStatus);
+            }
         }
     }
 
@@ -322,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('coach_id', coachId);
             formData.append('audio', audioBlob, 'audio.webm');
 
-            const response = await fetch('/server/chatgpt_api.pl', {
+            const response = await fetch('/server/chat_api', {
                 method: 'POST',
                 body: formData
             });
@@ -339,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add small delay before response
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const reply = await sendToGPT(data.text, coachId);
+            const reply = await sendToServer(data.text, coachId);
             addMessage(reply, false);
             setCoachStatus(coachId, 'online');
 
@@ -371,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('action', 'vision');
             formData.append('image', blob, 'image.jpg');
 
-            const res = await fetch('/server/chatgpt_api.pl', {
+            const res = await fetch('/server/chat_api', {
                 method: 'POST',
                 body: formData
             });
@@ -446,15 +490,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    let mediaRecorder;
+    let mediaRecorder = null;
     let audioChunks = [];
     let isRecording = false;
+    let audioStream = null;
 
-    // Initialize audio recording
     async function initializeAudioRecording() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
+            audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(audioStream);
             
             mediaRecorder.ondataavailable = e => {
                 audioChunks.push(e.data);
@@ -487,23 +531,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioChunks = []; 
             };
 
+            // Start recording immediately after getting permission
+            audioChunks = [];
+            mediaRecorder.start();
+            isRecording = true;
             const voiceBtn = document.getElementById('voiceBtn');
-            voiceBtn.addEventListener('click', () => {
-                if (!isRecording) {
-                    // Start recording
-                    audioChunks = [];
-                    mediaRecorder.start();
-                    isRecording = true;
-                    voiceBtn.classList.add('text-danger');
-                    voiceBtn.querySelector('i').classList.replace('bi-mic-fill', 'bi-stop-fill');
-                } else {
-                    // Stop recording
-                    mediaRecorder.stop();
-                    isRecording = false;
-                    voiceBtn.classList.remove('text-danger');
-                    voiceBtn.querySelector('i').classList.replace('bi-stop-fill', 'bi-mic-fill');
-                }
-            });
+            voiceBtn.classList.add('text-danger');
+            voiceBtn.querySelector('i').classList.replace('bi-mic-fill', 'bi-stop-fill');
 
         } catch (err) {
             console.error('Error accessing microphone:', err);
@@ -513,27 +547,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add preview handling function
-    function addMediaPreview(base64Data, type = 'image') {
-        const previewId = 'preview_' + Date.now();
-        const previewHtml = `
-            <div class="media-preview d-flex align-items-center gap-2 p-2 border rounded" id="${previewId}">
-                ${type === 'image' ? `
-                    <img src="data:image/jpeg;base64,${base64Data}" 
-                        class="img-fluid rounded" 
-                        style="max-height: 100px; max-width: 150px;"
-                        alt="Preview">
-                ` : ''}
-                <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.media-preview').remove()">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        `;
-        previewContainer.insertAdjacentHTML('beforeend', previewHtml);
-        return previewId;
-    }
+    // Handle voice button click
+    const voiceBtn = document.getElementById('voiceBtn');
+    voiceBtn.addEventListener('click', async () => {
+        if (!mediaRecorder) {
+            // First time clicking - request permissions and initialize
+            await initializeAudioRecording();
+            return;
+        }
 
-    // Initial load
+        if (isRecording) {
+            // Stop recording
+            mediaRecorder.stop();
+            isRecording = false;
+            voiceBtn.classList.remove('text-danger');
+            voiceBtn.querySelector('i').classList.replace('bi-stop-fill', 'bi-mic-fill');
+        } else {
+            // Start another recording
+            audioChunks = [];
+            mediaRecorder.start();
+            isRecording = true;
+            voiceBtn.classList.add('text-danger');
+            voiceBtn.querySelector('i').classList.replace('bi-mic-fill', 'bi-stop-fill');
+        }
+    });
+
+    // Just keep the initial coach list load
     loadCoachesList();
-    initializeAudioRecording();
 });
+
