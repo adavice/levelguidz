@@ -1,6 +1,7 @@
 import { loadCoaches, loadChatHistory } from './clientApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
+import { API_BASE_URL } from './config.js';
 
 let chatHistory = new Map(); // Store chat history by coach ID
 let activeCoachId = null; // Track current active coach
@@ -367,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('coach_id', coachId);
             formData.append('audio', audioBlob, 'audio.webm');
 
-            const response = await fetch('/server/chat_api', {
+            const response = await fetch(`${API_BASE_URL}`, {
                 method: 'POST',
                 body: formData
             });
@@ -398,55 +399,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add new image message handler
-    async function handleImageMessage(base64Image, coachId, originalStatus) {
-        try {
-            addMessage(base64Image, true, false, true);
-            setCoachStatus(coachId, 'responding');
+async function handleImageMessage(base64Image, coachId, originalStatus) {
+    try {
+        addMessage(base64Image, true, false, true);
+        setCoachStatus(coachId, 'responding');
 
-            // Convert base64 to blob
-            const byteString = atob(base64Image);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            const blob = new Blob([ab], { type: 'image/jpeg' });
-
-            const formData = new FormData();
-            formData.append('action', 'vision');
-            formData.append('image', blob, 'image.jpg');
-
-            const res = await fetch('/server/chat_api', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!res.ok) {
-                throw new Error(`Server returned ${res.status}: ${res.statusText}`);
-            }
-
-            let data;
-            try {
-                const text = await res.text(); // Get response as text first
-                data = JSON.parse(text); // Try to parse as JSON
-            } catch (parseError) {
-                console.error('Raw response:', text);
-                throw new Error('Invalid response format from server');
-            }
-
-            if (data && data.reply) {
-                addMessage(data.reply, false);
-            } else {
-                throw new Error('Missing reply in server response');
-            }
-            
-            setCoachStatus(coachId, 'online');
-        } catch (err) {
-            console.error('Error handling image message:', err);
-            addMessage(`<span class="text-danger">Unable to process image right now. Please try again later.</span>`, false);
-            setCoachStatus(coachId, originalStatus);
+        // Convert base64 to blob
+        const byteString = atob(base64Image);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
         }
+        const blob = new Blob([ab], { type: 'image/jpeg' });
+
+        const formData = new FormData();
+        formData.append('action', 'vision');
+        formData.append('image', blob, 'image.jpg');
+        formData.append('coach_id', coachId);  // Add this line to pass the coach ID
+
+        const res = await fetch(`${API_BASE_URL}`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!res.ok) {
+            throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+        }
+
+        let data;
+        try {
+            const text = await res.text();
+            data = JSON.parse(text);
+        } catch (parseError) {
+            console.error('Raw response:', text);
+            throw new Error('Invalid response format from server');
+        }
+
+        if (data && data.reply) {
+            addMessage(data.reply, false);
+        } else {
+            throw new Error('Missing reply in server response');
+        }
+        
+        setCoachStatus(coachId, 'online');
+    } catch (err) {
+        console.error('Error handling image message:', err);
+        addMessage(`<span class="text-danger">Unable to process image right now. Please try again later.</span>`, false);
+        setCoachStatus(coachId, originalStatus);
     }
+}
 
     // Handle screenshot paste (Ctrl+V) for vision analysis
     messageInput.addEventListener('paste', async (event) => {
