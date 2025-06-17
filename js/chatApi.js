@@ -1,5 +1,5 @@
 import { authService } from './authService.js';
-import { DEFAULT_AVATAR } from './constants.js';
+import { API_BASE_URL } from './config.js';
 
 function getAuthHeaders() {
     const state = authService.getAuthState();
@@ -10,7 +10,7 @@ function getAuthHeaders() {
 }
 
 export async function loadCoaches() {
-    const response = await fetch('/server/chat_api?action=list_coaches', {
+    const response = await fetch(`${API_BASE_URL}?action=list_coaches`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     });
@@ -18,7 +18,7 @@ export async function loadCoaches() {
 }
 
 export async function loadChatHistory() {
-    const response = await fetch('/server/chat_api?action=load_chat_history', {
+    const response = await fetch(`${API_BASE_URL}?action=load_chat_history`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     });

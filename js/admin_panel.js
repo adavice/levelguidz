@@ -1,4 +1,5 @@
 import { loadCoaches, saveCoaches, saveCoach as saveCoachApi, deleteCoach as deleteCoachApi } from './clientApi.js';
+import { DEFAULT_AVATAR } from './constants.js';
 
 let coaches = []; // Initialize empty array
 let selectedCoach = null;
@@ -9,7 +10,7 @@ let pendingAction = null;
 function renderCoaches() {
   const coachList = document.querySelector(".chatbot-list");
   if (!coachList) return;
-  
+
   coachList.innerHTML = coaches
     .map(
       (coach) => `
@@ -30,39 +31,49 @@ function renderCoaches() {
 
   // Add click listeners after rendering
   document.querySelectorAll('.coach-item').forEach(item => {
-    item.addEventListener('click', () => selectCoach(parseInt(item.dataset.id)));
+    const coachId = item.dataset.id; // Use string directly
+    if (coachId) {
+      item.addEventListener('click', () => {
+        console.log(`Coach clicked: ${coachId}`); // Debug log
+        selectCoach(coachId);
+      });
+    } else {
+      console.error(`Invalid coach ID: ${item.dataset.id}`); // Debug log
+    }
   });
 }
 
 // Select coach and populate edit form
 function selectCoach(id) {
+  console.log(`selectCoach called with id: ${id}`); // Debug log
   if (selectedCoach?.id === id) return;
-  
-  const selectNewCoach = () => {
-      const targetCoach = coaches.find((coach) => coach.id === id);
-      if (targetCoach) {
-          // If current coach is new and unchanged, remove it
-          if (selectedCoach?.name === "New Coach" && selectedCoach?.persona === "Untitled") {
-              const index = coaches.findIndex(c => c.id === selectedCoach.id);
-              if (index > -1) {
-                  coaches.splice(index, 1);
-              }
-          }
-          selectedCoach = targetCoach;
-          document.querySelector(".avatar-upload").style.backgroundImage = `url('${selectedCoach.avatar}')`;
-          document.querySelector('#profile-name-input').value = selectedCoach.name;
-          document.querySelector('#profile-description-input').value = selectedCoach.persona;
-          document.querySelector('#profile-role-input').value = selectedCoach.role;
-          document.querySelector('#profile-greeting-input').value = selectedCoach.greeting;
-          hasUnsavedChanges = false;
-          renderCoaches();
-      }
-  };
 
-  if (selectedCoach && hasUnsavedChanges) {
-      checkUnsavedChanges(selectNewCoach);
+  const targetCoach = coaches.find((coach) => coach.id === id);
+  if (targetCoach) {
+    console.log(`Coach found: ${targetCoach.name}`); // Debug log
+    selectedCoach = targetCoach;
+
+    // Update active state in the coach list
+    document.querySelectorAll('.coach-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.id === id);
+    });
+
+    // Update form fields with selected coach details
+    const avatarUpload = document.querySelector(".avatar-upload");
+    const nameInput = document.querySelector('#profile-name-input');
+    const personaInput = document.querySelector('#profile-description-input');
+    const roleInput = document.querySelector('#profile-role-input');
+    const greetingInput = document.querySelector('#profile-greeting-input');
+
+    if (avatarUpload) avatarUpload.style.backgroundImage = `url('${selectedCoach.avatar || DEFAULT_AVATAR}')`;
+    if (nameInput) nameInput.value = selectedCoach.name || '';
+    if (personaInput) personaInput.value = selectedCoach.persona || '';
+    if (roleInput) roleInput.value = selectedCoach.role || '';
+    if (greetingInput) greetingInput.value = selectedCoach.greeting || '';
+
+    hasUnsavedChanges = false; // Reset unsaved changes flag
   } else {
-      selectNewCoach();
+    console.error(`Coach with id ${id} not found`);
   }
 }
 
@@ -100,20 +111,24 @@ function handleFileUpload() {
 // Add new coach
 function addCoach() {
   const createNewCoach = () => {
-      const newId = coaches.length > 0 ? Math.max(...coaches.map((c) => c.id)) + 1 : 1;
+      const highestId = coaches.reduce((max, coach) => {
+          const idNumber = parseInt(coach.id.replace('coach', '')) || 0;
+          return Math.max(max, idNumber);
+      }, 0);
+      const newId = `coach${highestId + 1}`;
       const newCoach = {
           id: newId,
           name: "New Coach",
           persona: "Untitled",
           role: "undefined",
-          avatar: DEFAULT_AVATAR,
+          avatar: "",
           greeting: ""
       };
       coaches.push(newCoach);
       selectedCoach = newCoach;
       renderCoaches();
       // Update form fields directly
-      document.querySelector(".avatar-upload").style.backgroundImage = `url('${DEFAULT_AVATAR}')`;
+      document.querySelector(".avatar-upload").style.backgroundImage = "";
       document.querySelector('#profile-name-input').value = newCoach.name;
       document.querySelector('#profile-description-input').value = newCoach.persona;
       document.querySelector('#profile-role-input').value = newCoach.role;
@@ -211,7 +226,7 @@ async function confirmDelete() {
               hasUnsavedChanges = false;
               renderCoaches();
               // Clear form
-              document.querySelector(".avatar-upload").style.backgroundImage = `url('${DEFAULT_AVATAR}')`;
+              document.querySelector(".avatar-upload").style.backgroundImage = "";
               document.querySelector('#profile-name-input').value = "";
               document.querySelector('#profile-description-input').value = "";
               document.querySelector('#profile-role-input').value = "";
@@ -278,7 +293,7 @@ async function resetFormToSelectedCoach() {
 }
 
 function clearForm() {
-    document.querySelector(".avatar-upload").style.backgroundImage = `url('${DEFAULT_AVATAR}')`;
+    document.querySelector(".avatar-upload").style.backgroundImage = "";
     document.querySelector('#profile-name-input').value = '';
     document.querySelector('#profile-description-input').value = '';
     document.querySelector('#profile-role-input').value = '';

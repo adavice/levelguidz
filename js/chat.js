@@ -1,5 +1,6 @@
 import { loadCoaches, loadChatHistory } from './clientApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
+import { DEFAULT_AVATAR } from './constants.js';
 
 let chatHistory = new Map(); // Store chat history by coach ID
 let activeCoachId = null; // Track current active coach
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return `
                 <div class="coach-item d-flex align-items-center gap-3" data-id="${coach.id}" data-status="${status}">
-                    <div class="coach-item-avatar" ${coach.avatar ? `style="background-image: url('${coach.avatar}')"` : ''}>
+                    <div class="coach-item-avatar" style="background-image: url('${coach.avatar || DEFAULT_AVATAR}')">
                     </div>
                     <div>
                         <h6 class="mb-0">${coach.name} <div class="coach-status status-${status}"></div></h6>
