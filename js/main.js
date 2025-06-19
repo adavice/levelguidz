@@ -11,8 +11,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle admin section
+    // Update login button based on auth state
     const user = getCurrentUser();
+    if (user) {
+        // Show username dropdown, hide login button
+        document.getElementById('loginButton')?.classList.add('d-none');
+        const userDropdown = document.getElementById('userDropdown');
+        const usernamePlaceholder = document.getElementById('usernamePlaceholder');
+        
+        if (userDropdown && usernamePlaceholder) {
+            userDropdown.classList.remove('d-none');
+            usernamePlaceholder.textContent = user.username;
+        }
+    }
+
+    // Handle admin section
     if (user?.isAdmin) {
         const navbarNav = document.querySelector('.navbar-nav');
         const adminLink = document.createElement('li');
@@ -25,3 +38,4 @@ document.addEventListener('DOMContentLoaded', function() {
         navbarNav.appendChild(adminLink);
     }
 });
+

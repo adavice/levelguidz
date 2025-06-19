@@ -12,58 +12,85 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="./index.html">
-                <img src="img/logo_dark.svg" alt="Logo" height="30">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./news.html">News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./chat.html">Coaching</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Guides</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./contact.html">Contact</a>
-                    </li>
+      <div class="container">
+        <a class="navbar-brand" href="./index.html">
+          <img src="img/logo_dark.svg" alt="Logo" height="30" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="./news.html">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./chat.html">Coaching</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Guides</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./contact.html">Contact</a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <div class="user-section">
+              <!-- Login button shown when logged out -->
+              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
+              
+              <!-- Username dropdown shown when logged in -->
+              <div class="dropdown d-none" id="userDropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <span id="usernamePlaceholder"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn">Logout</a></li>
                 </ul>
-                <div class="d-flex">
-                    <a class="btn btn-outline-light" href="./index.html#login">Login</a>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </nav>
 
     <div class="hero-banner position-relative">
         <div class="decorative-dots"></div>
-        <div class="container">
-            <div class="hero-content">
+        <div class="container h-100 d-flex align-items-center">
+            <div class="hero-content text-center mx-auto" style="max-width: 800px;">
                 <h1 class="display-4 fw-bold">Leading TFT Coaching Platform</h1>
                 <p class="lead">Become a better gamer! Get TFT coaching to raise to Challenger tier!</p>
-                <div class="d-flex flex-column flex-sm-row gap-3">
-                    <a href="./chat.html" class="btn btn-hero-cta">
+                
+                <div class="steps-indicator mb-4" style="z-index: 2;">
+                    <div class="steps-wrapper d-flex justify-content-center gap-5">
+                        <div class="step-circle">
+                            <span class="step-number">1</span>
+                            <span class="step-text">Choose your game</span>
+                        </div>
+                        <div class="step-circle">
+                            <span class="step-number">2</span>
+                            <span class="step-text">Find your coach</span>
+                        </div>
+                        <div class="step-circle">
+                            <span class="step-number">3</span>
+                            <span class="step-text">Start Improving</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <a href="./chat.html" class="btn btn-hero-cta mt-5">
                         <span>Choose Your Coach</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-2" viewBox="0 0 16 16">
                             <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
                         </svg>
                     </a>
                 </div>
-            </div>
-            <div class="game-selector-wrapper mt-5">
-                <select id="gameSelector" class="form-select game-select border-0 shadow d-none">
-                    <option value="1">CS:GO</option>
-                    <option value="2">League of Legends</option>
-                    <option value="3">Fortnite</option>
-                    <option value="4">CoD Warzone</option>
-                    <option value="5">FIFA 2024</option>
-                </select>
             </div>
         </div>
     </div>
@@ -513,72 +540,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
-    <script>
-        // Game selector functionality
-        const gameSelector = document.getElementById('gameSelector');
-        const heroContent = document.querySelector('.hero-content');
-        const heroBanner = document.querySelector('.hero-banner');
 
-        // Add initial state content
-        const initialState = {
-            title: "Leading TFT Coaching Platform",
-            description: "Become a better gamer! Get TFT coaching to raise to Challenger tier!",
-            background: "./img/hero.jpg"
-        };
-
-        // Add placeholder as first option
-        gameSelector.insertAdjacentHTML('afterbegin', '<option value="" selected>Select your game</option>');
-
-        const games = {
-            1: {
-                title: "Master CS:GO With Pro Guidance",
-                description: "Learn advanced strategies, improve your aim, and climb to Global Elite with our expert CS:GO coaches!",
-                background: "./img/game1.jpg"
-            },
-            2: {
-                title: "Leading League of Legends Coaching",
-                description: "Become a better gamer! Get LoL coaching to raise to Challenger tier!",
-                background: "./img/game2.jpg"
-            },
-            3: {
-                title: "Dominate Fortnite Battles",
-                description: "Build faster, aim better, and secure more Victory Royales with pro Fortnite coaching!",
-                background: "./img/game3.jpg"
-            },
-            4: {
-                title: "Warzone Victory Strategy",
-                description: "Master CoD Warzone with elite coaches! Learn advanced tactics and dominate the battlefield.",
-                background: "./img/game4.jpg"
-            },
-            5: {
-                title: "FIFA 2024 Pro Coaching",
-                description: "Level up your FIFA game! Learn pro techniques and tactics to climb the competitive ladder.",
-                background: "./img/game5.jpg"
-            }
-        };
-
-        function updateGameContent(gameId) {
-            // If no game selected, restore initial state
-            if (!gameId) {
-                heroContent.querySelector('h1').textContent = initialState.title;
-                heroContent.querySelector('p').textContent = initialState.description;
-                heroBanner.style.backgroundImage = `url('${initialState.background}')`;
-                return;
-            }
-
-            const game = games[gameId];
-            if (!game) return;
-
-            heroContent.querySelector('h1').textContent = game.title;
-            heroContent.querySelector('p').textContent = game.description;
-            heroBanner.style.backgroundImage = `url('${game.background}')`;
-        }
-
-        // Handle selection change
-        gameSelector.addEventListener('change', (e) => {
-            updateGameContent(e.target.value);
-        });
-    </script>
     <script type="module">
         import { login, signup, forgotPassword } from './js/authApi.js';
 
@@ -663,7 +625,6 @@
                 }
             });
 
-            // Rest of your existing DOM event listeners...
             document.querySelectorAll('.password-toggle:not(#signup-password-toggle)').forEach(toggle => {
                 toggle.addEventListener('click', function() {
                     const input = this.parentElement.querySelector('input');
@@ -702,6 +663,9 @@
                 });
             });
         });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>

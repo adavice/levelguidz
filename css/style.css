@@ -54,28 +54,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-banner {
-    height: 100vh;
-    background: url('../img/hero.jpg') center/cover no-repeat;
-    margin-bottom: 2rem;
+    min-height: 100vh;
+    overflow-x: hidden;
     display: flex;
     align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../img/hero.jpg');
+    padding: 6rem 0;
     position: relative;
-    overflow: hidden;
-    transition: background-image 0.5s ease;
-}
-
-.hero-content {
-    max-width: 650px;
-    position: relative;
-    z-index: 3;
 }
 
 .hero-banner::before {
-    content: "";
+    content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(6,6,7,0.85) 0%, rgba(6,6,7,0.45) 100%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75); /* Increased opacity from 0.5 to 0.75 */
+}
+
+.hero-content {
+    position: relative;
     z-index: 1;
+}
+
+.hero-content h1,
+.hero-content p {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-banner::after {
@@ -107,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-content .display-4 {
     font-size: 4rem;
     line-height: 1.1;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     position: relative;
 }
 
@@ -120,13 +128,14 @@ h1, h2, h3, h4, h5, h6 {
     height: 4px;
     background: var(--primary-color);
     border-radius: 2px;
+    left: 50%;
+    transform: translate(-50%, 10px);
 }
 
 .hero-content .lead {
     font-size: 1.35rem;
     opacity: 0.9;
     margin-bottom: 2.5rem;
-    max-width: 540px;
 }
 
 .hero-decorative-circle {
@@ -209,22 +218,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .features-section {
-    margin-top: -5rem;
     position: relative;
     z-index: 2;
 }
 
 .feature-card {
-    margin-top: 5px;
     background: var(--gradient-bg);
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1rem;
     height: 100%;
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     flex: 1;
+}
+
+.toast {
+    background-color: var(--primary-color)!important;
+}
+
+.toast-container {
+    border-radius: 8px;
 }
 
 .feature-card:hover {
@@ -979,7 +994,6 @@ input::placeholder, textarea::placeholder {
 
 .chatbot-list {
     min-height: 200px;
-    max-height: 600px;
     overflow-y: auto;
 }
 
@@ -1191,6 +1205,7 @@ input::placeholder, textarea::placeholder {
 .chatbot-list .coach-item.active {
     background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
     border-color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
 }
 
 .chatbot-list .coach-item.active h6 {
@@ -1352,3 +1367,72 @@ input::placeholder, textarea::placeholder {
     max-width: 100%;
     margin: 0;
 }
+
+.steps-indicator {
+    margin-bottom: 4rem;
+}
+
+.steps-indicator .steps-wrapper {
+    padding: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.steps-indicator .step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.steps-indicator .step-number {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.steps-indicator .step-text {
+    font-size: 0.875rem;
+    position: absolute;
+    bottom: -2.5rem;
+    white-space: nowrap;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    width: 120px;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.steps-indicator .step-circle:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -3.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.steps-indicator .steps-wrapper {
+        gap: 5rem !important;
+    }
+
+@media (max-width: 768px) {
+    .steps-indicator .steps-wrapper {
+        gap: 4rem !important;
+    }
+    
+    .steps-indicator .step-circle:not(:last-child)::after {
+        right: -2.5rem;
+    }
+}
+

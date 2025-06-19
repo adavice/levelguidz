@@ -1,5 +1,7 @@
+import { API_BASE_URL } from "./config.js";
+
 export async function login(email, password) {
-    const response = await fetch('/server/chat_api', {
+    const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -12,7 +14,7 @@ export async function login(email, password) {
 }
 
 export async function signup(username, email, password) {
-    const response = await fetch('/server/chat_api', {
+    const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -26,7 +28,7 @@ export async function signup(username, email, password) {
 }
 
 export async function forgotPassword(email) {
-    const response = await fetch('/server/chat_api', {
+    const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

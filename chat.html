@@ -89,7 +89,20 @@
             </li>
           </ul>
           <div class="d-flex">
-            <a class="btn btn-outline-light" href="./index.html#login">Login</a>
+            <div class="user-section">
+              <!-- Login button shown when logged out -->
+              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
+              
+              <!-- Username dropdown shown when logged in -->
+              <div class="dropdown d-none" id="userDropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <span id="usernamePlaceholder"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
