@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Rename sendToGPT to sendToServer
     async function sendToServer(message, coachId) {
         try {
-            const response = await fetch('/server/chat_api', {
+            const response = await fetch(`${API_BASE_URL}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -250,6 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     message: message
                 })
             });
+
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+            }
+
             const data = await response.json();
             
             if (data.error) {
@@ -263,8 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function processUserMessage(message) {
-        // Simulate user message processing (typing effect)
+    async function processUserMessage() {
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 
@@ -492,6 +496,28 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
             event.target.value = '';
         }
     });
+
+    // Add media preview function
+    function addMediaPreview(src, type) {
+        const previewContainer = document.querySelector('.media-preview-container');
+        const existingPreview = previewContainer.querySelector('.media-preview');
+        
+        if (existingPreview) {
+            existingPreview.remove();
+        }
+
+        const previewHtml = type === 'image' ? `
+            <div class="media-preview d-flex align-items-center gap-2 my-2">
+                <i class="bi bi-image text-primary"></i>
+                <img src="data:image/jpeg;base64,${src}" class="img-fluid rounded" style="max-height: 100px;">
+                <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.media-preview').remove()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        ` : '';
+
+        previewContainer.insertAdjacentHTML('afterbegin', previewHtml);
+    }
 
     let mediaRecorder = null;
     let audioChunks = [];
