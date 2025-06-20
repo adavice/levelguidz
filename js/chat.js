@@ -1,4 +1,4 @@
-import { loadCoaches, loadChatHistory } from './clientApi.js';
+import { loadCoaches, loadChatHistory, saveChatHistory } from './clientApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
 import { API_BASE_URL } from './config.js';
@@ -21,17 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadCoachesList() {
         try {
-            const [coaches, history] = await Promise.all([
-                loadCoaches(),
-                loadChatHistory()
-            ]);
-            
+            let coaches, history;
+            try {
+                [coaches, history] = await Promise.all([
+                    loadCoaches(),
+                    loadChatHistory()
+                ]);
+            } catch (historyError) {
+                // If error is "No user logged in", show toast and proceed with empty history
+                if (historyError && historyError.message && historyError.message.includes('No user logged in')) {
+                    showToast('Please log in to load your chat history.', false);
+                    coaches = await loadCoaches();
+                    history = [];
+                } else {
+                    throw historyError;
+                }
+            }
+
             if (!Array.isArray(coaches)) {
                 throw new Error('Invalid coaches data');
             }
 
             // Initialize chat history
+            chatHistory = new Map();
             if (Array.isArray(history)) {
+                // Group messages by coachId into arrays
                 history.forEach(item => {
                     if (!chatHistory.has(item.coachId)) {
                         chatHistory.set(item.coachId, []);
@@ -41,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             renderCoaches(coaches);
+
+            // Optionally, auto-select the first coach and restore its chat
+            const firstCoach = document.querySelector('.coach-item');
+            if (firstCoach) selectCoach(firstCoach);
+
         } catch (error) {
             console.error('Error loading coaches:', error);
             chatMessages.innerHTML = `
@@ -126,9 +145,99 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Helper: Render messages for a specific coachId into the chatMessages container
+function renderMessagesForCoach(coachId) {
+    chatMessages.innerHTML = '';
+    const coachHistory = chatHistory.get(coachId) || [];
+    coachHistory.forEach(msg => {
+        addMessage(
+            msg.content,
+            msg.isUser,
+            msg.isAudio,
+            msg.isImage,
+            msg.timestamp
+        );
+    });
+}
+
+// Modified handleTextMessage to only update DOM if user is still on the same coach
+async function handleTextMessage(message, coachId, originalStatus) {
+    const targetCoachId = coachId;
+
+    // Save user message to the correct chat history
+    if (!chatHistory.has(targetCoachId)) chatHistory.set(targetCoachId, []);
+    chatHistory.get(targetCoachId).push({
+        content: message,
+        isUser: true,
+        timestamp: Date.now()
+    });
+    saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+        msgs.map(m => ({ ...m, coachId: cid }))
+    ).flat());
+
+    // Only render if user is still on this coach
+    if (activeCoachId === targetCoachId) {
+        addMessage(message, true);
+    }
+
+    try {
+        if (originalStatus === 'online' && activeCoachId === targetCoachId) {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            setCoachStatus(targetCoachId, 'responding');
+        }
+
+        const initialDelay = getResponseDelay(originalStatus);
+        await new Promise(resolve => setTimeout(resolve, initialDelay));
+
+        const reply = await sendToServer(message, targetCoachId);
+
+        // Save coach reply to the correct chat history
+        chatHistory.get(targetCoachId).push({
+            content: reply,
+            isUser: false,
+            timestamp: Date.now()
+        });
+        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+            msgs.map(m => ({ ...m, coachId: cid }))
+        ).flat());
+
+        // Only render if user is still on this coach
+        if (activeCoachId === targetCoachId) {
+            const typingDelay = calculateTypingDelay(reply);
+            await new Promise(resolve => setTimeout(resolve, typingDelay));
+            addMessage(reply, false);
+            setCoachStatus(targetCoachId, 'online');
+        }
+        // If not, do not update DOM. When user switches back, renderMessagesForCoach will show all messages.
+    } catch (error) {
+        chatHistory.get(targetCoachId).push({
+            content: `
+                <div class="alert alert-danger mb-0">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    ${error.message}
+                </div>
+            `,
+            isUser: false,
+            timestamp: Date.now()
+        });
+        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+            msgs.map(m => ({ ...m, coachId: cid }))
+        ).flat());
+
+        if (activeCoachId === targetCoachId) {
+            addMessage(`
+                <div class="alert alert-danger mb-0">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    ${error.message}
+                </div>
+            `, false);
+            setCoachStatus(targetCoachId, originalStatus);
+        }
+    }
+}
+
     function selectCoach(coachItem) {
         const newCoachId = coachItem.dataset.id;
-        
         // Store current messages for previous coach if any
         if (activeCoachId) {
             const messages = Array.from(chatMessages.children).map(msg => ({
@@ -137,6 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 timestamp: parseInt(msg.dataset.timestamp)
             }));
             chatHistory.set(activeCoachId, messages);
+            // Save chat history after switching
+            saveChatHistory(Array.from(chatHistory.entries()).map(([coachId, msgs]) =>
+                msgs.map(m => ({ ...m, coachId }))
+            ).flat());
         }
         
         document.querySelectorAll('.coach-item').forEach(item => item.classList.remove('active'));
@@ -154,11 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Load chat history for selected coach
         activeCoachId = newCoachId;
-        chatMessages.innerHTML = '';
-        const coachHistory = chatHistory.get(newCoachId) || [];
-        coachHistory.forEach(msg => {
-            addMessage(msg.content, msg.isUser, msg.isAudio, msg.isImage, msg.timestamp);
-        });
+        renderMessagesForCoach(newCoachId);
     }
 
     function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now()) {
@@ -215,6 +324,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         chatMessages.appendChild(message);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Save chat history after every new message
+        if (activeCoachId) {
+            const messages = Array.from(chatMessages.children).map(msg => ({
+                content: msg.querySelector('.message-content').children[0].innerHTML,
+                isUser: msg.classList.contains('user'),
+                timestamp: parseInt(msg.dataset.timestamp)
+            }));
+            chatHistory.set(activeCoachId, messages);
+            saveChatHistory(Array.from(chatHistory.entries()).map(([coachId, msgs]) =>
+                msgs.map(m => ({ ...m, coachId }))
+            ).flat());
+        }
     }
 
     function getResponseDelay(status) {
@@ -315,46 +436,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function handleTextMessage(message, coachId, originalStatus) {
-        if (coachId !== activeCoachId) {
-            console.warn('Coach switched during message processing');
-            return;
+        const targetCoachId = coachId;
+
+        // Save user message to the correct chat history
+        if (!chatHistory.has(targetCoachId)) chatHistory.set(targetCoachId, []);
+        chatHistory.get(targetCoachId).push({
+            content: message,
+            isUser: true,
+            timestamp: Date.now()
+        });
+        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+            msgs.map(m => ({ ...m, coachId: cid }))
+        ).flat());
+
+        // Only render if user is still on this coach
+        if (activeCoachId === targetCoachId) {
+            addMessage(message, true);
         }
 
         try {
-            await processUserMessage(message);
-            addMessage(message, true);
-
-            // Only show typing indicator if coach is online
-            if (originalStatus === 'online') {
-                // Add 2 seconds delay before showing typing indicator
+            if (originalStatus === 'online' && activeCoachId === targetCoachId) {
                 await new Promise(resolve => setTimeout(resolve, 2000));
-                setCoachStatus(coachId, 'responding');
+                setCoachStatus(targetCoachId, 'responding');
             }
 
-            // Initial response delay based on status
             const initialDelay = getResponseDelay(originalStatus);
             await new Promise(resolve => setTimeout(resolve, initialDelay));
 
-            const reply = await sendToServer(message, coachId);
-            
-            // Only add response if still on same coach
-            if (coachId === activeCoachId) {
-                // Add typing delay based on response length
+            const reply = await sendToServer(message, targetCoachId);
+
+            // Save coach reply to the correct chat history
+            chatHistory.get(targetCoachId).push({
+                content: reply,
+                isUser: false,
+                timestamp: Date.now()
+            });
+            saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+                msgs.map(m => ({ ...m, coachId: cid }))
+            ).flat());
+
+            // Only render if user is still on this coach
+            if (activeCoachId === targetCoachId) {
                 const typingDelay = calculateTypingDelay(reply);
                 await new Promise(resolve => setTimeout(resolve, typingDelay));
                 addMessage(reply, false);
-                setCoachStatus(coachId, 'online');
+                setCoachStatus(targetCoachId, 'online');
             }
-
+            // If not, do not update DOM. When user switches back, renderMessagesForCoach will show all messages.
         } catch (error) {
-            if (coachId === activeCoachId) {
+            chatHistory.get(targetCoachId).push({
+                content: `
+                    <div class="alert alert-danger mb-0">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${error.message}
+                    </div>
+                `,
+                isUser: false,
+                timestamp: Date.now()
+            });
+            saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
+                msgs.map(m => ({ ...m, coachId: cid }))
+            ).flat());
+
+            if (activeCoachId === targetCoachId) {
                 addMessage(`
                     <div class="alert alert-danger mb-0">
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         ${error.message}
                     </div>
                 `, false);
-                setCoachStatus(coachId, originalStatus);
+                setCoachStatus(targetCoachId, originalStatus);
             }
         }
     }
@@ -384,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (!data || !data.text) {
+                console.log(data)
                 throw new Error('Invalid response from server');
             }
 
@@ -453,6 +605,32 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
         setCoachStatus(coachId, originalStatus);
     }
 }
+
+    // Toast utility for chat page
+    function showToast(message, success = false) {
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        let toast = document.createElement('div');
+        toast.className = 'toast show';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('data-bs-delay', '3000');
+        toast.innerHTML = `
+            <div class="toast-body feature-card border-0">
+                <span>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi ${success ? 'bi-check-circle-fill text-success' : 'bi-exclamation-circle-fill text-danger'}"></i>
+                        <span>${message}</span>
+                    </div>
+                </span>
+            </div>
+        `;
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
 
     // Handle screenshot paste (Ctrl+V) for vision analysis
     messageInput.addEventListener('paste', async (event) => {
@@ -604,4 +782,5 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
     // Just keep the initial coach list load
     loadCoachesList();
 });
+
 

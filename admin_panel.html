@@ -51,12 +51,31 @@
         background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         color: var(--text-color) !important;
+        border-radius: 0.5rem !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        font-size: 1rem;
       }
 
-      .form-control:focus {
-        background: rgba(255, 255, 255, 0.08) !important;
+      .form-select.custom-role-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 2.5rem;
+        background-image: url("data:image/svg+xml,%3Csvg fill='white' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+      }
+
+      .form-select.custom-role-select:focus {
         border-color: var(--primary-color) !important;
         box-shadow: none !important;
+      }
+
+      .form-select.custom-role-select option {
+        color: #222 !important;
+        background: #fff !important;
       }
 
       .admin-panel {
@@ -222,12 +241,22 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label text-white">Role</label>
-                  <input
+                  <select
                     id="profile-role-input"
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter role"
-                  />
+                    class="form-select custom-role-select"
+                  >
+                    <option value="all" selected>Gaming Guru</option>
+                    <option value="MOBA">MOBA expert</option>
+                    <option value="FPS">FPS expert</option>
+                    <option value="RPG">RPG expert</option>
+                    <option value="Battle Royale">Battle Royale expert</option>
+                    <option value="Auto Battler">Auto Battler expert</option>
+                    <option value="Tactical Shooter">Tactical Shooter expert</option>
+                    <option value="Sports">Sports expert</option>
+                    <option value="Strategy">Strategy expert</option>
+                    <option value="Racing">Racing expert</option>
+                    <option value="Card">Card Game expert</option>
+                  </select>
                 </div>
                 <div class="col-12">
                   <label class="form-label text-white">Persona</label>
@@ -329,7 +358,5 @@
     import { initAuthGuard } from './js/authGuard.js';
     document.addEventListener('DOMContentLoaded', initAuthGuard);
 </script> -->
-  </body>
-</html>
   </body>
 </html>

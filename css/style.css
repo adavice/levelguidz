@@ -974,7 +974,6 @@ input::placeholder, textarea::placeholder {
 .modal-content {
     transform: translateY(-20px);
     transition: transform 0.3s ease;
-    width: auto;
     height: auto;
     max-height: 90vh;
     margin: auto;
@@ -1435,5 +1434,33 @@ input::placeholder, textarea::placeholder {
     .steps-indicator .step-circle:not(:last-child)::after {
         right: -2.5rem;
     }
+}
+
+#gameCoachModal .list-group-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+#gameCoachModal .list-group-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#gameCoachModal .list-group-item.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#gameCoachModal .modal-content {
+    min-height: 600px;
+}
+
+#gameCoachModal .coach-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#gameCoachModal .coach-card:hover {
+    transform: translateY(-5px);
 }
 
