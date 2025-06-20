@@ -374,4 +374,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             action();
         }
     });
+
+    // Ensure role selector updates selectedCoach.role immediately
+    document.getElementById('profile-role-input')?.addEventListener('change', function() {
+        if (selectedCoach) {
+            selectedCoach.role = this.value;
+            hasUnsavedChanges = true;
+        }
+    });
 });
