@@ -52,6 +52,48 @@ document.addEventListener('DOMContentLoaded', function() {
     async function renderCoachesInModal(gameKey) {
         const coachesList = document.getElementById('coachesList');
         if (!coachesList) return;
+        // Check if user is NOT logged in
+        const user = getCurrentUser();
+        if (!user) {
+            coachesList.innerHTML = `
+                <div class="text-center py-4 w-100">
+                    <div class="mb-3 text-muted">Please log in to view the list of available coaches.</div>
+                    <a id="loginModalBtn" href="#login" class="btn btn-primary">Go to Login</a>
+                </div>
+            `;
+            setTimeout(() => {
+                const loginBtn = document.getElementById('loginModalBtn');
+                if (loginBtn) {
+                    loginBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const modal = document.querySelector('#gameCoachModal .modal-content');
+                        if (modal) {
+                            modal.style.transition = 'opacity 0.5s';
+                            modal.style.opacity = '0';
+                        }
+                        setTimeout(() => {
+                            // Close the modal first
+                            const modalInstance = bootstrap.Modal.getInstance(document.getElementById('gameCoachModal'));
+                            if (modalInstance) {
+                                modalInstance.hide();
+                            }
+                            // Wait for modal to close, then scroll
+                            setTimeout(() => {
+                                const loginEl = document.getElementById('login');
+                                if (loginEl) {
+                                    loginEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }
+                                // Restore modal opacity for next open
+                                if (modal) {
+                                    modal.style.opacity = '1';
+                                }
+                            }, 400);
+                        }, 500);
+                    });
+                }
+            }, 0);
+            return;
+        }
         coachesList.innerHTML = '<div class="text-muted">Loading coaches...</div>';
 
         try {
@@ -76,11 +118,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             coachesList.innerHTML = filtered.map(coach => `
                 <div class="col-md-6">
-                    <div class="coach-card border p-3 rounded d-flex gap-3 align-items-center">
+                    <div class="coach-card border p-3 rounded d-flex gap-3 align-items-center coach-selectable" data-coach-id="${coach.id}">
                         <img src="${coach.avatar || 'img/default-avatar.png'}" alt="${coach.name}" width="60" height="60" class="rounded-circle">
                         <div>
                             <h6 class="mb-1">${coach.name}</h6>
-                            <small class="text-muted">${coach.role || ''}</small>
+                            <small class="text-muted">${coach.role || ''} expert</small>
                             <div class="mt-1">
                                 <span class="badge bg-primary">${coach.status || 'online'}</span>
                             </div>
@@ -88,6 +130,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `).join('');
+            // Add click event to each coach card for redirect
+            coachesList.querySelectorAll('.coach-selectable').forEach(card => {
+                card.addEventListener('click', function() {
+                    const coachId = this.getAttribute('data-coach-id');
+                    if (coachId) {
+                        window.location.href = `chat.html?coach=${encodeURIComponent(coachId)}`;
+                    }
+                });
+            });
         } catch (err) {
             coachesList.innerHTML = '<div class="text-danger">Failed to load coaches.</div>';
         }

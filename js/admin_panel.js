@@ -1,4 +1,4 @@
-import { loadCoaches, saveCoaches, saveCoach as saveCoachApi, deleteCoach as deleteCoachApi } from './clientApi.js';
+import { loadCoaches, saveCoach } from './clientApi.js';
 import { DEFAULT_AVATAR } from './constants.js';
 
 let coaches = []; // Initialize empty array
@@ -21,7 +21,7 @@ function renderCoaches() {
                   <div class="coach-item-avatar me-3" style="background-image: url('${coach.avatar || DEFAULT_AVATAR}')"></div>
                   <div>
                       <h6 class="mb-1 fw-semibold">${coach.name}</h6>
-                      <p class="text-muted small mb-0">${coach.role}</p>
+                      <p class="text-muted small mb-0">${coach.role} expert</p>
                   </div>
               </div>
           </div>
@@ -172,15 +172,6 @@ async function loadCoachesFromServer() {
     return false;
 }
 
-// Replace saveBotToServer with saveCoach
-async function saveCoachToServer(coach) {
-    return saveCoachApi(coach);
-}
-
-// Replace deleteBotFromServer with deleteCoach
-async function deleteCoachFromServer(id) {
-    return deleteCoachApi(id);
-}
 
 // Save coach changes
 async function handleSaveCoach() {
@@ -193,7 +184,13 @@ async function handleSaveCoach() {
     selectedCoach.greeting = document.querySelector('#profile-greeting-input').value;
 
     try {
-        await saveCoaches(coaches);
+        // Save only the selected coach
+        const savedCoach = await saveCoach(selectedCoach);
+        // Optionally update local array with returned coach (if backend returns updated coach)
+        if (savedCoach && savedCoach.id) {
+            const idx = coaches.findIndex(c => c.id === savedCoach.id);
+            if (idx > -1) coaches[idx] = savedCoach;
+        }
         hasUnsavedChanges = false;
         renderCoaches();
         showModal();

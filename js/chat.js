@@ -56,10 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             renderCoaches(coaches);
 
-            // Optionally, auto-select the first coach and restore its chat
-            const firstCoach = document.querySelector('.coach-item');
-            if (firstCoach) selectCoach(firstCoach);
-
+            // Check for coach param in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const coachIdParam = urlParams.get('coach');
+            if (coachIdParam) {
+                // Hide coach list
+                const coachListPanel = document.querySelector('.col-lg-3');
+                if (coachListPanel) coachListPanel.style.display = 'none';
+                // Auto-select the coach
+                const coachCard = document.querySelector(`.coach-item[data-id="${coachIdParam}"]`);
+                if (coachCard) {
+                    coachCard.click();
+                } else {
+                    // If not found, select first coach
+                    const firstCoach = document.querySelector('.coach-item');
+                    if (firstCoach) firstCoach.click();
+                }
+            } else {
+                // Optionally, auto-select the first coach and restore its chat
+                const firstCoach = document.querySelector('.coach-item');
+                if (firstCoach) firstCoach.click();
+            }
         } catch (error) {
             console.error('Error loading coaches:', error);
             chatMessages.innerHTML = `
