@@ -43,7 +43,7 @@ async function renderCoachesInModal(gameKey) {
     const coachesList = document.getElementById('coachesList');
     if (!coachesList) return;
     const user = getCurrentUser();
-    if (!user) {
+    if (!user || !user.username) {
         coachesList.innerHTML = `
             <div class="text-center py-4 w-100">
                 <div class="mb-3 text-muted">Please log in to view the list of available coaches.</div>

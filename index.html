@@ -550,7 +550,7 @@
         const loginBtn = document.getElementById('loginButton');
         const userDropdown = document.getElementById('userDropdown');
         const usernamePlaceholder = document.getElementById('usernamePlaceholder');
-        if (user) {
+        if (user && user.username) {
           if (loginBtn) loginBtn.classList.add('d-none');
           if (userDropdown && usernamePlaceholder) {
             userDropdown.classList.remove('d-none');

@@ -14,10 +14,11 @@ class AuthService {
     }
 
     login(userData) {
+        // userData is the user object from backend (no token, no isAdmin)
         this.saveAuthState({
             isLoggedIn: true,
-            isAdmin: userData.isAdmin || false,
-            token: userData.token,
+            isAdmin: false, // default to false, since backend does not provide
+            token: null,    // no token from backend
             user: userData
         });
     }

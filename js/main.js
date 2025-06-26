@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update login button based on auth state
     const user = getCurrentUser();
+    console.log('Current user:', user);
     if (user) {
         // Show username dropdown, hide login button
         document.getElementById('loginButton')?.classList.add('d-none');
