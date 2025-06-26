@@ -550,16 +550,34 @@
         const loginBtn = document.getElementById('loginButton');
         const userDropdown = document.getElementById('userDropdown');
         const usernamePlaceholder = document.getElementById('usernamePlaceholder');
+        // Admin link logic
+        let adminLink = document.getElementById('adminNavLink');
         if (user && user.username) {
           if (loginBtn) loginBtn.classList.add('d-none');
           if (userDropdown && usernamePlaceholder) {
             userDropdown.classList.remove('d-none');
             usernamePlaceholder.textContent = user.username;
           }
+          // Show admin link if user.isAdmin
+          if (user.isAdmin) {
+            if (!adminLink) {
+              const nav = document.querySelector('.navbar-nav');
+              if (nav) {
+                adminLink = document.createElement('li');
+                adminLink.className = 'nav-item';
+                adminLink.id = 'adminNavLink';
+                adminLink.innerHTML = `<a class="nav-link" href="./admin_panel.html"><i class="bi bi-shield-lock"></i> Admin</a>`;
+                nav.appendChild(adminLink);
+              }
+            }
+          } else if (adminLink) {
+            adminLink.remove();
+          }
         } else {
           if (loginBtn) loginBtn.classList.remove('d-none');
           if (userDropdown) userDropdown.classList.add('d-none');
           if (usernamePlaceholder) usernamePlaceholder.textContent = '';
+          if (adminLink) adminLink.remove();
         }
       }
 

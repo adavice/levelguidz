@@ -17,14 +17,17 @@ class AuthService {
         // userData is the user object from backend (no token, no isAdmin)
         this.saveAuthState({
             isLoggedIn: true,
-            isAdmin: false, // default to false, since backend does not provide
+            isAdmin: !!userData.isAdmin,
             token: null,    // no token from backend
             user: userData
         });
+        // Also save to 'user' for UI logic
+        localStorage.setItem('user', JSON.stringify(userData));
     }
 
     logout() {
         localStorage.removeItem('authState');
+        localStorage.removeItem('user');
         this.authState = null;
         window.location.href = '/index.html';
     }
@@ -34,11 +37,11 @@ class AuthService {
     }
 
     isLoggedIn() {
-        return this.authState?.isLoggedIn || false;
+        return !!(this.authState && this.authState.user && this.authState.user.username);
     }
 
     isAdmin() {
-        return this.authState?.isAdmin || false;
+        return !!(this.authState && this.authState.user && this.authState.user.isAdmin);
     }
 }
 
