@@ -1,4 +1,5 @@
-import { loadCoaches, loadChatHistory, saveChatHistory } from './clientApi.js';
+import { loadCoaches } from './clientApi.js';
+import { loadChatHistory, saveChatHistory } from './chatApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
 import { API_BASE_URL } from './config.js';

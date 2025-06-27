@@ -17,10 +17,17 @@ export async function loadCoaches() {
     return response.json();
 }
 
-export async function loadChatHistory() {
-    const response = await fetch(`${API_BASE_URL}?action=load_chat_history`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' }
+export async function saveChatHistory(historyArray) {
+    const user = getCurrentUser();
+    if (!user?.id) throw new Error('No user logged in');
+    const response = await fetch(`${API_BASE_URL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'save_chat_history',
+            user_id: user.id,
+            history: historyArray
+        })
     });
     return response.json();
 }
@@ -31,5 +38,19 @@ export async function logout() {
 
 export function getCurrentUser() {
     return authService.getAuthState()?.user || null;
+}
+
+export async function loadChatHistory(coachId = null) {
+    const user = getCurrentUser();
+    if (!user?.id) throw new Error('No user logged in');
+    let url = `${API_BASE_URL}?action=chat_history&user_id=${encodeURIComponent(user.id)}`;
+    if (coachId) {
+        url += `&coach_id=${encodeURIComponent(coachId)}`;
+    }
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+    });
+    return response.json();
 }
 

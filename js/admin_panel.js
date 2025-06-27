@@ -1,4 +1,4 @@
-import { loadCoaches, saveCoach } from './clientApi.js';
+import { loadCoaches, saveCoach, deleteCoach } from './adminApi.js';
 import { DEFAULT_AVATAR } from './constants.js';
 
 let coaches = []; // Initialize empty array
@@ -217,8 +217,9 @@ async function confirmDelete() {
       const index = coaches.findIndex((coach) => coach.id === selectedCoach.id);
       if (index > -1) {
           try {
+              // Delete coach from backend
+              await deleteCoach(selectedCoach.id);
               coaches.splice(index, 1);
-              await saveCoaches(coaches);
               selectedCoach = null;
               hasUnsavedChanges = false;
               renderCoaches();

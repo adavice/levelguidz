@@ -17,20 +17,12 @@ export async function loadCoaches() {
     return response.json();
 }
 
-export async function saveCoaches(coachesArray) {
-    const response = await fetch(`${API_BASE_URL}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_coaches', coaches: coachesArray })
-    });
-    return response.json();
-}
-
 export async function saveCoach(coach) {
+    if (!coach.id) throw new Error('Coach id is required for saveCoach');
     const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_coach', coach })
+        body: JSON.stringify({ action: 'save_coach', coach: { ...coach, id: coach.id } })
     });
     return response.json();
 }
