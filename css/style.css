@@ -1425,6 +1425,126 @@ input::placeholder, textarea::placeholder {
 .steps-indicator .steps-wrapper {
         gap: 5rem !important;
     }
+       .chatbot-list {
+        min-height: 200px;
+        max-height: 600px;
+        overflow-y: auto;
+      }
+
+      .coach-item {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        background: var(--gradient-bg);
+      }
+
+      .coach-item.active {
+        background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .avatar-upload {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        margin-bottom: 2rem;
+        border: 2px solid var(--primary-color);
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .coach-item-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .form-control,
+      .form-select {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: var(--text-color) !important;
+        border-radius: 0.5rem !important;
+        min-height: 48px !important;
+        font-size: 1rem;
+      }
+
+      .form-select.custom-role-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 2.5rem;
+        background-image: url("data:image/svg+xml,%3Csvg fill='white' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+      }
+
+      .form-select.custom-role-select:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: none !important;
+      }
+
+      .form-select.custom-role-select option {
+        color: #222 !important;
+        background: #fff !important;
+      }
+
+      .admin-panel {
+        margin-top: 80px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .bot-item {
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 1rem !important;
+        margin-bottom: 0.5rem;
+      }
+
+      .bot-item:hover {
+        transform: translateY(-2px);
+      }
+
+      .bot-item.active {
+        border-color: var(--primary-color);
+      }
+
+      .bot-item.active h6 {
+        color: var(--primary-color);
+      }
+
+      .bot-item-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1050;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-overlay.hidden {
+        display: none !important;
+      }
 
 @media (max-width: 768px) {
     .steps-indicator .steps-wrapper {
@@ -1462,5 +1582,114 @@ input::placeholder, textarea::placeholder {
 
 #gameCoachModal .coach-card:hover {
     transform: translateY(-5px);
+}
+
+/* Custom Scrollbar Styles for Dark Theme */
+::-webkit-scrollbar {
+    width: 10px;
+    background: #18181a;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 8px;
+    border: 2px solid #18181a;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #b81a4b;
+}
+::-webkit-scrollbar-corner {
+    background: #18181a;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #18181a;
+}
+
+/* Markdown styling for AI chat responses (dark mode) */
+.ai-markdown {
+  color: #e0e0e0;
+  background: transparent;
+  font-size: 1em;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.ai-markdown h1,
+.ai-markdown h2,
+.ai-markdown h3,
+.ai-markdown h4,
+.ai-markdown h5,
+.ai-markdown h6 {
+  color: #ffd966;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+.ai-markdown p {
+  margin: 0.5em 0;
+}
+.ai-markdown strong,
+.ai-markdown b {
+  color: #fff;
+  font-weight: bold;
+}
+.ai-markdown em,
+.ai-markdown i {
+  color: #ffb366;
+}
+.ai-markdown ul,
+.ai-markdown ol {
+  margin: 0.5em 0 0.5em 1.5em;
+}
+.ai-markdown li {
+  margin-bottom: 0.25em;
+}
+.ai-markdown code {
+  background: #23272e;
+  color: #ffb366;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.95em;
+  font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+}
+.ai-markdown pre {
+  background: #23272e;
+  color: #ffb366;
+  padding: 0.75em 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+.ai-markdown blockquote {
+  border-left: 4px solid #ffd966;
+  background: #23272e;
+  color: #b0b0b0;
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+}
+.ai-markdown a {
+  color: #7ecfff;
+  text-decoration: underline;
+}
+.ai-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  background: #23272e;
+  color: #e0e0e0;
+}
+.ai-markdown th,
+.ai-markdown td {
+  border: 1px solid #444;
+  padding: 0.5em 0.75em;
+}
+.ai-markdown th {
+  background: #1a1d22;
+  color: #ffd966;
+}
+.ai-markdown tr:nth-child(even) {
+  background: #20232a;
 }
 

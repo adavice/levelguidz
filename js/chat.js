@@ -3,6 +3,7 @@ import { loadChatHistory, saveChatHistory } from './chatApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
 import { API_BASE_URL } from './config.js';
+import '../js/marked.min.js'; // Import the Markdown parser
 
 let chatHistory = new Map(); // Store chat history by coach ID
 let activeCoachId = null; // Track current active coach
@@ -318,6 +319,9 @@ async function handleTextMessage(message, coachId, originalStatus) {
                     <audio src="${content}" controls class="audio-message"></audio>
                 </div>
             `;
+        } else if (!isUser && !isImage && !isAudio) {
+            // Render AI (non-user) messages as Markdown
+            messageContent = `<div class="ai-markdown">${marked.parse(content)}</div>`;
         }
 
         message.innerHTML = `
@@ -796,6 +800,21 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
             voiceBtn.querySelector('i').classList.replace('bi-mic-fill', 'bi-stop-fill');
         }
     });
+
+    // Hide coach list and center chat window if coach list is hidden
+    function hideCoachListAndCenterChat() {
+        const coachListPanel = document.querySelector('.coach-list-panel');
+        const chatPanel = document.querySelector('.chat-window-panel');
+        if (coachListPanel && chatPanel) {
+            coachListPanel.style.display = 'none';
+            chatPanel.classList.add('justify-content-center');
+            chatPanel.classList.add('align-items-center');
+            chatPanel.style.margin = '0 auto';
+        }
+    }
+
+    // In your loadCoachesList or wherever you hide the coach list:
+    // hideCoachListAndCenterChat();
 
     // Just keep the initial coach list load
     loadCoachesList();
