@@ -99,10 +99,14 @@ export async function saveChatHistory(historyArray) {
     return response.json();
 }
 
-export async function loadChatHistory() {
+export async function loadChatHistory(coachId = null) {
     const user = getCurrentUser();
     if (!user?.id) throw new Error('No user logged in');
-    const response = await fetch(`${API_BASE_URL}?action=load_chat_history&user_id=${encodeURIComponent(user.id)}`, {
+    let url = `${API_BASE_URL}?action=chat_history&user_id=${encodeURIComponent(user.id)}`;
+    if (coachId) {
+        url += `&coach_id=${encodeURIComponent(coachId)}`;
+    }
+    const response = await fetch(url, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     });
