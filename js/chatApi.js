@@ -1,14 +1,6 @@
 import { authService } from './authService.js';
 import { API_BASE_URL } from './config.js';
 
-function getAuthHeaders() {
-    const state = authService.getAuthState();
-    return {
-        'Authorization': state?.token ? `Bearer ${state.token}` : '',
-        'Content-Type': 'application/json'
-    };
-}
-
 export async function loadCoaches() {
     const response = await fetch(`${API_BASE_URL}?action=list_coaches`, {
         method: 'GET',
@@ -20,16 +12,24 @@ export async function loadCoaches() {
 export async function saveChatHistory(historyArray) {
     const user = getCurrentUser();
     if (!user?.id) throw new Error('No user logged in');
+    // Ensure each message has user_id and coachId
+    const normalizedHistory = historyArray.map(msg => ({
+        ...msg,
+        user_id: user.id,
+        coachId: msg.coachId || msg.coach_id // fallback if needed
+    }));
     const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'save_chat_history',
             user_id: user.id,
-            history: historyArray
+            history: normalizedHistory
         })
     });
-    return response.json();
+    const data = await response.json();
+    console.log('saveChatHistory response:', data);
+    return data;
 }
 
 export async function logout() {
@@ -51,6 +51,8 @@ export async function loadChatHistory(coachId = null) {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     });
-    return response.json();
+    const data = await response.json();
+    console.log('loadChatHistory response:', data);
+    return data;
 }
 
