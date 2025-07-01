@@ -90,8 +90,8 @@ async function renderCoachesInModal(gameKey) {
         }
         let filtered = Array.isArray(coaches)
             ? coaches.filter(coach =>
-                !genre ||
-                (coach.role && (coach.role.toLowerCase() === genre.toLowerCase() || coach.role.toLowerCase() === 'all'))
+        !genre ||
+        (coach.role && (coach.role.toLowerCase() === genre.toLowerCase() || coach.role.toLowerCase() === 'gaming'))
               )
             : [];
         filtered = sortCoachesByRole(filtered);
