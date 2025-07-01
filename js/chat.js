@@ -337,12 +337,12 @@ async function handleTextMessage(message, coachId, originalStatus) {
                 </div>
             `;
         } else if (!isUser && !isImage && !isAudio) {
-            // Filter out markdown-like symbols (#, **) from AI (non-user) messages
+            // Remove markdown headers and bold, but preserve newlines as <br>
             let filtered = (content || '')
                 .replace(/#+\s*/g, '') // Remove markdown headers
-                .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers (greedy, multi-line)
+                .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
                 .replace(/\*/g, '') // Remove stray asterisks
-                // .replace(/\n/g, '<br>'); // Convert newlines to <br>
+                .replace(/\n/g, '<br>'); // Convert newlines to <br>
             messageContent = `<div class="ai-markdown">${filtered}</div>`;
         }
 
