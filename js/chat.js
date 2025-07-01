@@ -27,11 +27,24 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadCoachesList() {
         try {
             let coaches, history;
+            // Check for coach param in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const coachIdParam = urlParams.get('coach');
+
             try {
-                [coaches, history] = await Promise.all([
-                    loadCoaches(),
-                    loadChatHistory()
-                ]);
+                if (coachIdParam) {
+                    // If a specific coach is selected, only load chat history for that coach
+                    [coaches, history] = await Promise.all([
+                        loadCoaches(),
+                        loadChatHistory(coachIdParam)
+                    ]);
+                } else {
+                    // Otherwise, load all chat history
+                    [coaches, history] = await Promise.all([
+                        loadCoaches(),
+                        loadChatHistory()
+                    ]);
+                }
             } catch (historyError) {
                 // If error is "No user logged in", show toast and proceed with empty history
                 if (historyError && historyError.message && historyError.message.includes('No user logged in')) {
@@ -61,9 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             renderCoaches(coaches);
 
-            // Check for coach param in URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const coachIdParam = urlParams.get('coach');
             if (coachIdParam) {
                 // Hide coach list (already hidden by default)
                 // Auto-select the coach
