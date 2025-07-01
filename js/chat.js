@@ -164,18 +164,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Helper: Render messages for a specific coachId into the chatMessages container
+    // Helper to fix mojibake (bad encoding) in loaded chat history
+function fixMojibake(str) {
+    if (!str || typeof str !== 'string') return str;
+    try {
+        // Decode as if misinterpreted as Latin-1 instead of UTF-8
+        return decodeURIComponent(escape(str));
+    } catch (e) {
+        return str;
+    }
+}
+
+// Helper: Render messages for a specific coachId into the chatMessages container
 function renderMessagesForCoach(coachId) {
     chatMessages.innerHTML = '';
     const coachHistory = chatHistory.get(coachId) || [];
     coachHistory.forEach(msg => {
-        addMessage(
-            msg.content,
-            msg.isUser,
-            msg.isAudio,
-            msg.isImage,
-            msg.timestamp
-        );
+        // Normalize message fields for UI compatibility
+        const isUser = typeof msg.isUser !== 'undefined' ? msg.isUser : !!msg.user;
+        const isAudio = !!msg.isAudio;
+        const isImage = !!msg.isImage;
+        // Fix mojibake in content
+        const content = fixMojibake(msg.content || msg.text || '');
+        const timestamp = msg.timestamp || Date.now();
+        addMessage(content, isUser, isAudio, isImage, timestamp);
     });
 }
 
