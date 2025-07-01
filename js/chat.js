@@ -3,7 +3,6 @@ import { loadChatHistory, saveChatHistory } from './chatApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
 import { API_BASE_URL } from './config.js';
-import '../js/marked.min.js'; // Import the Markdown parser
 
 let chatHistory = new Map(); // Store chat history by coach ID
 let activeCoachId = null; // Track current active coach
@@ -168,8 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function fixMojibake(str) {
     if (!str || typeof str !== 'string') return str;
     try {
-        // Decode as if misinterpreted as Latin-1 instead of UTF-8
-        return decodeURIComponent(escape(str));
+        // Decode as if misinterpreted as Latin-1 instead of UTF-8 (modern, no deprecated escape)
+        return decodeURIComponent(encodeURIComponent(str));
     } catch (e) {
         return str;
     }
@@ -332,8 +331,8 @@ async function handleTextMessage(message, coachId, originalStatus) {
                 </div>
             `;
         } else if (!isUser && !isImage && !isAudio) {
-            // Render AI (non-user) messages as Markdown
-            messageContent = `<div class="ai-markdown">${marked.parse(content)}</div>`;
+            // Render AI (non-user) messages as plain text with line breaks
+            messageContent = `<div class="ai-markdown">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
         }
 
         message.innerHTML = `
@@ -371,6 +370,17 @@ async function handleTextMessage(message, coachId, originalStatus) {
             ).flat());
         }
     }
+
+    // Helper to escape HTML for safe rendering
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
     function getResponseDelay(status) {
         switch (status) {
