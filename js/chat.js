@@ -337,8 +337,12 @@ async function handleTextMessage(message, coachId, originalStatus) {
                 </div>
             `;
         } else if (!isUser && !isImage && !isAudio) {
-            // Render AI (non-user) messages as plain text with line breaks (no HTML escaping)
-            messageContent = `<div class="ai-markdown">${(content || '').replace(/\n/g, '<br>')}</div>`;
+            // Filter out markdown-like symbols (#, **) from AI (non-user) messages
+            let filtered = (content || '')
+                .replace(/#+\s*/g, '') // Remove markdown headers
+                .replace(/\*\*/g, '') // Remove bold markers
+                // .replace(/\n/g, '<br>'); // Convert newlines to <br>
+            messageContent = `<div class="ai-markdown">${filtered}</div>`;
         }
 
         message.innerHTML = `
