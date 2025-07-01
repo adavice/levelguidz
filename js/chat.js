@@ -197,9 +197,9 @@ function renderMessagesForCoach(coachId) {
         const isUser = typeof msg.isUser !== 'undefined' ? msg.isUser : !!msg.user;
         const isAudio = !!msg.isAudio;
         const isImage = !!msg.isImage;
-        // Fix mojibake in content
         const content = fixMojibake(msg.content || msg.text || '');
-        const timestamp = msg.timestamp || Date.now();
+        // Only use timestamp if present, otherwise blank
+        const timestamp = (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null) ? msg.timestamp : '';
         addMessage(content, isUser, isAudio, isImage, timestamp);
     });
 }
@@ -309,7 +309,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
     function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now()) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
-        message.dataset.timestamp = timestamp; // Store timestamp as data attribute
+        message.dataset.timestamp = timestamp;
         
         // Add delete button for user messages
         const deleteButton = isUser ? `
@@ -355,7 +355,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
                     ${deleteButton}
                 </div>
                 <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    ${timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                 </div>
             </div>
         `;
