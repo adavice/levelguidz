@@ -32,18 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const coachIdParam = urlParams.get('coach');
 
             try {
+                coaches = await loadCoaches();
                 if (coachIdParam) {
-                    // If a specific coach is selected, only load chat history for that coach
-                    [coaches, history] = await Promise.all([
-                        loadCoaches(),
-                        loadChatHistory(coachIdParam)
-                    ]);
+                    // Only load chat history for the selected coach
+                    history = await loadChatHistory(coachIdParam);
                 } else {
-                    // Otherwise, load all chat history
-                    [coaches, history] = await Promise.all([
-                        loadCoaches(),
-                        loadChatHistory()
-                    ]);
+                    // Load all chat history
+                    history = await loadChatHistory();
                 }
             } catch (historyError) {
                 // If error is "No user logged in", show toast and proceed with empty history
@@ -63,13 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Initialize chat history
             chatHistory = new Map();
             if (Array.isArray(history)) {
-                // Group messages by coachId into arrays
-                history.forEach(item => {
-                    if (!chatHistory.has(item.coachId)) {
-                        chatHistory.set(item.coachId, []);
-                    }
-                    chatHistory.get(item.coachId).push(item);
-                });
+                if (coachIdParam) {
+                    // Only one coach's history, so use coachIdParam
+                    chatHistory.set(coachIdParam, history);
+                } else {
+                    // Group messages by coachId into arrays
+                    history.forEach(item => {
+                        if (!chatHistory.has(item.coachId)) {
+                            chatHistory.set(item.coachId, []);
+                        }
+                        chatHistory.get(item.coachId).push(item);
+                    });
+                }
             }
 
             renderCoaches(coaches);
@@ -340,9 +340,9 @@ async function handleTextMessage(message, coachId, originalStatus) {
             // Remove markdown headers and bold, but preserve newlines as <br>
             let filtered = (content || '')
                 .replace(/#+\s*/g, '') // Remove markdown headers
-                .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers
+                .replace(/\*\*(.*?)\*\*/gs, '$1') // Remove bold markers (multiline)
                 .replace(/\*/g, '') // Remove stray asterisks
-                .replace(/\n/g, '<br>'); // Convert newlines to <br>
+                .split(/\r?\n/).map(line => line.trim()).join('<br>'); // Convert newlines to <br> and trim lines
             messageContent = `<div class="ai-markdown">${filtered}</div>`;
         }
 
