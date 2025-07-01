@@ -327,8 +327,8 @@ async function handleTextMessage(message, coachId, originalStatus) {
                 </div>
             `;
         } else if (!isUser && !isImage && !isAudio) {
-            // Render AI (non-user) messages as plain text with line breaks
-            messageContent = `<div class="ai-markdown">${escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
+            // Render AI (non-user) messages as plain text with line breaks (no HTML escaping)
+            messageContent = `<div class="ai-markdown">${(content || '').replace(/\n/g, '<br>')}</div>`;
         }
 
         message.innerHTML = `
@@ -365,16 +365,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         }
     }
 
-    // Helper to escape HTML for safe rendering
-function escapeHtml(text) {
-    if (!text) return '';
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
+
 
     function getResponseDelay(status) {
         switch (status) {
