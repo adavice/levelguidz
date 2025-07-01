@@ -340,7 +340,8 @@ async function handleTextMessage(message, coachId, originalStatus) {
             // Filter out markdown-like symbols (#, **) from AI (non-user) messages
             let filtered = (content || '')
                 .replace(/#+\s*/g, '') // Remove markdown headers
-                .replace(/\*\*/g, '') // Remove bold markers
+                .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers (greedy, multi-line)
+                .replace(/\*/g, '') // Remove stray asterisks
                 // .replace(/\n/g, '<br>'); // Convert newlines to <br>
             messageContent = `<div class="ai-markdown">${filtered}</div>`;
         }
