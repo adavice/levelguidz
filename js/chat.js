@@ -198,8 +198,11 @@ function renderMessagesForCoach(coachId) {
         const isAudio = !!msg.isAudio;
         const isImage = !!msg.isImage;
         const content = fixMojibake(msg.content || msg.text || '');
-        // Only use timestamp if present, otherwise blank
-        const timestamp = (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null) ? msg.timestamp : '';
+        // Only use timestamp if present and is a valid number
+        let timestamp = '';
+        if (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null && !isNaN(Number(msg.timestamp)) && Number(msg.timestamp) > 0) {
+            timestamp = msg.timestamp;
+        }
         addMessage(content, isUser, isAudio, isImage, timestamp);
     });
 }
@@ -355,7 +358,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
                     ${deleteButton}
                 </div>
                 <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                    ${(timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) ? new Date(Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                 </div>
             </div>
         `;
