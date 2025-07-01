@@ -74,7 +74,7 @@
               <a class="nav-link active" href="./news.html">News</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./chat.html">Coaching</a>
+              <a class="nav-link" href="#" id="coachingNavLink">Coaching</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Guides</a>
@@ -93,8 +93,13 @@
                 <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
                   <span id="usernamePlaceholder"></span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                <ul class="dropdown-menu dropdown-menu-dark" style="min-width: fit-content;">
+                  <li>
+                    <a class="dropdown-item d-flex align-items-center gap-2 text-danger fw-semibold p-0 px-3 rounded-2" href="./index.html#login" id="logoutBtn" style="font-size: 1rem;">
+                      <i class="bi bi-box-arrow-right" style="font-size:1.1em;"></i>
+                      <span>Logout</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -236,61 +241,79 @@
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/chat.js"></script>
     <script type="module">
-        import { initAuthGuard } from './js/authGuard.js';
-        import { convertVoiceToBase64, convertImageToBase64 } from './js/mediaUtils.js';
+      import { initCoachSelectorModal, showCoachSelectorModal } from './js/coachSelector.js';
+      import { initAuthGuard } from './js/authGuard.js';
+      import { convertVoiceToBase64, convertImageToBase64 } from './js/mediaUtils.js';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Enable auth guard to protect chat page
-            // initAuthGuard();
+      document.addEventListener('DOMContentLoaded', () => {
+        // Enable auth guard to protect chat page
+        // initAuthGuard();
 
-            // Handle voice recording
-            const voiceBtn = document.getElementById('voiceBtn');
-            let mediaRecorder;
-            let audioChunks = [];
+        // Coach selector modal setup
+        initCoachSelectorModal();
+        // Only show coach selector modal if user navigates to /chat.html without a coach param and it's not a page reload
+        const urlParams = new URLSearchParams(window.location.search);
+        if (!urlParams.has('coach') && window.performance && window.performance.navigation && window.performance.navigation.type !== 1) {
+          showCoachSelectorModal();
+        }
 
-            voiceBtn.addEventListener('click', async () => {
-                try {
-                    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                        mediaRecorder = new MediaRecorder(stream);
-                        audioChunks = [];
+        // Add: Make Coaching navbar link trigger coach selector modal (like news.html)
+        const coachingLink = document.getElementById('coachingNavLink');
+        if (coachingLink) {
+          coachingLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showCoachSelectorModal();
+          });
+        }
 
-                        mediaRecorder.ondataavailable = (event) => {
-                            audioChunks.push(event.data);
-                        };
+        // Handle voice recording
+        const voiceBtn = document.getElementById('voiceBtn');
+        let mediaRecorder;
+        let audioChunks = [];
 
-                        mediaRecorder.onstop = async () => {
-                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                            const base64Audio = await convertVoiceToBase64(audioBlob);
-                            // TODO: Send base64Audio to your chat processing function
-                            stream.getTracks().forEach(track => track.stop());
-                        };
+        voiceBtn.addEventListener('click', async () => {
+          try {
+            if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+              mediaRecorder = new MediaRecorder(stream);
+              audioChunks = [];
 
-                        mediaRecorder.start();
-                        voiceBtn.classList.add('btn-danger');
-                    } else {
-                        mediaRecorder.stop();
-                        voiceBtn.classList.remove('btn-danger');
-                    }
-                } catch (error) {
-                    console.error('Error handling voice recording:', error);
-                }
-            });
+              mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+              };
 
-            // Handle image upload
-            const imageUpload = document.getElementById('imageUpload');
-            imageUpload.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    try {
-                        const base64Image = await convertImageToBase64(file);
-                        // TODO: Send base64Image to your chat processing function
-                    } catch (error) {
-                        console.error('Error handling image upload:', error);
-                    }
-                }
-            });
+              mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const base64Audio = await convertVoiceToBase64(audioBlob);
+                // TODO: Send base64Audio to your chat processing function
+                stream.getTracks().forEach(track => track.stop());
+              };
+
+              mediaRecorder.start();
+              voiceBtn.classList.add('btn-danger');
+            } else {
+              mediaRecorder.stop();
+              voiceBtn.classList.remove('btn-danger');
+            }
+          } catch (error) {
+            console.error('Error handling voice recording:', error);
+          }
         });
+
+        // Handle image upload
+        const imageUpload = document.getElementById('imageUpload');
+        imageUpload.addEventListener('change', async (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            try {
+              const base64Image = await convertImageToBase64(file);
+              // TODO: Send base64Image to your chat processing function
+            } catch (error) {
+              console.error('Error handling image upload:', error);
+            }
+          }
+        });
+      });
     </script>
   </body>
 </html>
