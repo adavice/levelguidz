@@ -1,5 +1,5 @@
 import { loadCoaches } from './clientApi.js';
-import { loadChatHistory, saveChatHistory } from './chatApi.js';
+import { loadChatHistory } from './chatApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
 import { DEFAULT_AVATAR } from './constants.js';
 import { API_BASE_URL } from './config.js';
@@ -13,7 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.querySelector('textarea');
     const sendButton = document.querySelector('.chat-input button');
     const chatInput = document.querySelector('.chat-input');
-    
+
+    // Hide coach list panel initially
+    const coachListPanel = document.querySelector('.coach-list-panel') || document.querySelector('.col-lg-3');
+    if (coachListPanel) coachListPanel.style.display = 'none';
+
     // Add preview container after chat input initialization
     chatInput.insertAdjacentHTML('afterbegin', `
         <div class="media-preview-container d-flex flex-wrap gap-2 my-2"></div>
@@ -61,9 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const coachIdParam = urlParams.get('coach');
             if (coachIdParam) {
-                // Hide coach list
-                const coachListPanel = document.querySelector('.col-lg-3');
-                if (coachListPanel) coachListPanel.style.display = 'none';
+                // Hide coach list (already hidden by default)
                 // Auto-select the coach
                 const coachCard = document.querySelector(`.coach-item[data-id="${coachIdParam}"]`);
                 if (coachCard) {
@@ -74,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (firstCoach) firstCoach.click();
                 }
             } else {
+                // Show coach list panel if no coach param
+                if (coachListPanel) coachListPanel.style.display = '';
                 // Optionally, auto-select the first coach and restore its chat
                 const firstCoach = document.querySelector('.coach-item');
                 if (firstCoach) firstCoach.click();
@@ -201,9 +205,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         isUser: true,
         timestamp: Date.now()
     });
-    saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-        msgs.map(m => ({ ...m, coachId: cid }))
-    ).flat());
+    // No need to save chat history, server handles it
 
     // Only render if user is still on this coach
     if (activeCoachId === targetCoachId) {
@@ -227,9 +229,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
             isUser: false,
             timestamp: Date.now()
         });
-        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-            msgs.map(m => ({ ...m, coachId: cid }))
-        ).flat());
+        // No need to save chat history, server handles it
 
         // Only render if user is still on this coach
         if (activeCoachId === targetCoachId) {
@@ -250,9 +250,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
             isUser: false,
             timestamp: Date.now()
         });
-        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-            msgs.map(m => ({ ...m, coachId: cid }))
-        ).flat());
+        // No need to save chat history, server handles it
 
         if (activeCoachId === targetCoachId) {
             addMessage(`
@@ -277,9 +275,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
             }));
             chatHistory.set(activeCoachId, messages);
             // Save chat history after switching
-            saveChatHistory(Array.from(chatHistory.entries()).map(([coachId, msgs]) =>
-                msgs.map(m => ({ ...m, coachId }))
-            ).flat());
+            // No need to save chat history, server handles it
         }
         
         document.querySelectorAll('.coach-item').forEach(item => item.classList.remove('active'));
@@ -365,9 +361,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
                 timestamp: parseInt(msg.dataset.timestamp)
             }));
             chatHistory.set(activeCoachId, messages);
-            saveChatHistory(Array.from(chatHistory.entries()).map(([coachId, msgs]) =>
-                msgs.map(m => ({ ...m, coachId }))
-            ).flat());
+            // No need to save chat history, server handles it
         }
     }
 
@@ -489,9 +483,7 @@ function escapeHtml(text) {
             isUser: true,
             timestamp: Date.now()
         });
-        saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-            msgs.map(m => ({ ...m, coachId: cid }))
-        ).flat());
+        // No need to save chat history, server handles it
 
         // Only render if user is still on this coach
         if (activeCoachId === targetCoachId) {
@@ -515,9 +507,7 @@ function escapeHtml(text) {
                 isUser: false,
                 timestamp: Date.now()
             });
-            saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-                msgs.map(m => ({ ...m, coachId: cid }))
-            ).flat());
+            // No need to save chat history, server handles it
 
             // Only render if user is still on this coach
             if (activeCoachId === targetCoachId) {
@@ -538,9 +528,7 @@ function escapeHtml(text) {
                 isUser: false,
                 timestamp: Date.now()
             });
-            saveChatHistory(Array.from(chatHistory.entries()).map(([cid, msgs]) =>
-                msgs.map(m => ({ ...m, coachId: cid }))
-            ).flat());
+            // No need to save chat history, server handles it
 
             if (activeCoachId === targetCoachId) {
                 addMessage(`

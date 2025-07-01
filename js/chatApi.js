@@ -9,29 +9,6 @@ export async function loadCoaches() {
     return response.json();
 }
 
-export async function saveChatHistory(historyArray) {
-    const user = getCurrentUser();
-    if (!user?.id) throw new Error('No user logged in');
-    // Ensure each message has user_id and coachId
-    const normalizedHistory = historyArray.map(msg => ({
-        ...msg,
-        user_id: user.id,
-        coachId: msg.coachId || msg.coach_id // fallback if needed
-    }));
-    const response = await fetch(`${API_BASE_URL}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'save_chat_history',
-            user_id: user.id,
-            history: normalizedHistory
-        })
-    });
-    const data = await response.json();
-    console.log('saveChatHistory response:', data);
-    return data;
-}
-
 export async function logout() {
     authService.logout();
 }
