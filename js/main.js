@@ -1,32 +1,19 @@
-import { initCoachSelectorModal, showCoachSelectorModal } from './coachSelector.js';
+import { getCurrentUser } from './clientApi.js';
+import { authService } from './authService.js';
 
 export function updateAuthUI() {
-  // Use getCurrentUser from clientApi.js for consistency
-  // Import dynamically to avoid circular dependencies if needed
-  let user;
-  try {
-    // Try to import getCurrentUser if available
-    // This works if clientApi.js exports getCurrentUser
-    user = require('./clientApi.js').getCurrentUser();
-  } catch (e) {
-    // Fallback: try localStorage directly
-    try {
-      user = JSON.parse(localStorage.getItem('user')) || null;
-    } catch (e2) {
-      user = null;
-    }
-  }
+  const user = getCurrentUser();
   const loginBtn = document.getElementById('loginButton');
   const userDropdown = document.getElementById('userDropdown');
   const usernamePlaceholder = document.getElementById('usernamePlaceholder');
   let adminLink = document.getElementById('adminNavLink');
-  if (user && user.username) {
+  if (authService.isLoggedIn()) {
     if (loginBtn) loginBtn.classList.add('d-none');
     if (userDropdown && usernamePlaceholder) {
       userDropdown.classList.remove('d-none');
       usernamePlaceholder.textContent = user.username;
     }
-    if (user.isAdmin) {
+    if (authService.isAdmin()) {
       if (!adminLink) {
         const nav = document.querySelector('.navbar-nav');
         if (nav) {
@@ -48,44 +35,116 @@ export function updateAuthUI() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Coach selector modal setup
-  initCoachSelectorModal();
-  const coachingLink = document.getElementById('coachingNavLink');
-  if (coachingLink) {
-    coachingLink.addEventListener('click', e => {
-      e.preventDefault();
-      showCoachSelectorModal();
-    });
-  }
-  const chooseCoachBtn = document.getElementById('chooseCoachBtn');
-  if (chooseCoachBtn) {
-    chooseCoachBtn.addEventListener('click', e => {
-      e.preventDefault();
-      showCoachSelectorModal();
-    });
-  }
-
-  // Auth UI state (safe for all pages)
-  updateAuthUI();
-
-  // Listen for logout (safe for all pages)
+export function setupAuthUIEvents() {
+  // Listen for logout
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function(e) {
       e.preventDefault();
       localStorage.removeItem('user');
-      localStorage.removeItem('authState');
-      window.location.replace('./index.html'); // Use replace to force reload and prevent back navigation
+      updateAuthUI();
+      window.location.href = './index.html';
     });
   }
-
   // Listen for login/signup success (optional: use a custom event or poll localStorage)
   window.addEventListener('storage', function(e) {
     if (e.key === 'user') updateAuthUI();
   });
-
-  // Expose updateAuthUI globally for use on all pages
+  // Optionally, expose updateAuthUI globally for other scripts
   window.updateAuthUI = updateAuthUI;
+}
+
+export function saveUserToLocalStorage(user) {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  } else {
+    localStorage.removeItem('user');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateAuthUI();
+  setupAuthUIEvents();
+  const navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  // Login form handler with console log for localStorage
+  const loginForm = document.querySelector('.auth-form.front form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const phone = form.querySelector('input[type="phone"]').value;
+      const password = form.querySelector('input[type="password"]').value;
+      try {
+        // Use login from clientApi.js
+        const { login } = await import('./clientApi.js');
+        const response = await login(phone, password);
+        if (response.status === 'ok') {
+          form.reset();
+          updateAuthUI();
+          // Log localStorage user after login
+          console.log('User in localStorage after login:', localStorage.getItem('user'));
+        } else if (response.error) {
+          alert(response.error);
+        } else {
+          alert('Login failed');
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  }
+
+  // Login form handler for both index.html and signin.html
+  function setupLoginFormHandler() {
+    // Try to find a login form on the page (works for both index and signin)
+    const loginForm = document.querySelector('.auth-form.front form');
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        // Try both selectors for phone/email (signin.html may use email, index.html uses phone)
+        const phoneInput = form.querySelector('input[type="phone"], input[type="tel"]');
+        const emailInput = form.querySelector('input[type="email"]');
+        const passwordInput = form.querySelector('input[type="password"]');
+        const phone = phoneInput ? phoneInput.value : '';
+        const email = emailInput ? emailInput.value : '';
+        const password = passwordInput ? passwordInput.value : '';
+        // Prefer phone, fallback to email
+        const identifier = phone || email;
+        try {
+          // Use login from clientApi.js
+          const { login } = await import('./clientApi.js');
+          // Pass identifier (phone or email) and password
+          const response = await login(identifier, password);
+          if (response.status === 'ok') {
+            form.reset();
+            updateAuthUI();
+            // Log localStorage user after login
+            console.log('User in localStorage after login:', localStorage.getItem('user'));
+            // If on signin.html, redirect to chat.html after login
+            if (window.location.pathname.endsWith('signin.html')) {
+              setTimeout(() => window.location.href = './chat.html', 500);
+            }
+          } else if (response.error) {
+            alert(response.error);
+          } else {
+            alert('Login failed');
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+    }
+  }
+
+  setupLoginFormHandler();
 });
 
