@@ -3,8 +3,23 @@ import { login, signup, forgotPassword } from './authApi.js';
 import { authService } from './authService.js';
 
 function showToast(message, success = false) {
-  // You may want to implement a toast system or use Bootstrap's Toast here
-  alert(message); // Placeholder
+  // Use Bootstrap Toast if available, fallback to alert
+  const toastEl = document.getElementById('authToast');
+  const toastMsg = document.getElementById('toastMessage');
+  if (toastEl && toastMsg) {
+    toastMsg.textContent = message;
+    if (success) {
+      toastEl.classList.remove('bg-danger');
+      toastEl.classList.add('bg-success');
+    } else {
+      toastEl.classList.remove('bg-success');
+      toastEl.classList.add('bg-danger');
+    }
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+    toast.show();
+  } else {
+    alert(message);
+  }
 }
 
 function updateAuthUI() {
