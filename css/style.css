@@ -1582,6 +1582,7 @@ input::placeholder, textarea::placeholder {
 #gameCoachModal .coach-card {
     cursor: pointer;
     transition: transform 0.2s;
+    text-align: center;
 }
 
 #gameCoachModal .coach-card:hover {
