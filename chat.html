@@ -240,14 +240,9 @@
         import { convertVoiceToBase64, convertImageToBase64 } from './js/mediaUtils.js';
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Enable auth guard to protect chat page
-            // initAuthGuard();
-
-            // Handle voice recording
             const voiceBtn = document.getElementById('voiceBtn');
             let mediaRecorder;
             let audioChunks = [];
-
             voiceBtn.addEventListener('click', async () => {
                 try {
                     if (!mediaRecorder || mediaRecorder.state === 'inactive') {

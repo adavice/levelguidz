@@ -1,3 +1,23 @@
+// Attach modal triggers for nav and hero button
+export function setupCoachSelectorTriggers() {
+    initCoachSelectorModal();
+    // Nav link
+    const coachingLink = document.getElementById('coachingNavLink');
+    if (coachingLink) {
+        coachingLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showCoachSelectorModal();
+        });
+    }
+    // Hero CTA button
+    const chooseCoachBtn = document.getElementById('chooseCoachBtn');
+    if (chooseCoachBtn) {
+        chooseCoachBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showCoachSelectorModal();
+        });
+    }
+}
 // coachSelector.js
 // Renders and manages the game/coach selection modal for reuse on any page
 // Usage: import { showCoachSelectorModal, initCoachSelectorModal } from './coachSelector.js';
@@ -47,7 +67,7 @@ async function renderCoachesInModal(gameKey) {
         coachesList.innerHTML = `
             <div class="text-center py-4 w-100">
                 <div class="mb-3 text-muted">Please log in to view the list of available coaches.</div>
-                <a id="loginModalBtn" href="#login" class="btn btn-primary">Go to Login</a>
+                <a id="loginModalBtn" href="index.html#login" class="btn btn-primary">Go to Login</a>
             </div>
         `;
         setTimeout(() => {
@@ -55,26 +75,21 @@ async function renderCoachesInModal(gameKey) {
             if (loginBtn) {
                 loginBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const modal = document.querySelector('#gameCoachModal .modal-content');
-                    if (modal) {
-                        modal.style.transition = 'opacity 0.5s';
-                        modal.style.opacity = '0';
-                    }
-                    setTimeout(() => {
+                    const isIndex = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
+                    if (isIndex) {
+                        // Just close the modal and scroll to login section
                         const modalInstance = bootstrap.Modal.getInstance(document.getElementById('gameCoachModal'));
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
+                        if (modalInstance) modalInstance.hide();
                         setTimeout(() => {
                             const loginEl = document.getElementById('login');
                             if (loginEl) {
                                 loginEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }
-                            if (modal) {
-                                modal.style.opacity = '1';
-                            }
                         }, 400);
-                    }, 500);
+                    } else {
+                        // Redirect to index.html#login
+                        window.location.href = 'index.html#login';
+                    }
                 });
             }
         }, 0);

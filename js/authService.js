@@ -14,22 +14,19 @@ class AuthService {
     }
 
     login(userData) {
-        // userData is the user object from backend (no token, no isAdmin)
         this.saveAuthState({
             isLoggedIn: true,
             isAdmin: !!userData.isAdmin,
-            token: null,    // no token from backend
+            token: null,
             user: userData
         });
-        // Also save to 'user' for UI logic
-        localStorage.setItem('user', JSON.stringify(userData));
+        // No longer set 'user' key; use only 'authState' for all logic
     }
 
     logout() {
         localStorage.removeItem('authState');
-        localStorage.removeItem('user');
         this.authState = null;
-        window.location.href = '/index.html';
+        // Do not redirect here; let the caller handle navigation after storage is cleared
     }
 
     getAuthState() {
