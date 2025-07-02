@@ -120,12 +120,12 @@
                                 <form>
                                     <div class="mb-3">
                                         <label class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control loginPhone" placeholder="Enter your phone number">
+                                        <input type="tel" class="form-control" placeholder="Enter your phone number">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
                                         <div class="password-field">
-                                            <input type="password" class="form-control loginPass" placeholder="Enter your password">
+                                            <input type="password" class="form-control" placeholder="Enter your password">
                                             <button type="button" class="password-toggle">
                                                 <i class="bi bi-eye"></i>
                                             </button>
@@ -150,24 +150,24 @@
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <label class="form-label">Username</label>
-                                            <input type="text" class="form-control signupUser" placeholder="Choose a username">
+                                            <input type="text" class="form-control" placeholder="Choose a username">
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control signupPhone" placeholder="Enter your phone number">
+                                            <input type="tel" class="form-control" placeholder="Enter your phone number">
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-6">
                                             <label class="form-label">Password</label>
                                             <div class="password-field">
-                                                <input type="password" class="form-control signupPass" placeholder="Create password">
+                                                <input type="password" class="form-control signup-password" placeholder="Create password">
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label">Confirm Password</label>
                                             <div class="password-field">
-                                                <input type="password" class="form-control signupPassConfirm" placeholder="Confirm password">
+                                                <input type="password" class="form-control signup-password" placeholder="Confirm password">
                                                 <button type="button" class="password-toggle">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
@@ -279,12 +279,9 @@
                     e.preventDefault();
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    // Use dedicated classes for login form fields
-                    let passwordInput = form.querySelector('.loginPass');
-                    let password = passwordInput ? passwordInput.value : '';
-                    let phoneInput = form.querySelector('.loginPhone');
-                    let email = phoneInput ? phoneInput.value : '';
-                    const remember = form.querySelector('#remember') ? form.querySelector('#remember').checked : false;
+                    const email = form.querySelector('input[type="email"]').value;
+                    const password = form.querySelector('input[type="password"]').value;
+                    const remember = form.querySelector('#remember').checked;
 
                     // Disable button and show loading state
                     submitBtn.disabled = true;
@@ -321,13 +318,10 @@
                     e.preventDefault();
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    // Use dedicated classes for signup form fields
-                    const username = form.querySelector('.signupUser') ? form.querySelector('.signupUser').value : '';
-                    const email = form.querySelector('.signupPhone') ? form.querySelector('.signupPhone').value : '';
-                    let passwordInput = form.querySelector('.signupPass');
-                    let confirmPasswordInput = form.querySelector('.signupPassConfirm');
-                    let password = passwordInput ? passwordInput.value : '';
-                    let confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : '';
+                    const username = form.querySelector('input[type="text"]').value;
+                    const email = form.querySelector('input[type="email"]').value;
+                    const password = form.querySelectorAll('.signup-password')[0].value;
+                    const confirmPassword = form.querySelectorAll('.signup-password')[1].value;
 
                     if (password !== confirmPassword) {
                         showToast('Passwords do not match');
@@ -403,23 +397,14 @@
 
             // UI interaction handlers
             const setupUIHandlers = () => {
-                // Password toggle functionality (hover only)
+                // Password toggle functionality
                 document.querySelectorAll('.password-toggle').forEach(toggle => {
-                    let input = toggle.parentElement.querySelector('input');
-                    let icon = toggle.querySelector('i');
-                    toggle.addEventListener('mouseenter', function(e) {
-                        if (input.type === 'password') {
-                            input.type = 'text';
-                            icon.classList.remove('bi-eye');
-                            icon.classList.add('bi-eye-slash');
-                        }
-                    });
-                    toggle.addEventListener('mouseleave', function(e) {
-                        if (input.type === 'text') {
-                            input.type = 'password';
-                            icon.classList.remove('bi-eye-slash');
-                            icon.classList.add('bi-eye');
-                        }
+                    toggle.addEventListener('click', function() {
+                        const input = this.parentElement.querySelector('input');
+                        const icon = this.querySelector('i');
+                        input.type = input.type === 'password' ? 'text' : 'password';
+                        icon.classList.toggle('bi-eye');
+                        icon.classList.toggle('bi-eye-slash');
                     });
                 });
 
