@@ -341,7 +341,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
                                         <div class="password-field">
-                                            <input type="password" class="form-control" placeholder="Enter your password">
+                                        <input type="password" class="form-control password" placeholder="Enter your password">
                                             <button type="button" class="password-toggle" aria-label="Toggle password visibility">
                                                 <i class="bi bi-eye"></i>
                                             </button>
@@ -378,14 +378,17 @@
                                     <div class="row mb-4">
                                         <div class="col-6">
                                             <label class="form-label">Password</label>
-                                            <div class="password-field">
-                                                <input type="password" class="form-control signup-password" placeholder="Create password">
-                                            </div>
+                                        <div class="password-field">
+                                            <input type="password" class="form-control signup-password password" placeholder="Create password">
+                                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label">Confirm Password</label>
                                             <div class="password-field">
-                                                <input type="password" class="form-control signup-password" placeholder="Confirm password">
+                                                <input type="password" class="form-control signup-password password" placeholder="Confirm password">
                                                 <button type="button" class="password-toggle" id="signup-password-toggle">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
@@ -599,7 +602,7 @@
           e.preventDefault();
           const form = e.target;
           const phone = form.querySelector('input[type="phone"]').value;
-          const password = form.querySelector('input[type="password"]').value;
+          const password = form.querySelector('input.password').value;
           try {
             const response = await login(phone, password);
             if (response.status === 'ok') {
@@ -623,8 +626,8 @@
           const form = e.target;
           const username = form.querySelector('input[type="text"]').value;
           const phone = form.querySelector('input[type="phone"]').value;
-          const password = form.querySelectorAll('.signup-password')[0].value;
-          const confirmPassword = form.querySelectorAll('.signup-password')[1].value;
+          const password = form.querySelectorAll('.signup-password.password')[0].value;
+          const confirmPassword = form.querySelectorAll('.signup-password.password')[1].value;
           if (password !== confirmPassword) {
             showToast('Passwords do not match');
             return;
@@ -675,10 +678,11 @@
           });
         });
 
-        document.querySelectorAll('.password-toggle:not(#signup-password-toggle)').forEach(toggle => {
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
           toggle.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('input');
+            const input = this.parentElement.querySelector('input.password');
             const icon = this.querySelector('i');
+            if (!input) return;
             input.type = input.type === 'password' ? 'text' : 'password';
             icon.classList.toggle('bi-eye');
             icon.classList.toggle('bi-eye-slash');
