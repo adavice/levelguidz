@@ -358,7 +358,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
                     ${deleteButton}
                 </div>
                 <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${(timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) ? new Date(Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                    ${(timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) ? new Date(Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                 </div>
             </div>
         `;
