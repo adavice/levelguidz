@@ -25,11 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
     `);
     
     function filterCoachText(text) {
+        console.log('filterCoachText');
     return (text || '')
         .replace(/#+\s*/g, '')
         .replace(/\*\*(.*?)\*\*/gs, '$1')
         .replace(/\*/g, '')
-        // .split(/\r?\n/).map(line => line.trim()).join('<br>');
+        .split(/\r?\n/).map(line => line.trim()).join('<br>');
     }
 
     async function loadCoachesList() {
