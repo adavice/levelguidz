@@ -296,10 +296,28 @@ async function handleTextMessage(message, coachId, originalStatus) {
             const messages = Array.from(chatMessages.children).map(msg => {
                 const contentElem = msg.querySelector('.message-content');
                 let content = '';
-                if (contentElem && contentElem.children && contentElem.children[0]) {
-                    content = contentElem.children[0].innerHTML;
+                // Detect if this is an image/AI message (array/object) by checking for .ai-markdown or .bi-image
+                if (contentElem && contentElem.querySelector('.bi-image')) {
+                    // Image/AI message: store as array/object
+                    const flexGrow = contentElem.querySelector('.flex-grow-1');
+                    if (flexGrow) {
+                        // Try to parse as JSON if possible, otherwise fallback to HTML
+                        try {
+                            content = JSON.parse(flexGrow.textContent);
+                        } catch {
+                            content = flexGrow.innerHTML;
+                        }
+                    } else {
+                        content = contentElem.innerHTML;
+                    }
+                } else if (contentElem && contentElem.querySelector('audio')) {
+                    // Voice message: store audio src
+                    const audio = contentElem.querySelector('audio');
+                    content = audio ? audio.src : '';
                 } else if (contentElem) {
-                    content = contentElem.textContent || '';
+                    // Text message: store plain text
+                    const flexGrow = contentElem.querySelector('.flex-grow-1');
+                    content = flexGrow ? flexGrow.textContent : contentElem.textContent || '';
                 }
                 return {
                     content,
@@ -345,35 +363,32 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
         let messageContent = '';
         // Handle array content (for images, etc.)
         if (Array.isArray(content)) {
-            messageContent = content.map(part => {
-                if (part.type === 'text') {
-                    // Remove markdown headers and bold, but preserve newlines as <br>
-                    let filtered = (part.text || '')
-                        .replace(/#+\s*/g, '')
-                        .replace(/\*\*(.*?)\*\*/gs, '$1')
-                        .replace(/\*/g, '')
-                        .split(/\r?\n/).map(line => line.trim()).join('<br>');
-                    return `<div class="ai-markdown">${filtered}</div>`;
-                } else if (part.type === 'image_url' && part.image_url && part.image_url.url) {
-                    return `
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <i class="bi bi-image text-primary"></i>
-                            <img src="${part.image_url.url}" class="img-fluid rounded" 
-                                style="max-height: 200px; cursor: pointer" 
-                                onclick="window.open(this.src, '_blank')"
-                                alt="Uploaded image">
-                        </div>
-                    `;
-                } else if (part.type === 'audio_url' && part.audio_url && part.audio_url.url) {
-                    return `
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <i class="bi bi-mic-fill text-primary"></i>
-                            <audio src="${part.audio_url.url}" controls class="audio-message"></audio>
-                        </div>
-                    `;
-                }
-                return '';
-            }).join('');
+            // Separate image and text parts
+            let imagePart = content.find(part => part.type === 'image_url' && part.image_url && part.image_url.url);
+            let textPart = content.find(part => part.type === 'text' && part.text);
+            let imageHtml = '';
+            let textHtml = '';
+            if (imagePart) {
+                imageHtml = `
+                    <div class="image-preview-block mb-2 text-center">
+                        <img src="${imagePart.image_url.url}" class="img-fluid rounded" style="max-height: 200px; cursor: pointer;" onclick="window.open(this.src, '_blank')" alt="Uploaded image">
+                    </div>
+                `;
+            }
+            if (textPart) {
+                let filtered = (textPart.text || '')
+                    .replace(/#+\s*/g, '')
+                    .replace(/\*\*(.*?)\*\*/gs, '$1')
+                    .replace(/\*/g, '')
+                    .split(/\r?\n/).map(line => line.trim()).join('<br>');
+                textHtml = `<div class="ai-markdown text-center">${filtered}</div>`;
+            }
+            messageContent = `
+                <div class="image-message-wrapper">
+                    ${imageHtml}
+                    ${textHtml}
+                </div>
+            `;
         } else if (typeof content === 'string') {
             // Fallback for plain text, markdown, or legacy image/audio
             messageContent = content;
@@ -430,10 +445,27 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
             const messages = Array.from(chatMessages.children).map(msg => {
                 const contentElem = msg.querySelector('.message-content');
                 let content = '';
-                if (contentElem && contentElem.children && contentElem.children[0]) {
-                    content = contentElem.children[0].innerHTML;
+                // Detect if this is an image/AI message (array/object) by checking for .bi-image
+                if (contentElem && contentElem.querySelector('.bi-image')) {
+                    // Image/AI message: store as array/object
+                    const flexGrow = contentElem.querySelector('.flex-grow-1');
+                    if (flexGrow) {
+                        try {
+                            content = JSON.parse(flexGrow.textContent);
+                        } catch {
+                            content = flexGrow.innerHTML;
+                        }
+                    } else {
+                        content = contentElem.innerHTML;
+                    }
+                } else if (contentElem && contentElem.querySelector('audio')) {
+                    // Voice message: store audio src
+                    const audio = contentElem.querySelector('audio');
+                    content = audio ? audio.src : '';
                 } else if (contentElem) {
-                    content = contentElem.textContent || '';
+                    // Text message: store plain text
+                    const flexGrow = contentElem.querySelector('.flex-grow-1');
+                    content = flexGrow ? flexGrow.textContent : contentElem.textContent || '';
                 }
                 return {
                     content,
