@@ -377,7 +377,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         renderMessagesForCoach(newCoachId);
     }
 
-function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now(), showDate = false) {
+function addMessage(content, isUser = false, isAudio = false, timestamp = Date.now()) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
         message.dataset.timestamp = timestamp;
@@ -406,7 +406,7 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
             }
             if (textPart) {
                 let filtered = filterCoachText(textPart.text || '');
-                textHtml = `<div class="ai-markdown text-center">${filtered}</div>`;
+                textHtml = `<div class="ai-markdown">${filtered}</div>`;
             }
             messageContent = `
                 <div class="image-message-wrapper">
@@ -549,10 +549,6 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
             console.error('Error sending message to server:', error);
             throw new Error(error.message || 'Failed to get response from coach');
         }
-    }
-
-    async function processUserMessage() {
-        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // Handle sending messages
