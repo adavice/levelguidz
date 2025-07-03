@@ -204,35 +204,18 @@ function renderMessagesForCoach(coachId) {
         if (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null && !isNaN(Number(msg.timestamp)) && Number(msg.timestamp) > 0) {
             timestamp = msg.timestamp;
         }
-        // Insert date separator if date changes
+        // Determine if this is the first message of a new day
         let dateToCheck = timestamp ? (Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)) : null;
-        let dateStr = '';
+        let showDate = false;
         if (dateToCheck) {
             const msgDate = new Date(dateToCheck);
-            const today = new Date();
-            const yesterday = new Date();
-            yesterday.setDate(today.getDate() - 1);
-            // Remove time for comparison
             msgDate.setHours(0,0,0,0);
-            today.setHours(0,0,0,0);
-            yesterday.setHours(0,0,0,0);
             if (!lastDate || msgDate.getTime() !== lastDate.getTime()) {
-                if (msgDate.getTime() === today.getTime()) {
-                    dateStr = 'Today';
-                } else if (msgDate.getTime() === yesterday.getTime()) {
-                    dateStr = 'Yesterday';
-                } else {
-                    dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-                }
-                // Insert date separator
-                const sep = document.createElement('div');
-                sep.className = 'chat-date-separator text-center text-muted my-2';
-                sep.textContent = dateStr;
-                chatMessages.appendChild(sep);
+                showDate = true;
                 lastDate = new Date(msgDate.getTime());
             }
         }
-        addMessage(content, isUser, isAudio, isImage, timestamp);
+        addMessage(content, isUser, isAudio, isImage, timestamp, showDate);
     });
 }
 
@@ -310,11 +293,20 @@ async function handleTextMessage(message, coachId, originalStatus) {
         const newCoachId = coachItem.dataset.id;
         // Store current messages for previous coach if any
         if (activeCoachId) {
-            const messages = Array.from(chatMessages.children).map(msg => ({
-                content: msg.querySelector('.message-content').children[0].innerHTML,
-                isUser: msg.classList.contains('user'),
-                timestamp: parseInt(msg.dataset.timestamp)
-            }));
+            const messages = Array.from(chatMessages.children).map(msg => {
+                const contentElem = msg.querySelector('.message-content');
+                let content = '';
+                if (contentElem && contentElem.children && contentElem.children[0]) {
+                    content = contentElem.children[0].innerHTML;
+                } else if (contentElem) {
+                    content = contentElem.textContent || '';
+                }
+                return {
+                    content,
+                    isUser: msg.classList.contains('user'),
+                    timestamp: parseInt(msg.dataset.timestamp)
+                };
+            });
             chatHistory.set(activeCoachId, messages);
             // Save chat history after switching
             // No need to save chat history, server handles it
@@ -338,7 +330,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         renderMessagesForCoach(newCoachId);
     }
 
-    function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now()) {
+function addMessage(content, isUser = false, isAudio = false, isImage = false, timestamp = Date.now(), showDate = false) {
         const message = document.createElement('div');
         message.className = `message ${isUser ? 'user' : ''}`;
         message.dataset.timestamp = timestamp;
@@ -387,6 +379,30 @@ async function handleTextMessage(message, coachId, originalStatus) {
             messageContent = content;
         }
 
+        // Format time and date for timestamp
+        let timeStr = '';
+        let dateStr = '';
+        if (timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) {
+            const dateObj = new Date(Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp));
+            timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (showDate) {
+                // Show Today, Yesterday, or date
+                const today = new Date();
+                const yesterday = new Date();
+                today.setHours(0,0,0,0);
+                yesterday.setDate(today.getDate() - 1);
+                yesterday.setHours(0,0,0,0);
+                const msgDate = new Date(dateObj.getTime());
+                msgDate.setHours(0,0,0,0);
+                if (msgDate.getTime() === today.getTime()) {
+                    dateStr = 'Today';
+                } else if (msgDate.getTime() === yesterday.getTime()) {
+                    dateStr = 'Yesterday';
+                } else {
+                    dateStr = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                }
+            }
+        }
         message.innerHTML = `
             <div class="message-content">
                 <div class="d-flex align-items-center justify-content-between">
@@ -396,7 +412,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
                     ${deleteButton}
                 </div>
                 <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${(timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) ? new Date(Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                    ${timeStr}${showDate && dateStr ? ' • ' + dateStr : ''}
                 </div>
             </div>
         `;
@@ -411,11 +427,20 @@ async function handleTextMessage(message, coachId, originalStatus) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
         // Save chat history after every new message
         if (activeCoachId) {
-            const messages = Array.from(chatMessages.children).map(msg => ({
-                content: msg.querySelector('.message-content').children[0].innerHTML,
-                isUser: msg.classList.contains('user'),
-                timestamp: parseInt(msg.dataset.timestamp)
-            }));
+            const messages = Array.from(chatMessages.children).map(msg => {
+                const contentElem = msg.querySelector('.message-content');
+                let content = '';
+                if (contentElem && contentElem.children && contentElem.children[0]) {
+                    content = contentElem.children[0].innerHTML;
+                } else if (contentElem) {
+                    content = contentElem.textContent || '';
+                }
+                return {
+                    content,
+                    isUser: msg.classList.contains('user'),
+                    timestamp: parseInt(msg.dataset.timestamp)
+                };
+            });
             chatHistory.set(activeCoachId, messages);
             // No need to save chat history, server handles it
         }
