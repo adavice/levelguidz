@@ -568,6 +568,7 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
         const audioPreview = document.querySelector('.audio-preview');
         const imagePreview = document.querySelector('.media-preview img');
 
+        // If nothing to send, return
         if (!message && !audioPreview && !imagePreview) return;
 
         const activeCoach = document.querySelector('.coach-item.active');
@@ -578,7 +579,6 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
 
         const coachId = activeCoach.dataset.id;
         const originalStatus = activeCoach.dataset.status;
-        messageInput.value = '';
 
         // If image is present, send image and text together
         if (imagePreview) {
@@ -587,9 +587,12 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
             imagePreview.closest('.media-preview').remove();
             // Use user input if present, otherwise fallback
             const userText = message || 'Please analyze this image';
+            messageInput.value = '';
             handleImageMessageWithText(base64Image, userText, coachId, originalStatus);
             return; // Do not send text separately
         }
+
+        messageInput.value = '';
 
         if (audioPreview) {
             handleAudioMessage(audioPreview, coachId, originalStatus);
