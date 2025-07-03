@@ -1,3 +1,4 @@
+// Filter coach/AI text: remove bold, asterisks, headers, preserve newlines as <br>
 import { loadCoaches } from './clientApi.js';
 import { loadChatHistory } from './chatApi.js';
 import { convertToBase64, resizeImage } from './mediaUtils.js';
@@ -22,7 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     chatInput.insertAdjacentHTML('afterbegin', `
         <div class="media-preview-container d-flex flex-wrap gap-2 my-2"></div>
     `);
-    const previewContainer = chatInput.querySelector('.media-preview-container');
+    
+    function filterCoachText(text) {
+    return (text || '')
+        .replace(/#+\s*/g, '')
+        .replace(/\*\*(.*?)\*\*/gs, '$1')
+        .replace(/\*/g, '')
+        .split(/\r?\n/).map(line => line.trim()).join('<br>');
+    }
 
     async function loadCoachesList() {
         try {
@@ -193,7 +201,8 @@ function renderMessagesForCoach(coachId) {
     chatMessages.innerHTML = '';
     const coachHistory = chatHistory.get(coachId) || [];
     let lastDate = null;
-    coachHistory.forEach(msg => {
+    let lastDateStr = null;
+    coachHistory.forEach((msg, idx) => {
         // Normalize message fields for UI compatibility
         const isUser = typeof msg.isUser !== 'undefined' ? msg.isUser : !!msg.user;
         const isAudio = !!msg.isAudio;
@@ -206,7 +215,6 @@ function renderMessagesForCoach(coachId) {
         }
         // Insert date separator if date changes
         let dateToCheck = timestamp ? (Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)) : null;
-        let showDate = false;
         let dateStr = '';
         if (dateToCheck) {
             const msgDate = new Date(dateToCheck);
@@ -224,12 +232,15 @@ function renderMessagesForCoach(coachId) {
                 } else {
                     dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
                 }
-                // Insert date separator
-                const sep = document.createElement('div');
-                sep.className = 'chat-date-separator text-center text-muted my-2';
-                sep.textContent = dateStr;
-                chatMessages.appendChild(sep);
-                lastDate = new Date(msgDate.getTime());
+                // Only insert separator if not the very first message, or if the first message is not today
+                if (idx === 0 || dateStr !== lastDateStr) {
+                    const sep = document.createElement('div');
+                    sep.className = 'chat-date-separator text-center text-muted my-2';
+                    sep.textContent = dateStr;
+                    chatMessages.appendChild(sep);
+                    lastDate = new Date(msgDate.getTime());
+                    lastDateStr = dateStr;
+                }
             }
         }
         addMessage(content, isUser, isAudio, isImage, timestamp, false);
@@ -393,11 +404,7 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
                 `;
             }
             if (textPart) {
-                let filtered = (textPart.text || '')
-                    .replace(/#+\s*/g, '')
-                    .replace(/\*\*(.*?)\*\*/gs, '$1')
-                    .replace(/\*/g, '')
-                    .split(/\r?\n/).map(line => line.trim()).join('<br>');
+                let filtered = filterCoachText(textPart.text || '');
                 textHtml = `<div class="ai-markdown text-center">${filtered}</div>`;
             }
             messageContent = `
@@ -407,8 +414,21 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
                 </div>
             `;
         } else if (typeof content === 'string') {
-            // Fallback for plain text, markdown, or legacy image/audio
-            messageContent = content;
+            // Voice message: render with icon and audio player if isAudio is true
+            if (isAudio) {
+                messageContent = `
+                    <div class="audio-message-block d-flex align-items-center gap-2">
+                        <i class="bi bi-mic-fill text-primary"></i>
+                        <audio src="${content}" controls class="audio-message flex-grow-1"></audio>
+                    </div>
+                `;
+            } else if (!isUser) {
+                // Filter coach/AI messages for formatting
+                let filtered = filterCoachText(content);
+                messageContent = `<div class=\"ai-markdown text-center\">${filtered}</div>`;
+            } else {
+                messageContent = content;
+            }
         }
 
         // Format time for timestamp (date is now in separator)
