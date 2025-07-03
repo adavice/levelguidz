@@ -204,18 +204,35 @@ function renderMessagesForCoach(coachId) {
         if (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null && !isNaN(Number(msg.timestamp)) && Number(msg.timestamp) > 0) {
             timestamp = msg.timestamp;
         }
-        // Determine if this is the first message of a new day
+        // Insert date separator if date changes
         let dateToCheck = timestamp ? (Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)) : null;
         let showDate = false;
+        let dateStr = '';
         if (dateToCheck) {
             const msgDate = new Date(dateToCheck);
+            const today = new Date();
+            const yesterday = new Date();
             msgDate.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            yesterday.setDate(today.getDate() - 1);
+            yesterday.setHours(0,0,0,0);
             if (!lastDate || msgDate.getTime() !== lastDate.getTime()) {
-                showDate = true;
+                if (msgDate.getTime() === today.getTime()) {
+                    dateStr = 'Today';
+                } else if (msgDate.getTime() === yesterday.getTime()) {
+                    dateStr = 'Yesterday';
+                } else {
+                    dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                }
+                // Insert date separator
+                const sep = document.createElement('div');
+                sep.className = 'chat-date-separator text-center text-muted my-2';
+                sep.textContent = dateStr;
+                chatMessages.appendChild(sep);
                 lastDate = new Date(msgDate.getTime());
             }
         }
-        addMessage(content, isUser, isAudio, isImage, timestamp, showDate);
+        addMessage(content, isUser, isAudio, isImage, timestamp, false);
     });
 }
 
@@ -394,29 +411,11 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
             messageContent = content;
         }
 
-        // Format time and date for timestamp
+        // Format time for timestamp (date is now in separator)
         let timeStr = '';
-        let dateStr = '';
         if (timestamp && !isNaN(Number(timestamp)) && Number(timestamp) > 0) {
             const dateObj = new Date(Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp));
             timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            if (showDate) {
-                // Show Today, Yesterday, or date
-                const today = new Date();
-                const yesterday = new Date();
-                today.setHours(0,0,0,0);
-                yesterday.setDate(today.getDate() - 1);
-                yesterday.setHours(0,0,0,0);
-                const msgDate = new Date(dateObj.getTime());
-                msgDate.setHours(0,0,0,0);
-                if (msgDate.getTime() === today.getTime()) {
-                    dateStr = 'Today';
-                } else if (msgDate.getTime() === yesterday.getTime()) {
-                    dateStr = 'Yesterday';
-                } else {
-                    dateStr = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-                }
-            }
         }
         message.innerHTML = `
             <div class="message-content">
@@ -427,7 +426,7 @@ function addMessage(content, isUser = false, isAudio = false, isImage = false, t
                     ${deleteButton}
                 </div>
                 <div class="message-timestamp text-end text-muted" style="font-size: 0.8em; opacity: 0.7; margin-top: 0.25rem;">
-                    ${timeStr}${showDate && dateStr ? ' • ' + dateStr : ''}
+                    ${timeStr}
                 </div>
             </div>
         `;
