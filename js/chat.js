@@ -192,6 +192,7 @@ function fixMojibake(str) {
 function renderMessagesForCoach(coachId) {
     chatMessages.innerHTML = '';
     const coachHistory = chatHistory.get(coachId) || [];
+    let lastDate = null;
     coachHistory.forEach(msg => {
         // Normalize message fields for UI compatibility
         const isUser = typeof msg.isUser !== 'undefined' ? msg.isUser : !!msg.user;
@@ -202,6 +203,34 @@ function renderMessagesForCoach(coachId) {
         let timestamp = '';
         if (typeof msg.timestamp !== 'undefined' && msg.timestamp !== null && !isNaN(Number(msg.timestamp)) && Number(msg.timestamp) > 0) {
             timestamp = msg.timestamp;
+        }
+        // Insert date separator if date changes
+        let dateToCheck = timestamp ? (Number(timestamp) < 2000000000 ? Number(timestamp) * 1000 : Number(timestamp)) : null;
+        let dateStr = '';
+        if (dateToCheck) {
+            const msgDate = new Date(dateToCheck);
+            const today = new Date();
+            const yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
+            // Remove time for comparison
+            msgDate.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            yesterday.setHours(0,0,0,0);
+            if (!lastDate || msgDate.getTime() !== lastDate.getTime()) {
+                if (msgDate.getTime() === today.getTime()) {
+                    dateStr = 'Today';
+                } else if (msgDate.getTime() === yesterday.getTime()) {
+                    dateStr = 'Yesterday';
+                } else {
+                    dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                }
+                // Insert date separator
+                const sep = document.createElement('div');
+                sep.className = 'chat-date-separator text-center text-muted my-2';
+                sep.textContent = dateStr;
+                chatMessages.appendChild(sep);
+                lastDate = new Date(msgDate.getTime());
+            }
         }
         addMessage(content, isUser, isAudio, isImage, timestamp);
     });
@@ -321,32 +350,41 @@ async function handleTextMessage(message, coachId, originalStatus) {
             </button>
         ` : '';
 
-        let messageContent = content;
-        if (isImage) {
-            messageContent = `
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <i class="bi bi-image text-primary"></i>
-                    <img src="data:image/jpeg;base64,${content}" class="img-fluid rounded" 
-                        style="max-height: 200px; cursor: pointer" 
-                        onclick="window.open(this.src, '_blank')"
-                        alt="Uploaded image">
-                </div>
-            `;
-        } else if (isAudio) {
-            messageContent = `
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <i class="bi bi-mic-fill text-primary"></i>
-                    <audio src="${content}" controls class="audio-message"></audio>
-                </div>
-            `;
-        } else if (!isUser && !isImage && !isAudio) {
-            // Remove markdown headers and bold, but preserve newlines as <br>
-            let filtered = (content || '')
-                .replace(/#+\s*/g, '') // Remove markdown headers
-                .replace(/\*\*(.*?)\*\*/gs, '$1') // Remove bold markers (multiline)
-                .replace(/\*/g, '') // Remove stray asterisks
-                .split(/\r?\n/).map(line => line.trim()).join('<br>'); // Convert newlines to <br> and trim lines
-            messageContent = `<div class="ai-markdown">${filtered}</div>`;
+        let messageContent = '';
+        // Handle array content (for images, etc.)
+        if (Array.isArray(content)) {
+            messageContent = content.map(part => {
+                if (part.type === 'text') {
+                    // Remove markdown headers and bold, but preserve newlines as <br>
+                    let filtered = (part.text || '')
+                        .replace(/#+\s*/g, '')
+                        .replace(/\*\*(.*?)\*\*/gs, '$1')
+                        .replace(/\*/g, '')
+                        .split(/\r?\n/).map(line => line.trim()).join('<br>');
+                    return `<div class="ai-markdown">${filtered}</div>`;
+                } else if (part.type === 'image_url' && part.image_url && part.image_url.url) {
+                    return `
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-image text-primary"></i>
+                            <img src="${part.image_url.url}" class="img-fluid rounded" 
+                                style="max-height: 200px; cursor: pointer" 
+                                onclick="window.open(this.src, '_blank')"
+                                alt="Uploaded image">
+                        </div>
+                    `;
+                } else if (part.type === 'audio_url' && part.audio_url && part.audio_url.url) {
+                    return `
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-mic-fill text-primary"></i>
+                            <audio src="${part.audio_url.url}" controls class="audio-message"></audio>
+                        </div>
+                    `;
+                }
+                return '';
+            }).join('');
+        } else if (typeof content === 'string') {
+            // Fallback for plain text, markdown, or legacy image/audio
+            messageContent = content;
         }
 
         message.innerHTML = `
@@ -453,7 +491,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         const message = messageInput.value.trim();
         const audioPreview = document.querySelector('.audio-preview');
         const imagePreview = document.querySelector('.media-preview img');
-        
+
         if (!message && !audioPreview && !imagePreview) return;
 
         const activeCoach = document.querySelector('.coach-item.active');
@@ -466,11 +504,15 @@ async function handleTextMessage(message, coachId, originalStatus) {
         const originalStatus = activeCoach.dataset.status;
         messageInput.value = '';
 
-        // Handle previews in order
+        // If image is present, send image and text together
         if (imagePreview) {
             const base64Image = imagePreview.src.split(',')[1];
-            handleImageMessage(base64Image, coachId, originalStatus);
+            // Remove preview immediately
             imagePreview.closest('.media-preview').remove();
+            // Use user input if present, otherwise fallback
+            const userText = message || 'Please analyze this image';
+            handleImageMessageWithText(base64Image, userText, coachId, originalStatus);
+            return; // Do not send text separately
         }
 
         if (audioPreview) {
@@ -595,10 +637,17 @@ async function handleTextMessage(message, coachId, originalStatus) {
         }
     }
 
-    // Add new image message handler
-async function handleImageMessage(base64Image, coachId, originalStatus) {
+
+// New: handle image and text together
+async function handleImageMessageWithText(base64Image, userText, coachId, originalStatus) {
     try {
-        addMessage(base64Image, true, false, true);
+        // Compose content array for local chat display
+        const contentArr = [];
+        if (userText) {
+            contentArr.push({ type: 'text', text: userText });
+        }
+        contentArr.push({ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + base64Image } });
+        addMessage(contentArr, true);
         setCoachStatus(coachId, 'responding');
 
         // Convert base64 to blob
@@ -613,7 +662,8 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
         const formData = new FormData();
         formData.append('action', 'vision');
         formData.append('image', blob, 'image.jpg');
-        formData.append('coach_id', coachId);  // Add this line to pass the coach ID
+        formData.append('coach_id', coachId);
+        formData.append('text', userText);
 
         const res = await fetch(`${API_BASE_URL}`, {
             method: 'POST',
@@ -638,7 +688,6 @@ async function handleImageMessage(base64Image, coachId, originalStatus) {
         } else {
             throw new Error('Missing reply in server response');
         }
-        
         setCoachStatus(coachId, 'online');
     } catch (err) {
         console.error('Error handling image message:', err);

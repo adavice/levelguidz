@@ -3,22 +3,40 @@ import { login, signup, forgotPassword } from './authApi.js';
 import { authService } from './authService.js';
 
 function showToast(message, success = false) {
-  // Use Bootstrap Toast if available, fallback to alert
-  const toastEl = document.getElementById('authToast');
-  const toastMsg = document.getElementById('toastMessage');
-  if (toastEl && toastMsg) {
-    toastMsg.textContent = message;
-    if (success) {
-      toastEl.classList.remove('bg-danger');
-      toastEl.classList.add('bg-success');
-    } else {
-      toastEl.classList.remove('bg-success');
-      toastEl.classList.add('bg-danger');
-    }
-    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
-    toast.show();
+  // Create toast container if it doesn't exist
+  let toastContainer = document.querySelector('.toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+    document.body.appendChild(toastContainer);
+  }
+
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = `toast align-items-center text-bg-${success ? 'success' : 'danger'} border-0 show`;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+  toast.style.minWidth = '250px';
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="bi ${success ? 'bi-check-circle-fill text-success' : 'bi-exclamation-circle-fill text-danger'} me-2"></i>
+        <span>${message}</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+  toastContainer.appendChild(toast);
+
+  // Show toast using Bootstrap's Toast API if available
+  if (window.bootstrap && window.bootstrap.Toast) {
+    const bsToast = window.bootstrap.Toast.getOrCreateInstance(toast, { delay: 3000 });
+    bsToast.show();
+    toast.addEventListener('hidden.bs.toast', () => toast.remove());
   } else {
-    alert(message);
+    // Fallback: auto-remove after 3s
+    setTimeout(() => toast.remove(), 3000);
   }
 }
 
