@@ -6,7 +6,7 @@ import { API_BASE_URL } from './config.js';
 
 let chatHistory = new Map(); // Store chat history by coach ID
 let activeCoachId = null; // Track current active coach
-console.log('test');
+console.log('test 2');
 document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
     const chatMessages = document.querySelector('.chat-messages');
