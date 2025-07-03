@@ -561,7 +561,9 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
     });
 
     function sendMessage() {
-        const message = messageInput.value.trim();
+        // Always capture the input value at the start
+        const inputValue = messageInput.value;
+        const message = inputValue.trim();
         const audioPreview = document.querySelector('.audio-preview');
         const imagePreview = document.querySelector('.media-preview img');
 
@@ -582,8 +584,8 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
             const base64Image = imagePreview.src.split(',')[1];
             // Remove preview immediately
             imagePreview.closest('.media-preview').remove();
-            // Use user input if present, otherwise fallback
-            const userText = message || 'Please analyze this image';
+            // Use the captured input value
+            const userText = inputValue.trim();
             messageInput.value = '';
             handleImageMessageWithText(base64Image, userText, coachId, originalStatus);
             return; // Do not send text separately
