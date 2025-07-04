@@ -426,7 +426,7 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
             } else if (!isUser) {
                 // Filter coach/AI messages for formatting
                 let filtered = filterCoachText(content);
-                messageContent = `<div class=\"ai-markdown text-center\">${filtered}</div>`;
+                messageContent = `<div class=\"ai-markdown\">${filtered}</div>`;
             } else {
                 messageContent = content;
             }
