@@ -1701,7 +1701,7 @@ input::placeholder, textarea::placeholder {
                 height: 2.2rem;
                 padding: 0;
                 border-radius: 50%;
-                background: rgb(146 16 57 / 30%) !important;
+                background: rgb(146 16 57 / 35%) !important;
                 color: #fff !important;
                 border: none;
                 display: flex;
