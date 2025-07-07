@@ -24,7 +24,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse text-center" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <a class="nav-link active" href="./news.html">News</a>
@@ -39,7 +39,7 @@
               <a class="nav-link" href="./contact.html">Contact</a>
             </li>
           </ul>
-          <div class="d-flex">
+          <div class="d-flex justify-content-center">
             <div class="user-section">
               <!-- Login button shown when logged out -->
               <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
@@ -129,202 +129,230 @@
                 </div>
             </div>
         </section>
-
+        <!-- Duplicate carousel for comparison -->
         <section class="featured-coaches py-5 position-relative">
             <div class="decorative-dots"></div>
             <div class="decorative-circle"></div>
             <h2 class="text-center mb-2">Featured Coaches</h2>
-            <p class="text-center text-muted mb-5">Learn from the best players in the industry</p>
-            
-            <div id="coachCarousel" class="carousel slide overflow-visible w-100" data-bs-ride="false">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#coachCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#coachCarousel" data-bs-slide-to="1"></button>
-                </div>
-                <div class="container-fluid px-0">
-                    <div class="carousel-inner">
-                        <!-- First Slide -->
-                        <div class="carousel-item active">
-                            <div class="row g-4 align-items-stretch">
-                                <!-- Coach 1 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-1.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">Alex "Wiz"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">4.9</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 98%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">Top Rated</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
-                                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
-                                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
-                                            </ul>
+            <p class="text-center text-muted mb-5">Learn from the best</p>
+            <div class="locomotive-carousel position-relative">
+                <button class="locomotive-arrow left btn btn-light position-absolute top-50 start-0 translate-middle-y" style="z-index:2;" aria-label="Scroll left">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Scroll left</span>
+                </button>
+                <div class="locomotive-track d-flex overflow-auto px-5" style="scroll-behavior:smooth; gap:2rem;">
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-1.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Alex "Wiz"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.9</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 98%"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Coach 2 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-2.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">Dan "EliteGuide"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">4.7</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 94%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">Expert</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
-                                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
-                                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
-                                            </ul>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <!-- Coach 3 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-3.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">Marcus "Strato"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">5.0</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 100%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">Pro Player</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-stars"></i> Professional esports player</li>
-                                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
-                                                <li><i class="bi bi-trophy"></i> Regional champion</li>
-                                            </ul>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
+                                <span class="badge bg-primary">Top Rated</span>
                             </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
+                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
+                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
+                            </ul>
                         </div>
-
-                        <!-- Second Slide -->
-                        <div class="carousel-item">
-                            <div class="row g-4 align-items-stretch">
-                                <!-- Coach 4 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-4.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">Brian "Macro"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">4.8</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 96%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">RTS Specialist</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-controller"></i> Expert in real-time strategy</li>
-                                                <li><i class="bi bi-graph-up"></i> Macro game analysis</li>
-                                                <li><i class="bi bi-trophy"></i> ESL Champion</li>
-                                            </ul>
+                    </div>
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-2.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Dan "EliteGuide"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.7</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 94%"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Coach 5 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-5.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">Michael "B-eye"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">4.6</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 92%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">FPS Expert</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-bullseye"></i> Precision aiming techniques</li>
-                                                <li><i class="bi bi-shield"></i> Defensive strategies</li>
-                                                <li><i class="bi bi-trophy"></i> Tournament finalist</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Coach 6 -->
-                                <div class="col-lg-4 d-flex">
-                                    <div class="coach-card flex-grow-1">
-                                        <img src="img/coach-6.jpg" alt="Coach Name" class="coach-image">
-                                        <div class="coach-info">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <div>
-                                                    <h3 class="h5 mb-2">David "SpeedKing"</h3>
-                                                    <div class="rating">
-                                                        <div class="rating-score">4.9</div>
-                                                        <div class="rating-bar">
-                                                            <div class="rating-fill" style="width: 98%"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="badge bg-primary">Racing Pro</span>
-                                            </div>
-                                            <ul class="coach-features">
-                                                <li><i class="bi bi-speedometer2"></i> Racing simulation expert</li>
-                                                <li><i class="bi bi-gear"></i> Vehicle setup mastery</li>
-                                                <li><i class="bi bi-trophy"></i> Circuit champion</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                <span class="badge bg-primary">Expert</span>
                             </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
+                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
+                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-3.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Marcus "Strato"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">5.0</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 100%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">Pro Player</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-stars"></i> Professional esports player</li>
+                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
+                                <li><i class="bi bi-trophy"></i> Regional champion</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-4.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Brian "Macro"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.8</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 96%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">RTS Specialist</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-controller"></i> Expert in real-time strategy</li>
+                                <li><i class="bi bi-graph-up"></i> Macro game analysis</li>
+                                <li><i class="bi bi-trophy"></i> ESL Champion</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-5.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">Michael "B-eye"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.6</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 92%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">FPS Expert</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-bullseye"></i> Precision aiming techniques</li>
+                                <li><i class="bi bi-shield"></i> Defensive strategies</li>
+                                <li><i class="bi bi-trophy"></i> Tournament finalist</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="coach-card flex-shrink-0" style="width:340px;">
+                        <img src="img/coach-6.jpg" alt="Coach Name" class="coach-image">
+                        <div class="coach-info">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h3 class="h5 mb-2">David "SpeedKing"</h3>
+                                    <div class="rating">
+                                        <div class="rating-score">4.9</div>
+                                        <div class="rating-bar">
+                                            <div class="rating-fill" style="width: 98%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary">Racing Pro</span>
+                            </div>
+                            <ul class="coach-features">
+                                <li><i class="bi bi-speedometer2"></i> Racing simulation expert</li>
+                                <li><i class="bi bi-gear"></i> Vehicle setup mastery</li>
+                                <li><i class="bi bi-trophy"></i> Circuit champion</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#coachCarousel" data-bs-slide="prev" style="top: 50%; transform: translateY(-50%); left: -50px;">
-                    <span class="carousel-control-prev-icon"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#coachCarousel" data-bs-slide="next" style="top: 50%; transform: translateY(-50%); right: -50px;">
-                    <span class="carousel-control-next-icon"></span>
-                    <span class="visually-hidden">Next</span>
+                <button class="locomotive-arrow right btn btn-light position-absolute top-50 end-0 translate-middle-y" style="z-index:2;" aria-label="Scroll right">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Scroll right</span>
                 </button>
             </div>
-        </section>
+            <script>
+            // Locomotive scroll logic
+            (function() {
+                const track = document.querySelector('.locomotive-track');
+                const leftBtn = document.querySelector('.locomotive-arrow.left');
+                const rightBtn = document.querySelector('.locomotive-arrow.right');
+                function getCardWidth() {
+                    const card = track.querySelector('.coach-card');
+                    if (!card) return 340;
+                    return card.offsetWidth + 32; // 32px gap
+                }
+                track.onmousedown = null;
+                track.onmousemove = null;
+                track.onmouseup = null;
+                track.onmouseleave = null;
+                track.style.userSelect = '';
+                track.style.webkitUserSelect = '';
+                track.style.msUserSelect = '';
+                track.style.touchAction = '';
 
+                leftBtn.addEventListener('click', () => {
+                    track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+                });
+                rightBtn.addEventListener('click', () => {
+                    track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+                });
+
+                // Touch drag-to-scroll (mobile) - keep momentum for swipe
+                let touchStartX = 0;
+                let touchScrollLeft = 0;
+                let lastTouchX = 0;
+                let lastTouchTime = 0;
+                let velocity = 0;
+                let momentumId = null;
+
+                function stopMomentum() {
+                    if (momentumId) {
+                        cancelAnimationFrame(momentumId);
+                        momentumId = null;
+                    }
+                }
+
+                track.addEventListener('touchstart', (e) => {
+                    if (e.touches.length !== 1) return;
+                    stopMomentum();
+                    touchStartX = e.touches[0].pageX;
+                    touchScrollLeft = track.scrollLeft;
+                    lastTouchX = touchStartX;
+                    lastTouchTime = e.timeStamp;
+                    velocity = 0;
+                }, { passive: true });
+
+                track.addEventListener('touchend', (e) => {
+                    // Momentum scrolling
+                    let momentum = velocity * 1000; // px/sec
+                    let currentScroll = track.scrollLeft;
+                    function animate() {
+                        if (Math.abs(momentum) < 0.5) return;
+                        currentScroll -= momentum * 0.04; // 40ms per frame
+                        track.scrollLeft = currentScroll;
+                        momentum *= 0.92; // friction
+                        momentumId = requestAnimationFrame(animate);
+                    }
+                    if (Math.abs(momentum) > 1) {
+                        animate();
+                    }
+                });
+            })();
+            </script>
+        </section>
         <section class="how-it-works py-5 position-relative">
             <div class="decorative-dots"></div>
             <div class="decorative-circle"></div>
             <h2 class="text-center mb-5">How it Works</h2>
-            
             <div class="row gy-5 align-items-center">
                 <!-- Block 1 - Image Left -->
                 <div class="col-lg-6">
