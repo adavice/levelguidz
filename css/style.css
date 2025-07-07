@@ -1696,68 +1696,67 @@ input::placeholder, textarea::placeholder {
   background: #20232a;
 }
 
-            .locomotive-arrow {
-                width: 2.2rem;
-                height: 2.2rem;
-                padding: 0;
-                border-radius: 50%;
-                background: rgb(146 16 57 / 35%) !important;
-                color: #fff !important;
-                border: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            }
-            .locomotive-arrow .carousel-control-prev-icon,
-            .locomotive-arrow .carousel-control-next-icon {
+.locomotive-arrow {
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  border-radius: 50%;
+  background: rgb(146 16 57 / 35%) !important;
+  color: #fff !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.locomotive-arrow .carousel-control-prev-icon,
+.locomotive-arrow .carousel-control-next-icon {
                 filter: invert(1) grayscale(1) brightness(2);
                 width: 1.2rem;
                 height: 1.2rem;
-            }
-            .locomotive-arrow:active {
+}
+.locomotive-arrow:active {
                 background: #222 !important;
-            }
-            .locomotive-arrow:focus {
+}
+.locomotive-arrow:focus {
                 outline: 2px solid #007bff;
-            }
-            .locomotive-carousel { margin-top: 2rem; margin-bottom: 2rem; }
-            .locomotive-track { scroll-snap-type: x mandatory; }
-            .locomotive-track .coach-card { scroll-snap-align: start; }
-            /* Hide scrollbar on desktop */
-            @media (min-width: 992px) {
-                .locomotive-track {
-                    min-width: 1020px;
-                    scrollbar-width: none; /* Firefox */
-                    -ms-overflow-style: none; /* IE 10+ */
-                }
-                .locomotive-track::-webkit-scrollbar {
-                    display: none;
-                }
-                .locomotive-track .coach-card { width: 340px !important; }
-                /* Make scroll buttons less visible on desktop */
-                .locomotive-arrow {
-                    transition: opacity 0.2s;
-                }
-                .locomotive-arrow:hover, .locomotive-arrow:focus {
-                    opacity: 0.8;
-                }
-            }
+}
+.locomotive-carousel { margin-top: 2rem; margin-bottom: 2rem; }
+.locomotive-track { scroll-snap-type: x mandatory; }
+.locomotive-track .coach-card { scroll-snap-align: start; }
+/* Hide scrollbar on desktop */
+@media (min-width: 992px) {
+.locomotive-track {
+    min-width: 1020px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+ .locomotive-track::-webkit-scrollbar {
+    display: none;
+}
+.locomotive-track .coach-card { width: 340px !important; }
+/* Make scroll buttons less visible on desktop */
+.locomotive-arrow {
+    transition: opacity 0.2s;
+}
+.locomotive-arrow:hover, .locomotive-arrow:focus {
+    opacity: 0.8; }
+}
             /* On mobile: show scrollbar, show scroll buttons */
-            @media (max-width: 991.98px) {
-                .locomotive-track .coach-card { width: 90vw !important; }
-                .locomotive-arrow {
-                    display: flex !important;
-                    opacity: 1 !important;
-                    position: absolute;
-                }
-                /* Show scrollbar (default) */
-                .locomotive-track {
-                    scrollbar-width: auto;
-                    -ms-overflow-style: auto;
-                }
-                .locomotive-track::-webkit-scrollbar {
-                    display: block;
-                }
-            }
+@media (max-width: 991.98px) {
+    .locomotive-track .coach-card { width: 90vw !important; }
+    .locomotive-arrow {
+        display: flex !important;
+        opacity: 1 !important;
+        position: absolute;
+    }
+    /* Show scrollbar (default) */
+    .locomotive-track {
+        scrollbar-width: auto;
+        -ms-overflow-style: auto;
+    }
+    .locomotive-track::-webkit-scrollbar {
+        display: block;
+    }
+}
 
