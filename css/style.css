@@ -345,6 +345,10 @@ footer {
     margin-bottom: 1rem;
 }
 
+.footer-branding {
+    margin-bottom: 2rem;
+}
+
 .footer-nav .nav-link {
     color: var(--text-color);
     opacity: 0.7;
@@ -357,10 +361,14 @@ footer {
     opacity: 1;
 }
 
+.footer-main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 @media (max-width: 991px) {
     .footer-nav, .footer .text-muted {
         text-align: center;
-        margin-top: 2rem;
     }
     
     .footer-brand {
@@ -376,6 +384,30 @@ footer {
     .footer-nav {
         text-align: center;
         margin-bottom: 1.5rem;
+    }
+    
+    .footer-main {
+        flex-direction: column;
+    }
+    
+    .footer-links {
+        order: 1;
+    }
+    
+    .footer-disclaimer {
+        order: 2;
+        margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-branding {
+        order: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 2rem;
     }
 }
 
@@ -798,6 +830,30 @@ hr {
     .hero-decorative-circle {
         display: none;
     }
+    
+    /* Footer mobile styling */
+    .footer-main {
+        flex-direction: column;
+    }
+    
+    .footer-links {
+        order: 1;
+        text-align: center;
+    }
+    
+    .footer-disclaimer {
+        order: 2;
+        margin: 1rem 0;
+    }
+    
+    .footer-branding {
+        order: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 2rem;
+    }
 }
 
 /* Decorative Elements for How It Works */
@@ -1159,6 +1215,7 @@ input::placeholder, textarea::placeholder {
 
 .delete-message:hover {
     color: var(--primary-color) !important;
+    filter: brightness(1.5);
 }
 
 .audio-preview {
