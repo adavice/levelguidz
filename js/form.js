@@ -2,6 +2,27 @@
 import { login, signup, forgotPassword } from './authApi.js';
 import { authService } from './authService.js';
 
+/**
+ * Normalizes contact information (phone or email) based on format
+ * @param {string} input - Phone number or email address
+ * @return {string} - Normalized contact info
+ */
+function normalizeContactInput(input) {
+  if (!input) return input;
+  
+  const trimmed = input.trim();
+  
+  // Check if it's likely an email (contains @ symbol)
+  if (trimmed.includes('@')) {
+    return trimmed.toLowerCase(); // Normalize email to lowercase
+  }
+  
+  // Otherwise treat as phone number
+  // Currently, we're passing the phone number as-is without any formatting
+  // This allows both formats (with or without +) to work with the backend
+  return trimmed;
+}
+
 function showToast(message, success = false) {
   // Create toast container if it doesn't exist
   let toastContainer = document.querySelector('.toast-container');
@@ -94,10 +115,12 @@ document.addEventListener('DOMContentLoaded', function () {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = e.target;
-      const phone = form.querySelector('input[type="phone"]').value;
+      // Get and normalize the contact input (works for both phone or email)
+      const contactInput = form.querySelector('input[type="phone"]').value;
+      const normalizedContact = normalizeContactInput(contactInput);
       const password = form.querySelector('input.password').value;
       try {
-        const response = await login(phone, password);
+        const response = await login(normalizedContact, password);
         if (response.status === 'ok') {
           form.reset();
           showToast('Login successful!', true);
@@ -121,7 +144,9 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const form = e.target;
       const username = form.querySelector('input[type="text"]').value;
-      const phone = form.querySelector('input[type="phone"]').value;
+      // Get and normalize the contact input (works for both phone or email)
+      const contactInput = form.querySelector('input[type="phone"]').value;
+      const normalizedContact = normalizeContactInput(contactInput);
       const password = form.querySelectorAll('.signup-password.password')[0].value;
       const confirmPassword = form.querySelectorAll('.signup-password.password')[1].value;
       if (password !== confirmPassword) {
@@ -129,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       try {
-        const response = await signup(username, phone, password);
+        const response = await signup(username, normalizedContact, password);
         if (response.status === 'ok') {
           form.reset();
           showToast('Account created successfully! Please login.', true);
@@ -148,12 +173,14 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.auth-form.forgot form').forEach(form => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const phone = form.querySelector('input[type="phone"]').value;
+      // Get and normalize the contact input (works for both phone or email)
+      const contactInput = form.querySelector('input[type="phone"]').value;
+      const normalizedContact = normalizeContactInput(contactInput);
       try {
-        const response = await forgotPassword(phone);
+        const response = await forgotPassword(normalizedContact);
         if (response.status === 'ok') {
           form.reset();
-          showToast('Password reset link has been sent to your phone.', true);
+          showToast('Password reset link has been sent.', true);
           document.querySelector('.auth-flipper').classList.remove('flipped');
         } else {
           throw new Error(response.error || 'Failed to send reset link');

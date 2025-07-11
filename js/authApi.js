@@ -27,13 +27,13 @@ export async function signup(username, email, password) {
     return response.json();
 }
 
-export async function forgotPassword(email) {
+export async function forgotPassword(contact) {
     const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'forgot_password',
-            email
+            contact  // Can be either phone or email
         })
     });
     return response.json();
