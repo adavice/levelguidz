@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
     const chatMessages = document.querySelector('.chat-messages');
     const messageInput = document.querySelector('textarea');
-    const sendButton = document.querySelector('.chat-input button');
+    const sendButton = document.querySelector('.send-btn');
     const chatInput = document.querySelector('.chat-input');
 
     // Hide coach list panel initially
