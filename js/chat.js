@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coachList = document.querySelector('.chatbot-list');
     const chatMessages = document.querySelector('.chat-messages');
     const messageInput = document.querySelector('textarea');
-    const sendButton = document.querySelector('.chat-input button');
+    const sendButton = document.querySelector('.send-btn');
     const chatInput = document.querySelector('.chat-input');
 
     // Hide coach list panel initially
@@ -521,7 +521,6 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
         return Math.min(Math.max(delay, 3000), 15000);
     }
 
-    // Rename sendToGPT to sendToServer
     async function sendToServer(message, coachId) {
         try {
             const response = await fetch(`${API_BASE_URL}`, {
@@ -552,13 +551,22 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
     }
 
     // Handle sending messages
-    sendButton.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
+    if (sendButton) {
+        sendButton.addEventListener('click', sendMessage);
+    } else {
+        console.error('Send button not found! Selector: .send-btn');
+    }
+    
+    if (messageInput) {
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    } else {
+        console.error('Message input not found! Selector: textarea');
+    }
 
     function sendMessage() {
         // Always capture the input value at the start
@@ -599,75 +607,6 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
 
         if (message) {
             handleTextMessage(message, coachId, originalStatus);
-        }
-    }
-
-    async function handleTextMessage(message, coachId, originalStatus) {
-        const targetCoachId = coachId;
-
-        // Save user message to the correct chat history
-        if (!chatHistory.has(targetCoachId)) chatHistory.set(targetCoachId, []);
-        chatHistory.get(targetCoachId).push({
-            content: message,
-            isUser: true,
-            timestamp: Date.now()
-        });
-        // No need to save chat history, server handles it
-
-        // Only render if user is still on this coach
-        if (activeCoachId === targetCoachId) {
-            addMessage(message, true);
-        }
-
-        try {
-            if (originalStatus === 'online' && activeCoachId === targetCoachId) {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                setCoachStatus(targetCoachId, 'responding');
-            }
-
-            const initialDelay = getResponseDelay(originalStatus);
-            await new Promise(resolve => setTimeout(resolve, initialDelay));
-
-            const reply = await sendToServer(message, targetCoachId);
-
-            // Save coach reply to the correct chat history
-            chatHistory.get(targetCoachId).push({
-                content: reply,
-                isUser: false,
-                timestamp: Date.now()
-            });
-            // No need to save chat history, server handles it
-
-            // Only render if user is still on this coach
-            if (activeCoachId === targetCoachId) {
-                const typingDelay = calculateTypingDelay(reply);
-                await new Promise(resolve => setTimeout(resolve, typingDelay));
-                addMessage(reply, false);
-                setCoachStatus(targetCoachId, 'online');
-            }
-            // If not, do not update DOM. When user switches back, renderMessagesForCoach will show all messages.
-        } catch (error) {
-            chatHistory.get(targetCoachId).push({
-                content: `
-                    <div class="alert alert-danger mb-0">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        ${error.message}
-                    </div>
-                `,
-                isUser: false,
-                timestamp: Date.now()
-            });
-            // No need to save chat history, server handles it
-
-            if (activeCoachId === targetCoachId) {
-                addMessage(`
-                    <div class="alert alert-danger mb-0">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        ${error.message}
-                    </div>
-                `, false);
-                setCoachStatus(targetCoachId, originalStatus);
-            }
         }
     }
 
@@ -947,22 +886,6 @@ async function handleImageMessageWithText(base64Image, userText, coachId, origin
         }
     });
 
-    // Hide coach list and center chat window if coach list is hidden
-    function hideCoachListAndCenterChat() {
-        const coachListPanel = document.querySelector('.coach-list-panel');
-        const chatPanel = document.querySelector('.chat-window-panel');
-        if (coachListPanel && chatPanel) {
-            coachListPanel.style.display = 'none';
-            chatPanel.classList.add('justify-content-center');
-            chatPanel.classList.add('align-items-center');
-            chatPanel.style.margin = '0 auto';
-        }
-    }
-
-    // In your loadCoachesList or wherever you hide the coach list:
-    // hideCoachListAndCenterChat();
-
-    // Just keep the initial coach list load
     loadCoachesList();
 });
 
