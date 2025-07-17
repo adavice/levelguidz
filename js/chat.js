@@ -682,8 +682,8 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
             const formData = new FormData();
             formData.append('action', 'transcribe_audio');
             formData.append('coach_id', coachId);
-            formData.append('audio', audioBlob, 'audio.webm');
-            
+            formData.append('audio', audioBlob);
+
             const response = await fetch(`${API_BASE_URL}`, {
                 method: 'POST',
                 body: formData
@@ -880,7 +880,7 @@ async function handleImageMessageWithText(base64Image, userText, coachId, origin
             };
 
             mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
                 const audioUrl = URL.createObjectURL(audioBlob);
                 
                 // Add preview to textarea area
