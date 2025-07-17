@@ -294,6 +294,82 @@
     <script type="module" src="./js/chat.js"></script>
     <script type="module">
         import { initAuthGuard } from './js/authGuard.js';
+        import { convertVoiceToBase64, convertImageToBase64 } from './js/mediaUtils.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the send button
+            const sendBtn = document.querySelector('.send-btn');
+            const textarea = document.querySelector('.chat-input textarea');
+            
+            function sendMessage() {
+                if (textarea && textarea.value.trim()) {
+                    // TODO: Send message function
+                    console.log('Sending message:', textarea.value);
+                    textarea.value = '';
+                }
+            }
+            
+            if (sendBtn) {
+                sendBtn.addEventListener('click', sendMessage);
+            }
+            
+            // Handle Enter key to send message (but allow Shift+Enter for newlines)
+            if (textarea) {
+                textarea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+            }
+            
+            // Voice recording functionality
+            const voiceBtn = document.getElementById('voiceBtn');
+            let mediaRecorder;
+            let audioChunks = [];
+            voiceBtn.addEventListener('click', async () => {
+                try {
+                    if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream);
+                        audioChunks = [];
+
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = async () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const base64Audio = await convertVoiceToBase64(audioBlob);
+                            // TODO: Send base64Audio to your chat processing function
+                            stream.getTracks().forEach(track => track.stop());
+                        };
+
+                        mediaRecorder.start();
+                        voiceBtn.classList.add('btn-danger');
+                    } else {
+                        mediaRecorder.stop();
+                        voiceBtn.classList.remove('btn-danger');
+                    }
+                } catch (error) {
+                    console.error('Error handling voice recording:', error);
+                }
+            });
+
+            // Handle image upload
+            const imageUpload = document.getElementById('imageUpload');
+            imageUpload.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    try {
+                        const base64Image = await convertImageToBase64(file);
+                        // TODO: Send base64Image to your chat processing function
+                    } catch (error) {
+                        console.error('Error handling image upload:', error);
+                    }
+                }
+            });
+        });
     </script>
   </body>
 </html>

@@ -17,7 +17,7 @@ class AuthService {
         this.saveAuthState({
             isLoggedIn: true,
             isAdmin: !!userData.isAdmin,
-            token: userData.token,
+            token: null,
             user: userData
         });
         // No longer set 'user' key; use only 'authState' for all logic
