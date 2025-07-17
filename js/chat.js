@@ -672,48 +672,55 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
     }
 
     async function handleAudioMessage(audioPreview, coachId, originalStatus) {
-        const audio = audioPreview.querySelector('audio');
-        const audioBlob = await fetch(audio.src).then(r => r.blob());
-        
-        try {
-            addMessage(audio.src, true, true);
-            setCoachStatus(coachId, 'responding');
+    const audio = audioPreview.querySelector('audio');
+    const audioBlob = await fetch(audio.src).then(r => r.blob());
+    
+    try {
+        addMessage(audio.src, true, true);
+        setCoachStatus(coachId, 'responding');
 
-            const formData = new FormData();
-            formData.append('action', 'transcribe_audio');
-            formData.append('coach_id', coachId);
-            formData.append('audio', audioBlob);
+        const formData = new FormData();
+        formData.append('action', 'transcribe_audio');
+        formData.append('coach_id', coachId); // Include coach_id so server can process AI response too
+        formData.append('audio', audioBlob);
 
-            const response = await fetch(`${API_BASE_URL}`, {
-                method: 'POST',
-                body: formData
-            });
+        const response = await fetch(`${API_BASE_URL}`, {
+            method: 'POST',
+            body: formData
+        });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-
-            if (!data || !data.text) {
-                console.log(data)
-                throw new Error('Invalid response from server');
-            }
-
-            // Add small delay before response
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            const reply = await sendToServer(data.text, coachId);
-            addMessage(reply, false);
-            setCoachStatus(coachId, 'online');
-
-        } catch (error) {
-            console.error('Audio processing error:', error);
-            addMessage(`<span class="text-danger">Failed to process audio message: ${error.message}</span>`, false);
-            setCoachStatus(coachId, originalStatus);
-        } finally {
-            audioPreview.remove();
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        // Server should return both transcribed text AND AI reply
+        if (data.reply) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            addMessage(data.reply, false);
+        } else if (data.text) {
+            // Fallback: if server only returns transcribed text, show it
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            addMessage(`Transcribed: "${data.text}"`, false);
+        } else {
+            throw new Error('Invalid response from server');
+        }
+        
+        setCoachStatus(coachId, 'online');
+
+    } catch (error) {
+        console.error('Audio processing error:', error);
+        addMessage(`<span class="text-danger">Failed to process audio message: ${error.message}</span>`, false);
+        setCoachStatus(coachId, originalStatus);
+    } finally {
+        audioPreview.remove();
     }
+}
 
 
 // New: handle image and text together
