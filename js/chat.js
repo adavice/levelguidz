@@ -680,10 +680,10 @@ function addMessage(content, isUser = false, isAudio = false, timestamp = Date.n
             setCoachStatus(coachId, 'responding');
 
             const formData = new FormData();
-            formData.append('action', 'transcribe_audio');
+            formData.append('action', 'chat');
             formData.append('coach_id', coachId);
             formData.append('audio', audioBlob, 'audio.webm');
-
+            formData.append('type', 'audio');
             const response = await fetch(`${API_BASE_URL}`, {
                 method: 'POST',
                 body: formData
