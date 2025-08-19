@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LevelGuidz Chat</title>
+  <title data-i18n="LevelGuidz Chat">LevelGuidz Chat</title>
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link href="./css/bootstrap.min.css" rel="stylesheet" />
     <link href="./css/bootstrap-icons.min.css" rel="stylesheet" />
@@ -137,37 +137,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="./news.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./chat.html">Coaching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Guides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./contact.html">Contact</a>
-            </li>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
           </ul>
-          <div class="d-flex">
-            <div class="user-section">
-              <!-- Login button shown when logged out -->
-              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
-              
-              <!-- Username dropdown shown when logged in -->
-              <div class="dropdown d-none" id="userDropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  <span id="usernamePlaceholder"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:48px; min-width:48px; padding-left:0.5rem; padding-right:0.5rem; background-position:right 0.5rem center;">
+                            <option value="en" title="English" aria-label="English">🇬🇧</option>
+                            <option value="sv" title="Svenska" aria-label="Svenska">🇸🇪</option>
+                            <option value="ro" title="Română" aria-label="Română">🇷🇴</option>
+                        </select>
+                    </div>
         </div>
       </div>
     </nav>
@@ -177,8 +182,8 @@
           <!-- Left Panel - Bot List -->
           <div class="col-lg-3 coach-list-panel d-none">
             <div class="feature-card">
-              <div class="card-header bg-transparent border-0">
-                <h5 class="text-white mb-0 d-flex align-items-center gap-2">
+                <div class="card-header bg-transparent border-0">
+                <h5 class="text-white mb-0 d-flex align-items-center gap-2" data-i18n="Coach List">
                   <i class="bi bi-people-fill" style="color: var(--primary-color);"></i>
                   Coach List
                 </h5>
@@ -253,41 +258,84 @@
       </div>
     </section>
     <footer class="footer py-5 mt-auto">
-        <div class="container">
-            <div class="row footer-main">
-                <div class="col-lg-4 footer-branding">
-                    <a href="#" class="footer-brand d-inline-block">
-                        <img src="img/logo_dark.svg" alt="Logo" height="30">
-                    </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz. All rights reserved.</p>
-                </div>
-                
-                <div class="col-lg-8 footer-links">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Company</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./faq.html">F.A.Q.</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Legal</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Privacy Policy</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Terms of Service</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./refund.html">Refund Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <div class="row footer-disclaimer">
-                <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
-                </div>
+      <div class="container">
+        <div class="row footer-main">
+          <div class="col-lg-4 footer-branding">
+            <a href="#" class="footer-brand d-inline-block">
+              <img src="img/logo_dark.svg" alt="Logo" height="30" />
+            </a>
+            <p class="text-muted small mt-2 mb-0">
+              &copy;
+              <script>document.write(new Date().getFullYear());</script>
+              <span data-i18n="All rights reserved.">LevelGuidz. All rights reserved.</span>
+            </p>
+          </div>
+
+          <div class="col-lg-8 footer-links">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./contact.html"
+                      data-i18n="Contact"
+                      >Contact</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./faq.html" data-i18n="F.A.Q."
+                      >F.A.Q.</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Privacy Policy"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Terms of Service"
+                      >Terms of Service</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./refund.html"
+                      data-i18n="Refund Policy"
+                      >Refund Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div class="row footer-disclaimer">
+            <div class="col-12">
+              <p
+                class="text-muted small text-center px-lg-5"
+                data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
+              >
+                All brand names, (registered) trademarks, images and product
+                descriptions are the property of their legal owners and are
+                neither sponsor nor partner of this promotion.
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
@@ -295,5 +343,13 @@
     <script type="module">
         import { initAuthGuard } from './js/authGuard.js';
     </script>
+  <script type="module">
+    import { translations } from './js/translations/i18n-chat.js';
+    import { setupTranslation } from './js/translate.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupTranslation(translations);
+    });
+  </script>
   </body>
 </html>

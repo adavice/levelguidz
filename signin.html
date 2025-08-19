@@ -78,7 +78,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top">
+<nav class="navbar navbar-expand-lg fixed-top">
       <div class="container">
         <a class="navbar-brand" href="./index.html">
           <img src="img/logo_dark.svg" alt="Logo" height="30" />
@@ -91,37 +91,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse text-center" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="./news.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" id="coachingNavLink">Coaching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Guides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./contact.html">Contact</a>
-            </li>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
           </ul>
-          <div class="d-flex justify-content-center">
-            <div class="user-section">
-              <!-- Login button shown when logged out -->
-              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
-              
-              <!-- Username dropdown shown when logged in -->
-              <div class="dropdown d-none" id="userDropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  <span id="usernamePlaceholder"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:48px; min-width:48px; padding-left:0.5rem; padding-right:0.5rem; background-position:right 0.5rem center;">
+                            <option value="en" title="English" aria-label="English">🇬🇧</option>
+                            <option value="sv" title="Svenska" aria-label="Svenska">🇸🇪</option>
+                            <option value="ro" title="Română" aria-label="Română">🇷🇴</option>
+                        </select>
+                    </div>
         </div>
       </div>
     </nav>
@@ -134,14 +139,14 @@
                         <div class="auth-flipper">
                             <!-- Login Form -->
                             <div class="auth-form front p-4">
-                                <h4 class="text-center mb-4">Sign In</h4>
+                                <h4 class="text-center mb-4" data-i18n="Sign In">Sign In</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                         <input type="tel" class="form-control" placeholder="Enter your phone number">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label" data-i18n="Password">Password</label>
                                         <div class="password-field">
                                             <input type="password" class="form-control" placeholder="Enter your password">
                                             <button type="button" class="password-toggle">
@@ -152,38 +157,38 @@
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="remember">
-                                            <label class="form-check-label" for="remember">Remember me</label>
+                                            <label class="form-check-label" for="remember" data-i18n="Remember me">Remember me</label>
                                         </div>
-                                        <a href="#" class="text-primary forgot-trigger">Forgot Password?</a>
+                                        <a href="#" class="text-primary forgot-trigger" data-i18n="Forgot Password?">Forgot Password?</a>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
-                                    <p class="text-center mb-0">Don't have an account? <a href="#" class="text-primary flip-trigger">Sign Up</a></p>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Sign In Button">Sign In</button>
+                                    <p class="text-center mb-0"><span  data-i18n="Don't have an account? Sign Up">Don't have an account?</span> <a href="#" class="text-primary flip-trigger" data-i18n="Sign Up">Sign Up</a></p>
                                 </form>
                             </div>
 
                             <!-- Sign Up Form -->
                             <div class="auth-form back p-4">
-                                <h4 class="text-center mb-4">Create Account</h4>
+                                <h4 class="text-center mb-4" data-i18n="Create Account">Create Account</h4>
                                 <form>
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            <label class="form-label">Username</label>
+                                            <label class="form-label" data-i18n="Username">Username</label>
                                             <input type="text" class="form-control" placeholder="Choose a username">
                                         </div>
                                         <div class="col-6">
-                                            <label class="form-label">Phone Number</label>
+                                            <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                             <input type="tel" class="form-control" placeholder="Enter your phone number">
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-6">
-                                            <label class="form-label">Password</label>
+                                            <label class="form-label" data-i18n="Password">Password</label>
                                             <div class="password-field">
                                                 <input type="password" class="form-control signup-password" placeholder="Create password">
                                             </div>
                                         </div>
                                         <div class="col-6">
-                                            <label class="form-label">Confirm Password</label>
+                                            <label class="form-label" data-i18n="Confirm Password">Confirm Password</label>
                                             <div class="password-field">
                                                 <input type="password" class="form-control signup-password" placeholder="Confirm password">
                                                 <button type="button" class="password-toggle">
@@ -192,22 +197,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
-                                    <p class="text-center mb-0">Already have an account? <a href="#" class="text-primary flip-trigger">Sign In</a></p>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Create Account Button">Create Account</button>
+                                    <p class="text-center mb-0"><span data-i18n="Already have an account?"></span>Already have an account? <a href="#" class="text-primary flip-trigger" data-i18n="Sign In">Sign In</a></p>
                                 </form>
                             </div>
 
                             <!-- Forgot Password Form -->
                             <div class="auth-form forgot p-4">
-                                <h4 class="text-center mb-4">Reset Password</h4>
+                                <h4 class="text-center mb-4" data-i18n="Reset Password">Reset Password</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                         <input type="tel" class="form-control" placeholder="Enter your phone number">
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Send Reset Link</button>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Send Reset Link">Send Reset Link</button>
                                     <p class="text-center mb-0">
-                                        <a href="#" class="text-primary back-to-login">Back to Sign In</a>
+                                        <a href="#" class="text-primary back-to-login" data-i18n="Back to Sign In">Back to Sign In</a>
                                     </p>
                                 </form>
                             </div>
@@ -228,41 +233,84 @@
     </div>
 
     <footer class="footer py-5 mt-auto">
-        <div class="container">
-            <div class="row footer-main">
-                <div class="col-lg-4 footer-branding">
-                    <a href="#" class="footer-brand d-inline-block">
-                        <img src="img/logo_dark.svg" alt="Logo" height="30">
-                    </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz. All rights reserved.</p>
-                </div>
-                
-                <div class="col-lg-8 footer-links">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Company</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./faq.html">F.A.Q.</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Legal</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Privacy Policy</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Terms of Service</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./refund.html">Refund Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <div class="row footer-disclaimer">
-                <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
-                </div>
+      <div class="container">
+        <div class="row footer-main">
+          <div class="col-lg-4 footer-branding">
+            <a href="#" class="footer-brand d-inline-block">
+              <img src="img/logo_dark.svg" alt="Logo" height="30" />
+            </a>
+            <p class="text-muted small mt-2 mb-0">
+              &copy;
+              <script>document.write(new Date().getFullYear());</script>
+              <span data-i18n="All rights reserved.">LevelGuidz. All rights reserved.</span>
+            </p>
+          </div>
+
+          <div class="col-lg-8 footer-links">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./contact.html"
+                      data-i18n="Contact"
+                      >Contact</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./faq.html" data-i18n="F.A.Q."
+                      >F.A.Q.</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Privacy Policy"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Terms of Service"
+                      >Terms of Service</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./refund.html"
+                      data-i18n="Refund Policy"
+                      >Refund Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div class="row footer-disclaimer">
+            <div class="col-12">
+              <p
+                class="text-muted small text-center px-lg-5"
+                data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
+              >
+                All brand names, (registered) trademarks, images and product
+                descriptions are the property of their legal owners and are
+                neither sponsor nor partner of this promotion.
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -282,8 +330,13 @@
     </script>
     <script type="module">
         import { login, signup, forgotPassword } from './js/authApi.js';
+        import { translations } from './js/translations/i18n-signin.js';
+        import { setupTranslation } from './js/translate.js';
 
         document.addEventListener('DOMContentLoaded', function() {
+            // initialize translations for this page
+            setupTranslation(translations);
+
             const authToast = new bootstrap.Toast(document.getElementById('authToast'));
             const showToast = (message, success = false) => {
                 const toastMessage = document.getElementById('toastMessage');
@@ -295,20 +348,30 @@
                 authToast.show();
             };
 
+            const t = (key) => {
+                // helper to read current language value from translations (fallback to key)
+                try {
+                    const lang = localStorage.getItem('siteLang') || (navigator.language || 'en').slice(0,2);
+                    return (translations[lang] && translations[lang][key]) || translations.en[key] || key;
+                } catch (e) {
+                    return key;
+                }
+            };
+
             const setupFormHandlers = () => {
                 // Login form handler
                 document.querySelector('.auth-form.front form').addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    const email = form.querySelector('input[type="email"]').value;
+                    const email = form.querySelector('input[type="email"]') ? form.querySelector('input[type="email"]').value : '';
                     const password = form.querySelector('input[type="password"]').value;
                     const remember = form.querySelector('#remember').checked;
 
                     // Disable button and show loading state
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...';
-                    
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + t('Signing in...') ;
+
                     try {
                         const response = await fetch('/signin', {
                             method: 'POST',
@@ -319,19 +382,19 @@
                         });
 
                         const data = await response.json();
-                        
+
                         if (response.ok) {
-                            showToast('Login successful! Redirecting...', true);
+                            showToast(t('Login successful! Redirecting...'), true);
                             setTimeout(() => window.location.href = '/chat.html', 1500);
                         } else {
-                            throw new Error(data.message || 'Login failed');
+                            throw new Error(data.message || t('Login failed'));
                         }
                     } catch (error) {
                         showToast(error.message);
                     } finally {
                         // Reset button state
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = 'Sign In';
+                        submitBtn.innerHTML = t('Sign In Button');
                     }
                 });
 
@@ -341,18 +404,18 @@
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
                     const username = form.querySelector('input[type="text"]').value;
-                    const email = form.querySelector('input[type="email"]').value;
+                    const email = form.querySelector('input[type="email"]') ? form.querySelector('input[type="email"]').value : '';
                     const password = form.querySelectorAll('.signup-password')[0].value;
                     const confirmPassword = form.querySelectorAll('.signup-password')[1].value;
 
                     if (password !== confirmPassword) {
-                        showToast('Passwords do not match');
+                        showToast(t('Passwords do not match'));
                         return;
                     }
 
                     // Disable button and show loading state
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating account...';
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + t('Creating account...');
 
                     try {
                         const response = await fetch('/signup', {
@@ -367,16 +430,16 @@
 
                         if (response.ok) {
                             form.reset();
-                            showToast('Account created successfully! Please login.', true);
+                            showToast(t('Account created successfully! Please login.'), true);
                             document.querySelector('.auth-flipper').classList.remove('flipped');
                         } else {
-                            throw new Error(data.message || 'Registration failed');
+                            throw new Error(data.message || t('Registration failed'));
                         }
                     } catch (error) {
                         showToast(error.message);
                     } finally {
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = 'Create Account';
+                        submitBtn.innerHTML = t('Create Account Button');
                     }
                 });
 
@@ -385,10 +448,10 @@
                     e.preventDefault();
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    const email = form.querySelector('input[type="email"]').value;
+                    const email = form.querySelector('input[type="email"]') ? form.querySelector('input[type="email"]').value : '';
 
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + t('Sending...');
 
                     try {
                         const response = await fetch('/forgot-password', {
@@ -403,16 +466,16 @@
 
                         if (response.ok) {
                             form.reset();
-                            showToast('Password reset link has been sent to your email.', true);
+                            showToast(t('Password reset link has been sent to your email.'), true);
                             document.querySelector('.auth-flipper').classList.remove('flipped');
                         } else {
-                            throw new Error(data.message || 'Failed to send reset link');
+                            throw new Error(data.message || t('Failed to send reset link'));
                         }
                     } catch (error) {
                         showToast(error.message);
                     } finally {
                         submitBtn.disabled = false;
-                        submitBtn.innerHTML = 'Send Reset Link';
+                        submitBtn.innerHTML = t('Send Reset Link');
                     }
                 });
             };
@@ -430,13 +493,29 @@
                     });
                 });
 
-                // Form flip triggers
+                // Form flip triggers (Sign In <-> Sign Up)
                 document.querySelectorAll('.flip-trigger').forEach(trigger => {
                     trigger.addEventListener('click', (e) => {
                         e.preventDefault();
-                        document.querySelector('.auth-flipper').classList.toggle('flipped');
-                        document.querySelector('.auth-form.forgot').style.display = 'none';
-                        document.querySelector('.auth-form.back').style.display = 'block';
+                        const flipper = document.querySelector('.auth-flipper');
+                        const isFlipped = flipper.classList.contains('flipped');
+                        const front = document.querySelector('.auth-form.front');
+                        const back = document.querySelector('.auth-form.back');
+                        const forgot = document.querySelector('.auth-form.forgot');
+
+                        if (!isFlipped) {
+                            // show Sign Up (back)
+                            flipper.classList.add('flipped');
+                            if (back) back.style.display = 'block';
+                            if (front) front.style.display = 'none';
+                            if (forgot) forgot.style.display = 'none';
+                        } else {
+                            // show Sign In (front)
+                            flipper.classList.remove('flipped');
+                            if (front) front.style.display = 'block';
+                            if (back) back.style.display = 'none';
+                            if (forgot) forgot.style.display = 'none';
+                        }
                     });
                 });
 
@@ -445,9 +524,11 @@
                     trigger.addEventListener('click', function(e) {
                         e.preventDefault();
                         const flipper = document.querySelector('.auth-flipper');
+                        const back = document.querySelector('.auth-form.back');
+                        const forgot = document.querySelector('.auth-form.forgot');
                         flipper.classList.add('flipped');
-                        document.querySelector('.auth-form.back').style.display = 'none';
-                        document.querySelector('.auth-form.forgot').style.display = 'block';
+                        if (back) back.style.display = 'none';
+                        if (forgot) forgot.style.display = 'block';
                     });
                 });
 
@@ -455,11 +536,14 @@
                 document.querySelectorAll('.back-to-login').forEach(trigger => {
                     trigger.addEventListener('click', function(e) {
                         e.preventDefault();
-                        document.querySelector('.auth-flipper').classList.remove('flipped');
-                        setTimeout(() => {
-                            document.querySelector('.auth-form.forgot').style.display = 'none';
-                            document.querySelector('.auth-form.back').style.display = 'block';
-                        }, 200);
+                        const flipper = document.querySelector('.auth-flipper');
+                        const front = document.querySelector('.auth-form.front');
+                        const back = document.querySelector('.auth-form.back');
+                        const forgot = document.querySelector('.auth-form.forgot');
+                        flipper.classList.remove('flipped');
+                        if (front) front.style.display = 'block';
+                        if (back) back.style.display = 'none';
+                        if (forgot) forgot.style.display = 'none';
                     });
                 });
             };
@@ -469,10 +553,34 @@
         });
 
 
-        // set Sign in as the active page
-        document.querySelector('.auth-flipper').classList.toggle('flipped');
-        document.querySelector('.auth-form.forgot').style.display = 'none';
-        document.querySelector('.auth-form.back').style.display = 'block';
+        // Initialize auth UI to show Sign In (front) view by default and wire header login button
+        (function initAuthView() {
+            const flipper = document.querySelector('.auth-flipper');
+            const front = document.querySelector('.auth-form.front');
+            const back = document.querySelector('.auth-form.back');
+            const forgot = document.querySelector('.auth-form.forgot');
+
+            // Show front (Sign In) and hide others
+            if (flipper) flipper.classList.remove('flipped');
+            if (front) front.style.display = 'block';
+            if (back) back.style.display = 'none';
+            if (forgot) forgot.style.display = 'none';
+
+            // Header login button should bring user to Sign In view
+            const headerLogin = document.getElementById('loginButton');
+            if (headerLogin) {
+                headerLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (flipper) flipper.classList.remove('flipped');
+                    if (front) front.style.display = 'block';
+                    if (back) back.style.display = 'none';
+                    if (forgot) forgot.style.display = 'none';
+                    // ensure auth area is visible
+                    front.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }
+        })();
     </script>
+    
 </body>
 </html>

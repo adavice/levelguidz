@@ -24,37 +24,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse text-center" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="./news.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" id="coachingNavLink">Coaching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Guides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./contact.html">Contact</a>
-            </li>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
           </ul>
-          <div class="d-flex justify-content-center">
-            <div class="user-section">
-              <!-- Login button shown when logged out -->
-              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
-              
-              <!-- Username dropdown shown when logged in -->
-              <div class="dropdown d-none" id="userDropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  <span id="usernamePlaceholder"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:48px; min-width:48px; padding-left:0.5rem; padding-right:0.5rem; background-position:right 0.5rem center;">
+                            <option value="en" title="English" aria-label="English">🇬🇧</option>
+                            <option value="sv" title="Svenska" aria-label="Svenska">🇸🇪</option>
+                            <option value="ro" title="Română" aria-label="Română">🇷🇴</option>
+                        </select>
+                    </div>
         </div>
       </div>
     </nav>
@@ -63,29 +68,29 @@
         <div class="decorative-dots"></div>
         <div class="container h-100 d-flex align-items-center">
             <div class="hero-content text-center mx-auto" style="max-width: 800px;">
-                <h1 class="display-4 fw-bold">Leading Coaching Platform</h1>
-                <p class="lead">Become a better gamer! Get coaching to raise to Top tier!</p>
+                <h1 class="display-4 fw-bold" data-i18n="Leading Coaching Platform">Leading Coaching Platform</h1>
+                <p class="lead" data-i18n="Become a better gamer! Get coaching to raise to Top tier!">Become a better gamer! Get coaching to raise to Top tier!</p>
                 
                 <div class="steps-indicator mb-4" style="z-index: 2;">
                     <div class="steps-wrapper d-flex justify-content-center gap-5">
                         <div class="step-circle">
                             <span class="step-number">1</span>
-                            <span class="step-text">Choose your game</span>
+                            <span class="step-text" data-i18n="Choose your game">Choose your game</span>
                         </div>
                         <div class="step-circle">
                             <span class="step-number">2</span>
-                            <span class="step-text">Find your coach</span>
+                            <span class="step-text" data-i18n="Find your coach">Find your coach</span>
                         </div>
                         <div class="step-circle">
                             <span class="step-number">3</span>
-                            <span class="step-text">Start Improving</span>
+                            <span class="step-text" data-i18n="Start Improving">Start Improving</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <a href="#" class="btn btn-hero-cta mt-5" id="chooseCoachBtn">
-                        <span>Choose Your Coach</span>
+                    <a href="#" class="btn btn-hero-cta mt-5" id="chooseCoachBtn" data-i18n="Choose Your Coach">
+                        <span data-i18n="Choose Your Coach">Choose Your Coach</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-2" viewBox="0 0 16 16">
                             <path d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
                         </svg>
@@ -104,8 +109,8 @@
                         <div class="feature-icon">
                             <i class="bi bi-controller"></i>
                         </div>
-                        <h3>Choose Your Arena</h3>
-                        <p>Select from our curated collection of popular competitive games. Each game features a dedicated team of elite coaches ready to guide you to victory.</p>
+                        <h3 data-i18n="Choose Your Arena">Choose Your Arena</h3>
+                        <p data-i18n="Select from our curated collection of popular competitive games. Each game features a dedicated team of elite coaches ready to guide you to victory.">Select from our curated collection of popular competitive games. Each game features a dedicated team of elite coaches ready to guide you to victory.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 position-relative">
@@ -113,8 +118,8 @@
                         <div class="feature-icon">
                             <i class="bi bi-search-heart"></i>
                         </div>
-                        <h3>Match with Your Mentor</h3>
-                        <p>Our sophisticated matching system analyzes your playstyle and goals to connect you with coaches who perfectly fit your needs and schedule.</p>
+                        <h3 data-i18n="Match with Your Mentor">Match with Your Mentor</h3>
+                        <p data-i18n="Our sophisticated matching system analyzes your playstyle and goals to connect you with coaches who perfectly fit your needs and schedule.">Our sophisticated matching system analyzes your playstyle and goals to connect you with coaches who perfectly fit your needs and schedule.</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -122,9 +127,9 @@
                         <div class="feature-icon">
                             <i class="bi bi-trophy"></i>
                         </div>
-                        <h3>Master Your Game</h3>
-                        <p>Transform your potential into professional-level performance. Our expert coaches will guide you through personalized training to achieve your competitive gaming goals.</p>
-                        <a href="#" class="btn btn-primary mt-3">Start Now</a>
+                        <h3 data-i18n="Master Your Game">Master Your Game</h3>
+                        <p data-i18n="Transform your potential into professional-level performance. Our expert coaches will guide you through personalized training to achieve your competitive gaming goals.">Transform your potential into professional-level performance. Our expert coaches will guide you through personalized training to achieve your competitive gaming goals.</p>
+                        <a href="#" class="btn btn-primary mt-3" data-i18n="Start Now">Start Now</a>
                     </div>
                 </div>
             </div>
@@ -133,8 +138,8 @@
         <section class="featured-coaches py-5 position-relative">
             <div class="decorative-dots"></div>
             <div class="decorative-circle"></div>
-            <h2 class="text-center mb-2">Featured Coaches</h2>
-            <p class="text-center text-muted mb-5">Learn from the best</p>
+            <h2 class="text-center mb-2" data-i18n="Featured Coaches">Featured Coaches</h2>
+            <p class="text-center text-muted mb-5" data-i18n="Learn from the best">Learn from the best</p>
             <div class="locomotive-carousel position-relative">
                 <button class="locomotive-arrow left btn btn-light position-absolute top-50 start-0 translate-middle-y" style="z-index:2;" aria-label="Scroll left">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -154,12 +159,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Top Rated</span>
+                                <span class="badge bg-primary" data-i18n="Top Rated">Top Rated</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-mortarboard"></i> Over 1000+ coaching sessions</li>
-                                <li><i class="bi bi-diagram-3"></i> Advanced strategy expert</li>
-                                <li><i class="bi bi-trophy"></i> Top 100 globally</li>
+                                <li><i class="bi bi-mortarboard"></i> <span data-i18n="Over 1000+ coaching sessions">Over 1000+ coaching sessions</span></li>
+                                <li><i class="bi bi-diagram-3"></i> <span data-i18n="Advanced strategy expert">Advanced strategy expert</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="Top 100 globally">Top 100 globally</span></li>
                             </ul>
                         </div>
                     </div>
@@ -176,12 +181,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Expert</span>
+                                <span class="badge bg-primary" data-i18n="Expert">Expert</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-calendar-check"></i> Competitive player since 2018</li>
-                                <li><i class="bi bi-graph-up"></i> Meta analysis expert</li>
-                                <li><i class="bi bi-trophy"></i> Tournament champion</li>
+                                <li><i class="bi bi-calendar-check"></i> <span data-i18n="Competitive player since 2018">Competitive player since 2018</span></li>
+                                <li><i class="bi bi-graph-up"></i> <span data-i18n="Meta analysis expert">Meta analysis expert</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="Tournament champion">Tournament champion</span></li>
                             </ul>
                         </div>
                     </div>
@@ -198,12 +203,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Pro Player</span>
+                                <span class="badge bg-primary" data-i18n="Pro Player">Pro Player</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-stars"></i> Professional esports player</li>
-                                <li><i class="bi bi-lightning"></i> Strategy optimization</li>
-                                <li><i class="bi bi-trophy"></i> Regional champion</li>
+                                <li><i class="bi bi-stars"></i> <span data-i18n="Professional esports player">Professional esports player</span></li>
+                                <li><i class="bi bi-lightning"></i> <span data-i18n="Strategy optimization">Strategy optimization</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="Regional champion">Regional champion</span></li>
                             </ul>
                         </div>
                     </div>
@@ -220,12 +225,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">RTS Specialist</span>
+                                <span class="badge bg-primary" data-i18n="RTS Specialist">RTS Specialist</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-controller"></i> Expert in real-time strategy</li>
-                                <li><i class="bi bi-graph-up"></i> Macro game analysis</li>
-                                <li><i class="bi bi-trophy"></i> ESL Champion</li>
+                                <li><i class="bi bi-controller"></i> <span data-i18n="Expert in real-time strategy">Expert in real-time strategy</span></li>
+                                <li><i class="bi bi-graph-up"></i> <span data-i18n="Macro game analysis">Macro game analysis</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="ESL Champion">ESL Champion</span></li>
                             </ul>
                         </div>
                     </div>
@@ -242,12 +247,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">FPS Expert</span>
+                                <span class="badge bg-primary" data-i18n="FPS Expert">FPS Expert</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-bullseye"></i> Precision aiming techniques</li>
-                                <li><i class="bi bi-shield"></i> Defensive strategies</li>
-                                <li><i class="bi bi-trophy"></i> Tournament finalist</li>
+                                <li><i class="bi bi-bullseye"></i> <span data-i18n="Precision aiming techniques">Precision aiming techniques</span></li>
+                                <li><i class="bi bi-shield"></i> <span data-i18n="Defensive strategies">Defensive strategies</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="Tournament finalist">Tournament finalist</span></li>
                             </ul>
                         </div>
                     </div>
@@ -264,12 +269,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="badge bg-primary">Racing Pro</span>
+                                <span class="badge bg-primary" data-i18n="Racing Pro">Racing Pro</span>
                             </div>
                             <ul class="coach-features">
-                                <li><i class="bi bi-speedometer2"></i> Racing simulation expert</li>
-                                <li><i class="bi bi-gear"></i> Vehicle setup mastery</li>
-                                <li><i class="bi bi-trophy"></i> Circuit champion</li>
+                                <li><i class="bi bi-speedometer2"></i> <span data-i18n="Racing simulation expert">Racing simulation expert</span></li>
+                                <li><i class="bi bi-gear"></i> <span data-i18n="Vehicle setup mastery">Vehicle setup mastery</span></li>
+                                <li><i class="bi bi-trophy"></i> <span data-i18n="Circuit champion">Circuit champion</span></li>
                             </ul>
                         </div>
                     </div>
@@ -352,7 +357,7 @@
         <section class="how-it-works py-5 position-relative">
             <div class="decorative-dots"></div>
             <div class="decorative-circle"></div>
-            <h2 class="text-center mb-5">How it Works</h2>
+            <h2 class="text-center mb-5" data-i18n="How it Works">How it Works</h2>
             <div class="row gy-5 align-items-center">
                 <!-- Block 1 - Image Left -->
                 <div class="col-lg-6" style="order: -2;">
@@ -360,14 +365,14 @@
                         <div class="auth-flipper">
                             <!-- Login Form -->
                             <div class="auth-form front p-4">
-                                <h4 class="text-center mb-4">Log In</h4>
+                                <h4 class="text-center mb-4" data-i18n="Log In">Log In</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                         <input type="phone" class="form-control login" placeholder="Enter your phone number">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label" data-i18n="Password">Password</label>
                                         <div class="password-field">
                                         <input type="password" class="form-control password" placeholder="Enter your password">
                                             <button type="button" class="password-toggle" aria-label="Toggle password visibility">
@@ -378,34 +383,34 @@
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="remember">
-                                            <label class="form-check-label" for="remember">Remember me</label>
+                                            <label class="form-check-label" for="remember" data-i18n="Remember me">Remember me</label>
                                         </div>
-                                        <a href="#" class="text-primary forgot-trigger">Forgot Password?</a>
+                                        <a href="#" class="text-primary forgot-trigger" data-i18n="Forgot Password?">Forgot Password?</a>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
-                                    <p class="text-center mb-0">Don't have an account? <a href="#" class="text-primary flip-trigger">Sign Up</a></p>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Sign In">Sign In</button>
+                                    <p class="text-center mb-0"><span data-i18n="Don't have an account?">Don't have an account?</span> <a href="#" class="text-primary flip-trigger" data-i18n="Sign Up">Sign Up</a></p>
                                 </form>
                             </div>
 
                             <!-- Sign Up Form -->
                             <div class="auth-form back p-4" id="login">
-                                <h4 class="text-center mb-4">Create Account</h4>
+                                <h4 class="text-center mb-4" data-i18n="Create Account">Create Account</h4>
                                 <form>
                                     <!-- Username and Phone in one line -->
                                     <div class="row mb-3">
                                         <div class="col-6">
-                                            <label class="form-label">Username</label>
+                                            <label class="form-label" data-i18n="Username">Username</label>
                                             <input type="text" class="form-control" placeholder="Choose a username">
                                         </div>
                                         <div class="col-6">
-                                            <label class="form-label">Phone Number</label>
+                                            <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                             <input type="phone" class="form-control" placeholder="Phone Number">
                                         </div>
                                     </div>
                                     <!-- Password fields in one line -->
                                     <div class="row mb-4">
                                         <div class="col-6">
-                                            <label class="form-label">Password</label>
+                                            <label class="form-label" data-i18n="Password">Password</label>
                                         <div class="password-field">
                                             <input type="password" class="form-control signup-password password" placeholder="Create password">
                                             <button type="button" class="password-toggle" aria-label="Toggle password visibility">
@@ -414,7 +419,7 @@
                                         </div>
                                         </div>
                                         <div class="col-6">
-                                            <label class="form-label">Confirm Password</label>
+                                            <label class="form-label" data-i18n="Confirm Password">Confirm Password</label>
                                             <div class="password-field">
                                                 <input type="password" class="form-control signup-password password" placeholder="Confirm password">
                                                 <button type="button" class="password-toggle" id="signup-password-toggle">
@@ -423,22 +428,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
-                                    <p class="text-center mb-0">Already have an account? <a href="#" class="text-primary flip-trigger">Sign In</a></p>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Create Account">Create Account</button>
+                                    <p class="text-center mb-0"><span data-i18n="Already have an account?">Already have an account?</span> <a href="#" class="text-primary flip-trigger" data-i18n="Sign In">Sign In</a></p>
                                 </form>
                             </div>
 
                             <!-- Forgot Password Form -->
                             <div class="auth-form forgot p-4 back">
-                                <h4 class="text-center mb-4">Reset Password</h4>
+                                <h4 class="text-center mb-4" data-i18n="Reset Password">Reset Password</h4>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label" data-i18n="Phone Number">Phone Number</label>
                                         <input type="phone" class="form-control" placeholder="Enter your phone Number">
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 mb-3">Send Reset Link</button>
+                                    <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="Send Reset Link">Send Reset Link</button>
                                     <p class="text-center mb-0">
-                                        <a href="#" class="text-primary back-to-login">Back to Sign In</a>
+                                        <a href="#" class="text-primary back-to-login" data-i18n="Back to Sign In">Back to Sign In</a>
                                     </p>
                                 </form>
                             </div>
@@ -447,28 +452,28 @@
                 </div>
                 <div class="col-lg-6" style="order : -3;">
                     <div class="numbered-content">
-                        <h3 class="mb-4">Start Your Gaming Journey</h3>
+                        <h3 class="mb-4" data-i18n="Start Your Gaming Journey">Start Your Gaming Journey</h3>
                         <div class="steps-list">
                             <div class="step-item">
                                 <div class="d-flex align-items-center gap-3 mb-2">
                                     <span class="step-number">1</span>
-                                    <h4 class="h6 mb-0">Upgrade your Membership to Premium</h4>
+                                    <h4 class="h6 mb-0" data-i18n="Upgrade your Membership to Premium">Upgrade your Membership to Premium</h4>
                                 </div>
-                                <p>Unlock the full potential of our platform with premium membership. Get priority access to top coaches, exclusive resources, and advanced features to accelerate your progress.</p>
+                                <p data-i18n="Unlock the full potential of our platform with premium membership. Get priority access to top coaches, exclusive resources, and advanced features to accelerate your progress.">Unlock the full potential of our platform with premium membership. Get priority access to top coaches, exclusive resources, and advanced features to accelerate your progress.</p>
                             </div>
                             <div class="step-item">
                                 <div class="d-flex align-items-center gap-3 mb-2">
                                     <span class="step-number">2</span>
-                                    <h4 class="h6 mb-0">Define games for yourself and choose your perfect coach</h4>
+                                    <h4 class="h6 mb-0" data-i18n="Define games for yourself and choose your perfect coach">Define games for yourself and choose your perfect coach</h4>
                                 </div>
-                                <p>Select your preferred games and explore our extensive roster of specialized coaches. Our platform helps you find the perfect mentor based on your skill level, goals, and playing style.</p>
+                                <p data-i18n="Select your preferred games and explore our extensive roster of specialized coaches. Our platform helps you find the perfect mentor based on your skill level, goals, and playing style.">Select your preferred games and explore our extensive roster of specialized coaches. Our platform helps you find the perfect mentor based on your skill level, goals, and playing style.</p>
                             </div>
                             <div class="step-item">
                                 <div class="d-flex align-items-center gap-3 mb-2">
                                     <span class="step-number">3</span>
-                                    <h4 class="h6 mb-0">Start your 1-1 unlimited session with a professional player</h4>
+                                    <h4 class="h6 mb-0" data-i18n="Start your 1-1 unlimited session with a professional player">Start your 1-1 unlimited session with a professional player</h4>
                                 </div>
-                                <p>Enjoy unlimited one-on-one coaching sessions with your chosen professional player. Get personalized attention, real-time feedback, and tailored strategies to maximize your improvement.</p>
+                                <p data-i18n="Enjoy unlimited one-on-one coaching sessions with your chosen professional player. Get personalized attention, real-time feedback, and tailored strategies to maximize your improvement.">Enjoy unlimited one-on-one coaching sessions with your chosen professional player. Get personalized attention, real-time feedback, and tailored strategies to maximize your improvement.</p>
                             </div>
                         </div>
                     </div>
@@ -482,22 +487,22 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="content-block">
-                        <h3>
-                            <span class="highlight-text">Level Up</span> Your Gaming Skills
+                        <h3 data-i18n="Level Up Your Gaming Skills">
+                            <span class="highlight-text" data-i18n="Level Up">Level Up</span> <span data-i18n="Your Gaming Skills">Your Gaming Skills</span>
                         </h3>
                         <div class="content-separator my-4"></div>
-                        <p>Ready to transform your gaming passion into professional-level expertise? Whether you're aiming for tournament success or streaming stardom, our coaching platform is your gateway to excellence. With personalized guidance from top-tier coaches, you'll master advanced strategies and techniques that separate casual players from champions. Take control of your gaming future and unlock your full potential today.</p>
+                        <p data-i18n="Ready to transform your gaming passion into professional-level expertise? Whether you're aiming for tournament success or streaming stardom, our coaching platform is your gateway to excellence. With personalized guidance from top-tier coaches, you'll master advanced strategies and techniques that separate casual players from champions. Take control of your gaming future and unlock your full potential today.">Ready to transform your gaming passion into professional-level expertise? Whether you're aiming for tournament success or streaming stardom, our coaching platform is your gateway to excellence. With personalized guidance from top-tier coaches, you'll master advanced strategies and techniques that separate casual players from champions. Take control of your gaming future and unlock your full potential today.</p>
                     </div>
                 </div>
 
                 <!-- Block 3 - Image Right -->
                 <div class="col-lg-6">
                     <div class="content-block">
-                        <h3>
-                            Learn from <span class="highlight-text">Elite Players</span>
+                        <h3 data-i18n="Learn from Elite Players">
+                            <span data-i18n="Learn from">Learn from</span> <span class="highlight-text" data-i18n="Elite Players">Elite Players</span>
                         </h3>
                         <div class="content-separator my-4"></div>
-                        <p>Connect with championship-caliber coaches who've proven themselves at the highest levels of competitive gaming. Our rigorous selection process ensures you're learning from verified experts who excel at both playing and teaching. With real-time scheduling and personalized feedback, you'll get the focused attention needed to rapidly improve your gameplay and decision-making skills.</p>
+                        <p data-i18n="Connect with championship-caliber coaches who've proven themselves at the highest levels of competitive gaming. Our rigorous selection process ensures you're learning from verified experts who excel at both playing and teaching. With real-time scheduling and personalized feedback, you'll get the focused attention needed to rapidly improve your gameplay and decision-making skills.">Connect with championship-caliber coaches who've proven themselves at the highest levels of competitive gaming. Our rigorous selection process ensures you're learning from verified experts who excel at both playing and teaching. With real-time scheduling and personalized feedback, you'll get the focused attention needed to rapidly improve your gameplay and decision-making skills.</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -514,9 +519,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="content-block">
-                        <h3>See <span class="highlight-text">Rapid Progress</span></h3>
+                        <h3 data-i18n="See Rapid Progress">See <span class="highlight-text" data-i18n="Rapid Progress">Rapid Progress</span></h3>
                         <div class="content-separator my-4"></div>
-                        <p>Experience measurable improvement in your gameplay from day one. Our structured coaching approach combines practical skills training with strategic insight, helping you climb ranks faster than solo practice. We're committed to your success, providing the tools and knowledge you need to compete at higher levels. Start your journey to mastery with coaches who understand what it takes to reach the top.</p>
+                        <p data-i18n="Experience measurable improvement in your gameplay from day one. Our structured coaching approach combines practical skills training with strategic insight, helping you climb ranks faster than solo practice. We're committed to your success, providing the tools and knowledge you need to compete at higher levels. Start your journey to mastery with coaches who understand what it takes to reach the top.">Experience measurable improvement in your gameplay from day one. Our structured coaching approach combines practical skills training with strategic insight, helping you climb ranks faster than solo practice. We're committed to your success, providing the tools and knowledge you need to compete at higher levels. Start your journey to mastery with coaches who understand what it takes to reach the top.</p>
                     </div>
                 </div>
             </div>
@@ -524,41 +529,84 @@
     </main>
 
     <footer class="footer py-5 mt-auto">
-        <div class="container">
-            <div class="row footer-main">
-                <div class="col-lg-4 footer-branding">
-                    <a href="#" class="footer-brand d-inline-block">
-                        <img src="img/logo_dark.svg" alt="Logo" height="30">
-                    </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz. All rights reserved.</p>
-                </div>
-                
-                <div class="col-lg-8 footer-links">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Company</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./faq.html">F.A.Q.</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Legal</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Privacy Policy</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Terms of Service</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./refund.html">Refund Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <div class="row footer-disclaimer">
-                <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
-                </div>
+      <div class="container">
+        <div class="row footer-main">
+          <div class="col-lg-4 footer-branding">
+            <a href="#" class="footer-brand d-inline-block">
+              <img src="img/logo_dark.svg" alt="Logo" height="30" />
+            </a>
+            <p class="text-muted small mt-2 mb-0">
+              &copy;
+              <script>document.write(new Date().getFullYear());</script>
+              <span data-i18n="All rights reserved.">LevelGuidz. All rights reserved.</span>
+            </p>
+          </div>
+
+          <div class="col-lg-8 footer-links">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./contact.html"
+                      data-i18n="Contact"
+                      >Contact</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./faq.html" data-i18n="F.A.Q."
+                      >F.A.Q.</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Privacy Policy"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Terms of Service"
+                      >Terms of Service</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./refund.html"
+                      data-i18n="Refund Policy"
+                      >Refund Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div class="row footer-disclaimer">
+            <div class="col-12">
+              <p
+                class="text-muted small text-center px-lg-5"
+                data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
+              >
+                All brand names, (registered) trademarks, images and product
+                descriptions are the property of their legal owners and are
+                neither sponsor nor partner of this promotion.
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -575,8 +623,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/form.js"></script>
+        <script type="module" src="./js/main.js"></script>
+        <script type="module" src="./js/form.js"></script>
 
+
+        <!-- Per-page translation file -->
+    <script type="module">
+      import { translations } from "./js/translations/i18n-index.js";
+      import { setupTranslation } from "./js/translate.js";
+      setupTranslation(translations);
+    </script>
 </body>
 </html>

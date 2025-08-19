@@ -23,37 +23,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse text-center" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="./news.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" id="coachingNavLink">Coaching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Guides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./contact.html">Contact</a>
-            </li>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
           </ul>
-          <div class="d-flex justify-content-center">
-            <div class="user-section">
-              <!-- Login button shown when logged out -->
-              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
-              
-              <!-- Username dropdown shown when logged in -->
-              <div class="dropdown d-none" id="userDropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  <span id="usernamePlaceholder"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:48px; min-width:48px; padding-left:0.5rem; padding-right:0.5rem; background-position:right 0.5rem center;">
+                            <option value="en" title="English" aria-label="English">🇬🇧</option>
+                            <option value="sv" title="Svenska" aria-label="Svenska">🇸🇪</option>
+                            <option value="ro" title="Română" aria-label="Română">🇷🇴</option>
+                        </select>
+                    </div>
         </div>
       </div>
     </nav>
@@ -61,107 +66,107 @@
     <div class="container my-5" style="margin-top: 100px !important;">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <div class="feature-card">
-                    <h1 class="text-center mb-5">Privacy Policy</h1>
+        <div class="feature-card">
+          <h1 class="text-center mb-5" data-i18n="Privacy.Title">Privacy Policy</h1>
                     
-                    <div class="content">
-                        <p class="mb-5">At Levelguidz, your privacy matters. By using our website and services, you consent - where legally permitted - to our collection, use, and disclosure of your personal data in accordance with this Privacy Policy. Levelguidz.com ("we", "us", or "our") is the controller of your data and is committed to safeguarding your personal information and privacy when you interact with our website or use our services.</p>
+          <div class="content">
+            <p class="mb-5" data-i18n="Privacy.Intro.P1">At Levelguidz, your privacy matters. By using our website and services, you consent - where legally permitted - to our collection, use, and disclosure of your personal data in accordance with this Privacy Policy. Levelguidz.com ("we", "us", or "our") is the controller of your data and is committed to safeguarding your personal information and privacy when you interact with our website or use our services.</p>
 
-                        <p class="mb-5">This Privacy Policy is part of our Terms and Conditions. It explains the types of data we collect, how we use it, and your rights and choices related to our data practices. Please review this document before submitting any personal data or using our services. If you do not agree with our practices, we recommend not accessing the website.</p>
+            <p class="mb-5" data-i18n="Privacy.Intro.P2">This Privacy Policy is part of our Terms and Conditions. It explains the types of data we collect, how we use it, and your rights and choices related to our data practices. Please review this document before submitting any personal data or using our services. If you do not agree with our practices, we recommend not accessing the website.</p>
 
-                        <div class="mb-5">
-                            <h3>Types of Data Collected</h3>
-                            <hr class="mb-4">
-                            <p>We may collect the following types of personal data:</p>
-                            <ul>
-                                <li>Directly provided by users: Name, email address, phone number, and physical address.</li>
-                                <li>Automatically collected: Cookies, usage data, IP addresses, and browser information.</li>
-                            </ul>
-                            <p>Cookies and tracking tools are used to enhance your experience, remember preferences, and analyze site traffic. Blocking cookies may limit functionality.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Types.Title">Types of Data Collected</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Types.P1">We may collect the following types of personal data:</p>
+              <ul>
+                <li data-i18n="Privacy.Types.List.1">Directly provided by users: Name, email address, phone number, and physical address.</li>
+                <li data-i18n="Privacy.Types.List.2">Automatically collected: Cookies, usage data, IP addresses, and browser information.</li>
+              </ul>
+              <p data-i18n="Privacy.Types.P2">Cookies and tracking tools are used to enhance your experience, remember preferences, and analyze site traffic. Blocking cookies may limit functionality.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Use of Personal Data</h3>
-                            <hr class="mb-4">
-                            <p>We process personal data for the following purposes:</p>
-                            <ul>
-                                <li>Account management and authentication</li>
-                                <li>Providing and improving services</li>
-                                <li>Analytics and user behavior tracking</li>
-                                <li>Communication and support</li>
-                                <li>Payment processing and e-commerce operations</li>
-                                <li>Displaying external content</li>
-                            </ul>
-                            <p>Some data processing may require your explicit consent, depending on legal jurisdiction.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Use.Title">Use of Personal Data</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Use.P1">We process personal data for the following purposes:</p>
+              <ul>
+                <li data-i18n="Privacy.Use.List.1">Account management and authentication</li>
+                <li data-i18n="Privacy.Use.List.2">Providing and improving services</li>
+                <li data-i18n="Privacy.Use.List.3">Analytics and user behavior tracking</li>
+                <li data-i18n="Privacy.Use.List.4">Communication and support</li>
+                <li data-i18n="Privacy.Use.List.5">Payment processing and e-commerce operations</li>
+                <li data-i18n="Privacy.Use.List.6">Displaying external content</li>
+              </ul>
+              <p data-i18n="Privacy.Use.P2">Some data processing may require your explicit consent, depending on legal jurisdiction.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Data Sharing and Disclosure</h3>
-                            <hr class="mb-4">
-                            <p>We do not sell your personal data for third-party marketing. However, we may share or disclose information under these circumstances:</p>
-                            <ul>
-                                <li>As required by law (e.g., court orders or subpoenas)</li>
-                                <li>To enforce legal rights or protect user safety</li>
-                                <li>In response to fraud investigations or national security concerns</li>
-                            </ul>
-                            <p>Your information is retained as long as necessary to provide services or meet legal obligations.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Sharing.Title">Data Sharing and Disclosure</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Sharing.P1">We do not sell your personal data for third-party marketing. However, we may share or disclose information under these circumstances:</p>
+              <ul>
+                <li data-i18n="Privacy.Sharing.List.1">As required by law (e.g., court orders or subpoenas)</li>
+                <li data-i18n="Privacy.Sharing.List.2">To enforce legal rights or protect user safety</li>
+                <li data-i18n="Privacy.Sharing.List.3">In response to fraud investigations or national security concerns</li>
+              </ul>
+              <p data-i18n="Privacy.Sharing.P2">Your information is retained as long as necessary to provide services or meet legal obligations.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Your GDPR Rights</h3>
-                            <hr class="mb-4">
-                            <p>If you're located in the EU or subject to the GDPR, you have the right to:</p>
-                            <ul>
-                                <li>Access your personal data (Art. 15 GDPR)</li>
-                                <li>Request correction of inaccurate or incomplete data (Art. 16)</li>
-                                <li>Request deletion of your data (Art. 17)</li>
-                                <li>Restrict processing of your data (Art. 18)</li>
-                                <li>Withdraw consent at any time</li>
-                            </ul>
-                            <p>To exercise these rights, contact us at <a href="mailto:support@levelguidz.com">support@levelguidz.com</a>.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.GDPR.Title">Your GDPR Rights</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.GDPR.P1">If you're located in the EU or subject to the GDPR, you have the right to:</p>
+              <ul>
+                <li data-i18n="Privacy.GDPR.List.1">Access your personal data (Art. 15 GDPR)</li>
+                <li data-i18n="Privacy.GDPR.List.2">Request correction of inaccurate or incomplete data (Art. 16)</li>
+                <li data-i18n="Privacy.GDPR.List.3">Request deletion of your data (Art. 17)</li>
+                <li data-i18n="Privacy.GDPR.List.4">Restrict processing of your data (Art. 18)</li>
+                <li data-i18n="Privacy.GDPR.List.5">Withdraw consent at any time</li>
+              </ul>
+              <p><span data-i18n="Privacy.GDPR.P2">To exercise these rights, contact us at</span> <a href="mailto:support@levelguidz.com">support@levelguidz.com</a>.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Cookies & Storage</h3>
-                            <hr class="mb-4">
-                            <p>We use cookies and local storage to improve website performance and personalize your experience. These may include:</p>
-                            <ul>
-                                <li>Session cookies – deleted after each visit</li>
-                                <li>Persistent cookies – stored for a limited time to save preferences</li>
-                                <li>Analytics and retargeting cookies – used to understand usage patterns and optimize content</li>
-                            </ul>
-                            <p>You can disable cookies in your browser settings. However, doing so may restrict access to parts of the site.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Cookies.Title">Cookies & Storage</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Cookies.P1">We use cookies and local storage to improve website performance and personalize your experience. These may include:</p>
+              <ul>
+                <li data-i18n="Privacy.Cookies.List.1">Session cookies – deleted after each visit</li>
+                <li data-i18n="Privacy.Cookies.List.2">Persistent cookies – stored for a limited time to save preferences</li>
+                <li data-i18n="Privacy.Cookies.List.3">Analytics and retargeting cookies – used to understand usage patterns and optimize content</li>
+              </ul>
+              <p data-i18n="Privacy.Cookies.P2">You can disable cookies in your browser settings. However, doing so may restrict access to parts of the site.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>System Logs</h3>
-                            <hr class="mb-4">
-                            <p>For maintenance and security purposes, we may collect system logs that include IP addresses and other technical data related to your interaction with the website.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Logs.Title">System Logs</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Logs.P1">For maintenance and security purposes, we may collect system logs that include IP addresses and other technical data related to your interaction with the website.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Data Security</h3>
-                            <hr class="mb-4">
-                            <p>We implement robust security protocols to protect your information. However, no system is 100% secure. Please use discretion when sharing sensitive data, especially via email. We are not liable for breaches beyond our control or those caused by third-party platforms.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Security.Title">Data Security</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Security.P1">We implement robust security protocols to protect your information. However, no system is 100% secure. Please use discretion when sharing sensitive data, especially via email. We are not liable for breaches beyond our control or those caused by third-party platforms.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Minors Under 18</h3>
-                            <hr class="mb-4">
-                            <p>Our services are not intended for individuals under 18 years old. We do not knowingly collect personal data from minors. If you suspect we've collected data from a minor, please contact us and we will promptly delete it.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Minors.Title">Minors Under 18</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Minors.P1">Our services are not intended for individuals under 18 years old. We do not knowingly collect personal data from minors. If you suspect we've collected data from a minor, please contact us and we will promptly delete it.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Changes to this Policy</h3>
-                            <hr class="mb-4">
-                            <p>We may update this Privacy Policy periodically. Any changes will be reflected on this page, and your continued use of the Service signifies acceptance of those changes. If legally required, we will notify you directly.</p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Changes.Title">Changes to this Policy</h3>
+              <hr class="mb-4">
+              <p data-i18n="Privacy.Changes.P1">We may update this Privacy Policy periodically. Any changes will be reflected on this page, and your continued use of the Service signifies acceptance of those changes. If legally required, we will notify you directly.</p>
+            </div>
 
-                        <div class="mb-5">
-                            <h3>Questions?</h3>
-                            <hr class="mb-4">
-                            <p>For questions or concerns, contact us at: <a href="mailto:support@levelguidz.com">support@levelguidz.com</a></p>
-                        </div>
+            <div class="mb-5">
+              <h3 data-i18n="Privacy.Questions.Title">Questions?</h3>
+              <hr class="mb-4">
+              <p><span data-i18n="Privacy.Questions.P1">For questions or concerns, contact us at:</span> <a href="mailto:support@levelguidz.com">support@levelguidz.com</a></p>
+            </div>
                     </div>
                 </div>
             </div>
@@ -169,45 +174,95 @@
     </div>
 
     <footer class="footer py-5 mt-auto">
-        <div class="container">
-            <div class="row footer-main">
-                <div class="col-lg-4 footer-branding">
-                    <a href="#" class="footer-brand d-inline-block">
-                        <img src="img/logo_dark.svg" alt="Logo" height="30">
-                    </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz. All rights reserved.</p>
-                </div>
-                
-                <div class="col-lg-8 footer-links">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Company</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./faq.html">F.A.Q.</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-white mb-3">Legal</h5>
-                            <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Privacy Policy</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Terms of Service</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./refund.html">Refund Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <div class="row footer-disclaimer">
-                <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
-                </div>
+      <div class="container">
+        <div class="row footer-main">
+          <div class="col-lg-4 footer-branding">
+            <a href="#" class="footer-brand d-inline-block">
+              <img src="img/logo_dark.svg" alt="Logo" height="30" />
+            </a>
+            <p class="text-muted small mt-2 mb-0">
+              &copy;
+              <script>document.write(new Date().getFullYear());</script>
+              <span data-i18n="All rights reserved.">LevelGuidz. All rights reserved.</span>
+            </p>
+          </div>
+
+          <div class="col-lg-8 footer-links">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./contact.html"
+                      data-i18n="Contact"
+                      >Contact</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="./faq.html" data-i18n="F.A.Q."
+                      >F.A.Q.</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
+                <ul class="nav flex-column footer-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Privacy Policy"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./terms.html"
+                      data-i18n="Terms of Service"
+                      >Terms of Service</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="./refund.html"
+                      data-i18n="Refund Policy"
+                      >Refund Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div class="row footer-disclaimer">
+            <div class="col-12">
+              <p
+                class="text-muted small text-center px-lg-5"
+                data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
+              >
+                All brand names, (registered) trademarks, images and product
+                descriptions are the property of their legal owners and are
+                neither sponsor nor partner of this promotion.
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
+    <script type="module">
+      import { translations } from './js/translations/i18n-privacy.js';
+      import { setupTranslation } from './js/translate.js';
+      document.addEventListener('DOMContentLoaded', function() {
+        setupTranslation(translations);
+      });
+    </script>
     <script type="module">
       import { initCoachSelectorModal, showCoachSelectorModal } from './js/coachSelector.js';
       document.addEventListener('DOMContentLoaded', function() {

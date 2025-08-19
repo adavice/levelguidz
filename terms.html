@@ -23,37 +23,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse text-center" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="./news.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" id="coachingNavLink">Coaching</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Guides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./contact.html">Contact</a>
-            </li>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
           </ul>
-          <div class="d-flex justify-content-center">
-            <div class="user-section">
-              <!-- Login button shown when logged out -->
-              <a class="btn btn-outline-light" href="./index.html#login" id="loginButton">Login</a>
-              
-              <!-- Username dropdown shown when logged in -->
-              <div class="dropdown d-none" id="userDropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                  <span id="usernamePlaceholder"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:48px; min-width:48px; padding-left:0.5rem; padding-right:0.5rem; background-position:right 0.5rem center;">
+                            <option value="en" title="English" aria-label="English">🇬🇧</option>
+                            <option value="sv" title="Svenska" aria-label="Svenska">🇸🇪</option>
+                            <option value="ro" title="Română" aria-label="Română">🇷🇴</option>
+                        </select>
+                    </div>
         </div>
       </div>
     </nav>
@@ -62,88 +67,88 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="feature-card">
-                    <h1 class="text-center mb-5">Terms and Conditions</h1>
+                    <h1 class="text-center mb-5" data-i18n="Terms and Conditions">Terms and Conditions</h1>
                     
                     <div class="content">
-                        <p class="mb-5">Welcome to Levelguidz, a coaching service designed to help you improve gaming skills. These Terms and Conditions ("Terms") govern your use of our website, services, and any content provided through the platform. Levelguidz is a weekly subscription service.</p>
+                        <p class="mb-5" data-i18n="Terms.Welcome">Welcome to Levelguidz, a coaching service designed to help you improve gaming skills. These Terms and Conditions ("Terms") govern your use of our website, services, and any content provided through the platform. Levelguidz is a weekly subscription service.</p>
 
                         <div class="mb-5">
-                            <h3>Eligibility</h3>
+                            <h3 data-i18n="Terms.Eligibility">Eligibility</h3>
                             <hr class="mb-4">
-                            <p>To use the Service, you must be at least 18 years old or have consent from a parent or legal guardian. By using the Service, you confirm that you meet this requirement.</p>
+                            <p data-i18n="Terms.Eligibility.P1">To use the Service, you must be at least 18 years old or have consent from a parent or legal guardian. By using the Service, you confirm that you meet this requirement.</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>Services Provided</h3>
+                            <h3 data-i18n="Terms.Services">Services Provided</h3>
                             <hr class="mb-4">
-                            <p>Levelguidz offers educational and entertainment-based coaching services. Our coaches provide strategy advice, gameplay reviews, live sessions, and other guidance to help players enhance their skills. Coaching is not a guarantee of rank increase or performance outcomes.</p>
+                            <p data-i18n="Terms.Services.P1">Levelguidz offers educational and entertainment-based coaching services. Our coaches provide strategy advice, gameplay reviews, live sessions, and other guidance to help players enhance their skills. Coaching is not a guarantee of rank increase or performance outcomes.</p>
                         </div>
 
                         <!-- Continue with other sections using the same structure -->
                         <div class="mb-5">
-                            <h3>Accounts and Registration</h3>
+                            <h3 data-i18n="Terms.Accounts">Accounts and Registration</h3>
                             <hr class="mb-4">
-                            <p>When you Subscribe / create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
-                            <p>You are responsible for securing the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.</p>
+                            <p data-i18n="Terms.Accounts.P1">When you Subscribe / create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
+                            <p data-i18n="Terms.Accounts.P2">You are responsible for securing the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.</p>
                         </div>
                         <div class="mb-5">
-                            <h3>CANCELLATIONS AND RESCHEDULING</h3>
+                            <h3 data-i18n="Terms.Cancellations">CANCELLATIONS AND RESCHEDULING</h3>
                             <hr class="mb-4">
-                            <p>"You may cancel the Service at any time by contacting us at <a href="mailto:support@levelguidz.com">support@levelguidz.com</a> or by following the opt-out instructions included in the SMS messages you receive from us.
+                            <p data-i18n="Terms.Cancellations.P1">"You may cancel the Service at any time by contacting us at <a href="mailto:support@levelguidz.com">support@levelguidz.com</a> or by following the opt-out instructions included in the SMS messages you receive from us.
                             In cases of abuse, harassment, or inappropriate behavior, we reserve the right to suspend or permanently terminate your account without prior notice."</p>
                         </div>
                         <div class="mb-5">
-                            <h3>CODE OF CONDUCT</h3>
+                            <h3 data-i18n="Terms.CodeOfConduct">CODE OF CONDUCT</h3>
                             <hr class="mb-4">
-                            <p>While using our service, you agree to:
-                                <ul>
-                                    <li>Not share account credentials or allow unauthorized access</li>
-                                    <li>Follow all provided rules and guidelines for sessions</li>
-                                    <li>Maintain appropriate behavior during coaching sessions</li>
-                                </ul>
-                            </p>
+              <p data-i18n="Terms.CodeOfConduct.P1">While using our service, you agree to:</p>
+                <ul>
+                  <li data-i18n="Terms.CodeOfConduct.List.1">Not share account credentials or allow unauthorized access</li>
+                  <li data-i18n="Terms.CodeOfConduct.List.2">Follow all provided rules and guidelines for sessions</li>
+                  <li data-i18n="Terms.CodeOfConduct.List.3">Maintain appropriate behavior during coaching sessions</li>
+                </ul>
                         </div>
 
                         <div class="mb-5">
-                            <h3>INTELLECTUAL PROPERTY</h3>
+                            <h3 data-i18n="Terms.IntellectualProperty">INTELLECTUAL PROPERTY</h3>
                             <hr class="mb-4">
-                            <p>All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion. All content provided through the service - including guides, videos, session recordings, and materials - is owned by Levelguidz or its licensors. You may not copy, modify, distribute, or reproduce any content without express permission.</p>
+                            <p data-i18n="Terms.IntellectualProperty.P1">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion. All content provided through the service - including guides, videos, session recordings, and materials - is owned by Levelguidz or its licensors. You may not copy, modify, distribute, or reproduce any content without express permission.</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>THIRD-PARTY SERVICES</h3>
+                            <h3 data-i18n="Terms.ThirdParty">THIRD-PARTY SERVICES</h3>
                             <hr class="mb-4">
-                            <p>Our website or coaching sessions may reference third-party platforms (e.g., Discord, Twitch, Riot Games). We are not responsible for any issues, policies, or content on those platforms. Your use of those services is subject to their terms.</p>
+                            <p data-i18n="Terms.ThirdParty.P1">Our website or coaching sessions may reference third-party platforms (e.g., Discord, Twitch, Riot Games). We are not responsible for any issues, policies, or content on those platforms. Your use of those services is subject to their terms.</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>DISCLAIMER</h3>
+                            <h3 data-i18n="Terms.Disclaimer">DISCLAIMER</h3>
                             <hr class="mb-4">
-                            <p>Coaching results vary by individual. We do not guarantee rank improvements, game outcomes, or success in competitive play. All advice and coaching are provided on an "as-is" basis. Use your own judgment when applying strategies learned.</p>
+                            <p data-i18n="Terms.Disclaimer.P1">Coaching results vary by individual. We do not guarantee rank improvements, game outcomes, or success in competitive play. All advice and coaching are provided on an "as-is" basis. Use your own judgment when applying strategies learned.</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>LIMITATION OF LIABILITY</h3>
+                            <h3 data-i18n="Terms.Limitation">LIMITATION OF LIABILITY</h3>
                             <hr class="mb-4">
-                            <p>To the fullest extent permitted by law, Levelguidz will not be liable for: loss of rank, MMR, or in-game rewards, downtime or interruptions of service, personal dissatisfaction with coaching outcomes</p>
+                            <p data-i18n="Terms.Limitation.P1">To the fullest extent permitted by law, Levelguidz will not be liable for: loss of rank, MMR, or in-game rewards, downtime or interruptions of service, personal dissatisfaction with coaching outcomes</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>AMENDMENTS</h3>
+                            <h3 data-i18n="Terms.Amendments">AMENDMENTS</h3>
                             <hr class="mb-4">
-                            <p>We may update these Terms at any time. Changes will be posted on this page and will take effect immediately upon publication. Continued use of the Service means you accept the revised Terms.</p>
+                            <p data-i18n="Terms.Amendments.P1">We may update these Terms at any time. Changes will be posted on this page and will take effect immediately upon publication. Continued use of the Service means you accept the revised Terms.</p>
                         </div>
 
                         <div class="mb-5">
-                            <h3>Contact Information</h3>
+                            <h3 data-i18n="Terms.Contact">Contact Information</h3>
                             <hr class="mb-4">
-                            <p>For customer service inquiries or disputes, You may contact us by email at <a href="mailto:support@levelguidz.com">support@levelguidz.com</a></p>
-                            <ul class="list-unstyled">
-                                <li>Company name: [Your Company Name]</li>
-                                <li>Company Registration Number: [Number]</li>
-                                <li>Phone: [Phone Number]</li>
-                                <li>Address: [Address]</li>
-                            </ul>
+                            <p data-i18n="Terms.Contact.P1">For customer service inquiries or disputes, You may contact us by email at <a href="mailto:support@levelguidz.com">support@levelguidz.com</a></p>
+              <ul class="list-unstyled">
+                <li data-i18n="Terms.Contact.Company">Company name: [Your Company Name]</li>
+                <li data-i18n="Terms.Contact.Registration">Company Registration Number: [Number]</li>
+                <li data-i18n="Terms.Contact.Phone">Phone: [Phone Number]</li>
+                <li data-i18n="Terms.Contact.Address">Address: [Address]</li>
+              </ul>
+              <img src="./assetsimg/contact.jpg" alt="Contact">
                         </div>
                     </div>
                 </div>
@@ -158,31 +163,31 @@
                     <a href="#" class="footer-brand d-inline-block">
                         <img src="img/logo_dark.svg" alt="Logo" height="30">
                     </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> LevelGuidz. All rights reserved.</p>
+                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <span data-i18n="All rights reserved.">LevelGuidz. All rights reserved.</span></p>
                 </div>
                 
                 <div class="col-lg-8 footer-links">
                     <div class="row">
                         <div class="col-6">
-                            <h5 class="text-white mb-3">Company</h5>
+                            <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
                             <ul class="nav flex-column footer-nav">
                                 <li class="nav-item"><a class="nav-link" href="./contact.html">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link" href="./faq.html">F.A.Q.</a></li>
                             </ul>
                         </div>
                         <div class="col-6">
-                            <h5 class="text-white mb-3">Legal</h5>
+                            <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
                             <ul class="nav flex-column footer-nav">
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Privacy Policy</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./terms.html">Terms of Service</a></li>
-                                <li class="nav-item"><a class="nav-link" href="./refund.html">Refund Policy</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./terms.html" data-i18n="Privacy Policy">Privacy Policy</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./terms.html" data-i18n="Terms of Service">Terms of Service</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./refund.html" data-i18n="Refund Policy">Refund Policy</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             <div class="row footer-disclaimer">
                 <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
+                    <p class="text-muted small text-center px-lg-5" data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
                 </div>
             </div>
             </div>
@@ -191,6 +196,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
+    <script type="module">
+      import { translations } from './js/translations/i18n-terms.js';
+      import { setupTranslation } from './js/translate.js';
+      document.addEventListener('DOMContentLoaded', function() {
+        setupTranslation(translations);
+      });
+    </script>
     <script type="module">
       import { initCoachSelectorModal, showCoachSelectorModal } from './js/coachSelector.js';
       document.addEventListener('DOMContentLoaded', function() {

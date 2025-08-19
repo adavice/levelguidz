@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (status === 'responding') {
                 // Show typing indicator with coach name
-                typingIndicator.querySelector('span').textContent = `${coachName} is typing...`;
+                typingIndicator.querySelector('span').innerHTML = `<i class="bi bi-keyboard me-2"></i>${coachName}`;
                 typingIndicator.classList.remove('d-none');
             } else {
                 // Hide typing indicator

@@ -1460,7 +1460,6 @@ input::placeholder, textarea::placeholder {
     font-size: 0.875rem;
     position: absolute;
     bottom: -2.5rem;
-    white-space: nowrap;
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-weight: 500;
