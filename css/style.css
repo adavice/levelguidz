@@ -86,6 +86,101 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Language selector: show background flag image and hide native arrow so image is visible */
+#languageSelector {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-repeat: no-repeat;
+    background-size: 20px 14px;
+    background-position: left 6px center;
+    padding-left: 2.2rem; /* space for the flag */
+    background-color: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: inherit;
+}
+
+/* Hide the native dropdown arrow on IE/Edge */
+#languageSelector::-ms-expand {
+    display: none;
+}
+
+/* Optional: small image rule for option content (unused in most browsers) */
+#languageSelector option img {
+    width: 20px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Custom flag select widget (replaces visible select) */
+.flag-select {
+    display: inline-block;
+    position: relative;
+    min-width: 48px;
+    max-width: 120px;
+    vertical-align: middle;
+}
+.flag-select__button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    height: 34px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: inherit;
+    cursor: pointer;
+}
+.flag-select__button .flag-select__flag {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+}
+.flag-select__button-label {
+    display: none; /* hide text to show image-only; keep for screen-reader via title/aria-label */
+}
+.flag-select__list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--gradient-bg);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0;
+    min-width: 160px;
+    z-index: 9999;
+    display: none;
+}
+.flag-select__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+.flag-select__item:hover, .flag-select__item.selected {
+    background: rgba(255,255,255,0.03);
+}
+.flag-select__item-flag {
+    width: 28px;
+    height: 18px;
+    object-fit: cover;
+}
+
+/* Keep the original select available for form submission but hidden visually */
+#languageSelector[aria-hidden='true'] {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
 .hero-banner::after {
     content: "";
     position: absolute;
@@ -667,11 +762,8 @@ hr {
 }
 
 .content-block {
-    /* padding: 2rem; */
-    /* background: rgba(255, 255, 255, 0.02); */
-    /* border-radius: 1rem;
-    backdrop-filter: blur(10px); */
-    /* border: 1px solid rgba(255, 255, 255, 0.05); */
+    /* keep a minimal rule so linters don't flag an empty block */
+    padding: 0;
 }
 
 .game-select {

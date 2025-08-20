@@ -20,13 +20,47 @@ export function setupTranslation(translations) {
   if (langSelector) langSelector.value = lang;
   translatePage(translations, lang);
 
+  // If language selector options include data-flag, use it to style the selector
+  function updateSelectorFlag(selector) {
+    try {
+      const opt = selector.options[selector.selectedIndex];
+      const flag = opt && opt.getAttribute('data-flag');
+      if (flag) {
+        selector.style.backgroundImage = `url('${flag}')`;
+        selector.style.backgroundSize = '20px 14px';
+        selector.style.backgroundPosition = 'left 6px center';
+        selector.style.paddingLeft = '2.2rem';
+      } else {
+        selector.style.backgroundImage = '';
+      }
+    } catch (e) { /* ignore */ }
+  }
+  if (langSelector) updateSelectorFlag(langSelector);
+
   if (langSelector) {
     langSelector.addEventListener('change', () => {
       const selected = langSelector.value;
       localStorage.setItem('siteLang', selected);
       translatePage(translations, selected);
+  updateSelectorFlag(langSelector);
     });
   }
+
+  // If a custom flag select widget is available, initialize it so pages don't
+  // need to include the widget script manually. Guard with a global flag so
+  // multiple calls are safe.
+  try {
+    if (typeof document !== 'undefined' && !window._flagSelectInitialized) {
+      import('./flagSelect.js').then(mod => {
+        try {
+          if (mod && typeof mod.default === 'function') {
+            mod.default('languageSelector');
+            window._flagSelectInitialized = true;
+          }
+        } catch (e) { /* ignore widget init errors */ }
+      }).catch(() => { /* ignore missing module */ });
+    }
+  } catch (e) { /* ignore dynamic import environment issues */ }
 }
 
 // Simple registry to allow different modules to register translation maps
