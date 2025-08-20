@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (historyError) {
                 // If error is "No user logged in", show toast and proceed with empty history
                 if (historyError && historyError.message && historyError.message.includes('No user logged in')) {
-                    showToast('Please log in to load your chat history.', false);
+                    // Use translation key
+                    if (window.showToast) window.showToast('please.login.chat', false);
+                    else showToast('please.login.chat', false);
                     coaches = await loadCoaches();
                     history = [];
                 } else {
@@ -103,11 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error loading coaches:', error);
-            chatMessages.innerHTML = `
-                <div class="alert alert-danger">
-                    Failed to load coaches. Please try refreshing the page.
-                </div>
-            `;
+            const msg = window.showToast ? null : 'Failed to load coaches. Please try refreshing the page.';
+            if (msg) {
+                chatMessages.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${msg}
+                    </div>
+                `;
+            } else {
+                // If global showToast exists, show localized toast
+                if (window.showToast) window.showToast('failed.load.coaches', false);
+            }
         }
     }
 
@@ -294,7 +302,7 @@ async function handleTextMessage(message, coachId, originalStatus) {
         }
         // If not, do not update DOM. When user switches back, renderMessagesForCoach will show all messages.
     } catch (error) {
-        chatHistory.get(targetCoachId).push({
+    chatHistory.get(targetCoachId).push({
             content: `
                 <div class="alert alert-danger mb-0">
                     <i class="bi bi-exclamation-triangle me-2"></i>

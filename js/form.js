@@ -24,7 +24,16 @@ function normalizeContactInput(input) {
 }
 
 function showToast(message, success = false) {
-  // Create toast container if it doesn't exist
+  // If a global localized showToast exists, delegate to it (it accepts keys or raw text)
+  if (window.showToast && window.showToast !== showToast) {
+    try {
+      window.showToast(message, success);
+      return;
+    } catch (e) {
+      // fallback to local implementation below
+    }
+  }
+  // Local fallback rendering (same as before)
   let toastContainer = document.querySelector('.toast-container');
   if (!toastContainer) {
     toastContainer = document.createElement('div');
@@ -32,7 +41,6 @@ function showToast(message, success = false) {
     document.body.appendChild(toastContainer);
   }
 
-  // Create toast element
   const toast = document.createElement('div');
   toast.className = `toast align-items-center text-bg-${success ? 'success' : 'danger'} border-0 show`;
   toast.setAttribute('role', 'alert');
@@ -50,13 +58,11 @@ function showToast(message, success = false) {
   `;
   toastContainer.appendChild(toast);
 
-  // Show toast using Bootstrap's Toast API if available
   if (window.bootstrap && window.bootstrap.Toast) {
     const bsToast = window.bootstrap.Toast.getOrCreateInstance(toast, { delay: 3000 });
     bsToast.show();
     toast.addEventListener('hidden.bs.toast', () => toast.remove());
   } else {
-    // Fallback: auto-remove after 3s
     setTimeout(() => toast.remove(), 3000);
   }
 }
@@ -123,13 +129,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const response = await login(normalizedContact, password);
         if (response.status === 'ok') {
           form.reset();
-          showToast('Login successful!', true);
+          showToast('login.success', true);
           authService.login(response.user);
           updateAuthUI();
         } else if (response.error) {
           showToast(response.error);
         } else {
-          showToast('Login failed');
+          showToast('login.failed');
         }
       } catch (error) {
         showToast(error.message);
@@ -150,14 +156,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const password = form.querySelectorAll('.signup-password.password')[0].value;
       const confirmPassword = form.querySelectorAll('.signup-password.password')[1].value;
       if (password !== confirmPassword) {
-        showToast('Passwords do not match');
+        showToast('passwords.mismatch');
         return;
       }
       try {
         const response = await signup(username, normalizedContact, password);
         if (response.status === 'ok') {
           form.reset();
-          showToast('Account created successfully! Please login.', true);
+          showToast('account.created', true);
           document.querySelector('.auth-flipper').classList.remove('flipped');
           setTimeout(updateAuthUI, 500);
         } else {
@@ -180,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const response = await forgotPassword(normalizedContact);
         if (response.status === 'ok') {
           form.reset();
-          showToast('Password reset link has been sent.', true);
+          showToast('password.reset.sent', true);
           document.querySelector('.auth-flipper').classList.remove('flipped');
         } else {
           throw new Error(response.error || 'Failed to send reset link');

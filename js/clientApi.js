@@ -31,7 +31,8 @@ function handleAuthError(data) {
             
             // Notify user if possible
             if (window.showToast) {
-                window.showToast('Your session has expired. Please log in again.');
+                // Use translation key so global showToast will localize it
+                window.showToast('session.expired');
             }
             
             // Redirect if we're on a protected page

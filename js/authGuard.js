@@ -58,7 +58,7 @@ export async function initAuthGuard() {
         if (!serverAuthValid) {
             // Show notification if possible
             if (window.showToast) {
-                window.showToast('Your session has expired. Please log in again.');
+                window.showToast('session.expired');
             }
             window.location.href = '/index.html#login';
             return;

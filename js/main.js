@@ -20,6 +20,21 @@ import { getCurrentUser, loadCoaches } from './clientApi.js';
 import { authService } from './authService.js';
 import { setupCoachSelectorTriggers } from './coachSelector.js';
 import { initAuthGuard } from './authGuard.js';
+import { translations as toastTranslations } from './translations/i18n-toasts.js';
+import { registerTranslations, t } from './translate.js';
+
+// Register toast translations so the central translator can be used elsewhere
+registerTranslations('toasts', toastTranslations);
+
+// Map common server error messages (or fragments) to translation keys.
+// This helps when server returns raw English error messages (e.g. "Invalid credentials").
+const serverErrorMappings = [
+  { pattern: /invalid credentials/i, key: 'invalid.credentials' },
+  { pattern: /invalid email/i, key: 'invalid.credentials' },
+  { pattern: /invalid password/i, key: 'invalid.credentials' },
+  { pattern: /authentication failed/i, key: 'invalid.credentials' },
+  { pattern: /invalid token/i, key: 'session.expired' }
+];
 
 export function updateAuthUI() {
   const loginBtn = document.getElementById('loginButton');
@@ -82,7 +97,7 @@ export function saveUserToLocalStorage(user) {
   }
 }
 
-export function showToast(message, success = false) {
+function renderToast(message, success = false) {
   // Create toast container if it doesn't exist
   let toastContainer = document.querySelector('.toast-container');
   if (!toastContainer) {
@@ -117,6 +132,34 @@ export function showToast(message, success = false) {
   } else {
     // Fallback: auto-remove after 3s
     setTimeout(() => toast.remove(), 3000);
+  }
+}
+
+/**
+ * Wrapper that accepts either a translation key or raw message text.
+ * If the provided message matches a key in the toasts translations for the
+ * current language, the translated text will be used.
+ */
+export function showToast(messageOrKey, success = false) {
+  try {
+  // If server returned a raw error string, map common patterns to translation keys
+  if (typeof messageOrKey === 'string') {
+    for (const m of serverErrorMappings) {
+      try {
+        if (m.pattern.test(messageOrKey)) {
+          messageOrKey = m.key;
+          break;
+        }
+      } catch (e) { /* ignore malformed patterns */ }
+    }
+  }
+
+  // Try to resolve via central translator (registered namespace 'toasts')
+  const translated = t(messageOrKey, 'toasts');
+  const message = translated || messageOrKey;
+  renderToast(message, success);
+  } catch (e) {
+    renderToast(messageOrKey, success);
   }
 }
 

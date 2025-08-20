@@ -24,6 +24,8 @@ export function setupCoachSelectorTriggers() {
 // Then call initCoachSelectorModal() on page load, and showCoachSelectorModal() to open the modal
 
 import { getCurrentUser, loadCoaches } from './clientApi.js';
+import { translations as coachTranslations } from './translations/i18n-coachSelector.js';
+import { getPreferredLanguage } from './translate.js';
 
 const games = [
     { key: 'tft', name: 'Teamfight Tactics', genre: 'Auto Battler', img: 'img/game-tft.jpg' },
@@ -48,15 +50,22 @@ function sortCoachesByRole(coaches) {
 function renderGamesList() {
     const gamesList = document.getElementById('gamesList');
     if (!gamesList) return;
-    gamesList.innerHTML = games.map((game, idx) => `
+    const lang = getPreferredLanguage(coachTranslations);
+    gamesList.innerHTML = games.map((game, idx) => {
+        const nameKey = `game.${game.key}.name`;
+        const genreKey = `game.${game.key}.genre`;
+        const name = (coachTranslations[lang] && coachTranslations[lang][nameKey]) || game.name;
+        const genre = (coachTranslations[lang] && coachTranslations[lang][genreKey]) || game.genre;
+        return `
         <button class="list-group-item list-group-item-action d-flex align-items-center gap-3${idx === 0 ? ' active' : ''}" data-game="${game.key}">
-            <img src="${game.img}" alt="${game.name}" width="50" height="50" class="rounded">
+            <img src="${game.img}" alt="${name}" width="50" height="50" class="rounded">
             <div>
-                <h6 class="mb-0">${game.name}</h6>
-                <small class="text-muted">${game.genre}</small>
+                <h6 class="mb-0">${name}</h6>
+                <small class="text-muted">${genre}</small>
             </div>
         </button>
-    `).join('');
+    `;
+    }).join('');
 }
 
 async function renderCoachesInModal(gameKey) {
@@ -64,10 +73,13 @@ async function renderCoachesInModal(gameKey) {
     if (!coachesList) return;
     const user = getCurrentUser();
     if (!user || !user.username) {
+        const lang = getPreferredLanguage(coachTranslations);
+        const pleaseLogin = (coachTranslations[lang] && coachTranslations[lang]['pleaseLogin.message']) || 'Please log in to view the list of available coaches.';
+        const loginBtnText = (coachTranslations[lang] && coachTranslations[lang]['login.button']) || 'Go to Login';
         coachesList.innerHTML = `
             <div class="text-center py-4 w-100">
-                <div class="mb-3 text-muted">Please log in to view the list of available coaches.</div>
-                <a id="loginModalBtn" href="index.html#login" class="btn btn-primary">Go to Login</a>
+                <div class="mb-3 text-muted">${pleaseLogin}</div>
+                <a id="loginModalBtn" href="index.html#login" class="btn btn-primary">${loginBtnText}</a>
             </div>
         `;
         setTimeout(() => {
@@ -95,7 +107,9 @@ async function renderCoachesInModal(gameKey) {
         }, 0);
         return;
     }
-    coachesList.innerHTML = '<div class="text-muted">Loading coaches...</div>';
+    const lang = getPreferredLanguage(coachTranslations);
+    const loadingText = (coachTranslations[lang] && coachTranslations[lang]['loading.coaches']) || 'Loading coaches...';
+    coachesList.innerHTML = `<div class="text-muted">${loadingText}</div>`;
     try {
         const coaches = await loadCoaches();
         let genre = null;
@@ -111,23 +125,29 @@ async function renderCoachesInModal(gameKey) {
             : [];
         filtered = sortCoachesByRole(filtered);
         if (filtered.length === 0) {
-            coachesList.innerHTML = '<div class="text-muted">No coaches found for this game.</div>';
+            const noCoachesText = (coachTranslations[lang] && coachTranslations[lang]['no.coaches']) || 'No coaches found for this game.';
+            coachesList.innerHTML = `<div class="text-muted">${noCoachesText}</div>`;
             return;
         }
-        coachesList.innerHTML = filtered.map(coach => `
+        coachesList.innerHTML = filtered.map(coach => {
+            const expertLabel = (coachTranslations[lang] && coachTranslations[lang]['expert']) || 'expert';
+            const statusLabel = (coachTranslations[lang] && coachTranslations[lang]['status.online']) || (coach.status || 'online');
+            const roleText = coach.role ? `${coach.role} ${expertLabel}` : `${expertLabel}`;
+            return `
             <div class="col-md-6">
                 <div class="coach-card border p-3 rounded d-flex gap-3 align-items-center coach-selectable" data-coach-id="${coach.id}">
                     <img src="${coach.avatar || 'img/default-avatar.png'}" alt="${coach.name}" width="60" height="60" class="rounded-circle">
                     <div>
                         <h6 class="mb-1">${coach.name}</h6>
-                        <small class="text-muted">${coach.role || ''} expert</small>
+                        <small class="text-muted">${coach.role || ''}${coach.role ? ' ' + expertLabel : ''}</small>
                         <div class="mt-1">
-                            <span class="badge bg-primary">${coach.status || 'online'}</span>
+                            <span class="badge bg-primary">${statusLabel}</span>
                         </div>
                     </div>
                 </div>
             </div>
-        `).join('');
+        `;
+        }).join('');
         coachesList.querySelectorAll('.coach-selectable').forEach(card => {
             card.addEventListener('click', function() {
                 const coachId = this.getAttribute('data-coach-id');
@@ -137,7 +157,9 @@ async function renderCoachesInModal(gameKey) {
             });
         });
     } catch (err) {
-        coachesList.innerHTML = '<div class="text-danger">Failed to load coaches.</div>';
+    const lang = getPreferredLanguage(coachTranslations);
+    const failedText = (coachTranslations[lang] && coachTranslations[lang]['failed.load']) || 'Failed to load coaches.';
+    coachesList.innerHTML = `<div class="text-danger">${failedText}</div>`;
     }
 }
 
@@ -148,7 +170,7 @@ function ensureModalHtml() {
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content bg-dark">
                 <div class="modal-header border-secondary">
-                    <h5 class="modal-title">Select Game & Coach</h5>
+                    <h5 class="modal-title" id="gameCoachModalTitle" data-i18n="modal.title"></h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-0">
@@ -167,6 +189,17 @@ function ensureModalHtml() {
         </div>
     </div>`;
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+    // Set localized title immediately after insertion (modal created dynamically)
+    try {
+        const titleEl = document.getElementById('gameCoachModalTitle');
+        if (titleEl) {
+            const lang = getPreferredLanguage(coachTranslations);
+            const titleText = (coachTranslations[lang] && coachTranslations[lang]['modal.title']) || 'Select Game & Coach';
+            titleEl.textContent = titleText;
+        }
+    } catch (e) {
+        // no-op if localization fails
+    }
 }
 
 export function showCoachSelectorModal() {
