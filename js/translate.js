@@ -16,7 +16,20 @@ function translatePage(translations, lang) {
 
 export function setupTranslation(translations) {
   const langSelector = document.getElementById('languageSelector');
-  const lang = getPreferredLanguage(translations);
+  // Determine language: prefer stored value; if none, use browser language
+  // when a translation exists for it, and persist that choice so subsequent
+  // loads honor the auto-detected language.
+  let lang = getPreferredLanguage(translations);
+  const storedLang = localStorage.getItem('siteLang');
+  if (!storedLang) {
+    try {
+      const browserLang = (navigator && navigator.language) ? navigator.language.slice(0, 2) : null;
+      if (browserLang && translations && translations[browserLang]) {
+        lang = browserLang;
+        localStorage.setItem('siteLang', browserLang);
+      }
+    } catch (e) { /* ignore */ }
+  }
   if (langSelector) langSelector.value = lang;
   translatePage(translations, lang);
 
