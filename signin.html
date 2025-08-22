@@ -99,9 +99,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-i18n="Guides">Guides</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
                         </li>
@@ -364,9 +362,11 @@
                     e.preventDefault();
                     const form = e.target;
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    const email = form.querySelector('input[type="email"]') ? form.querySelector('input[type="email"]').value : '';
+                    // Support either email or phone inputs (some pages use type="tel" or a .login class)
+                    const contactEl = form.querySelector('input[type="email"], input[type="tel"], input[type="phone"], .login');
+                    const email = contactEl ? contactEl.value : '';
                     const password = form.querySelector('input[type="password"]').value;
-                    const remember = form.querySelector('#remember').checked;
+                    const remember = form.querySelector('#remember') ? form.querySelector('#remember').checked : false;
 
                     // Disable button and show loading state
                     submitBtn.disabled = true;

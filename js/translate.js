@@ -56,6 +56,10 @@ export function setupTranslation(translations) {
       localStorage.setItem('siteLang', selected);
       translatePage(translations, selected);
   updateSelectorFlag(langSelector);
+      try {
+        // Notify other modules the site language changed
+        window.dispatchEvent(new CustomEvent('siteLanguageChanged', { detail: { lang: selected } }));
+      } catch (e) { /* ignore */ }
     });
   }
 
@@ -74,6 +78,10 @@ export function setupTranslation(translations) {
       }).catch(() => { /* ignore missing module */ });
     }
   } catch (e) { /* ignore dynamic import environment issues */ }
+  try {
+    // Emit initial language so listeners can react on first setup
+    window.dispatchEvent(new CustomEvent('siteLanguageChanged', { detail: { lang } }));
+  } catch (e) { /* ignore */ }
 }
 
 // Simple registry to allow different modules to register translation maps
