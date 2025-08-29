@@ -5,6 +5,7 @@ let coaches = []; // Initialize empty array
 let selectedCoach = null;
 let hasUnsavedChanges = false;
 let pendingAction = null;
+let stagedLanguages = []; // languages added before a coach is selected
 
 // Render coach list
 function renderCoaches() {
@@ -70,6 +71,13 @@ function selectCoach(id) {
     if (personaInput) personaInput.value = selectedCoach.persona || '';
     if (roleInput) roleInput.value = selectedCoach.role || '';
     if (greetingInput) greetingInput.value = selectedCoach.greeting || '';
+    // If there were staged languages (added before selecting a coach), merge them
+    if ((!selectedCoach.languages || selectedCoach.languages.length === 0) && stagedLanguages.length > 0) {
+        selectedCoach.languages = Array.from(new Set([...(selectedCoach.languages || []), ...stagedLanguages]));
+        stagedLanguages.length = 0;
+    }
+    // Render language tags for the selected coach (or staged if empty)
+    renderLanguageTags(selectedCoach.languages || stagedLanguages);
 
     hasUnsavedChanges = false; // Reset unsaved changes flag
   } else {
@@ -122,7 +130,8 @@ function addCoach() {
           persona: "Untitled",
           role: "undefined",
           avatar: "",
-          greeting: ""
+              greeting: "",
+              languages: stagedLanguages.length ? Array.from(new Set(stagedLanguages)) : []
       };
       coaches.push(newCoach);
       selectedCoach = newCoach;
@@ -182,6 +191,12 @@ async function handleSaveCoach() {
     selectedCoach.persona = document.querySelector('#profile-description-input').value;
     selectedCoach.role = document.querySelector('#profile-role-input').value;
     selectedCoach.greeting = document.querySelector('#profile-greeting-input').value;
+
+    // Merge any staged languages into the selected coach before saving
+    if (stagedLanguages.length) {
+        selectedCoach.languages = Array.from(new Set([...(selectedCoach.languages || []), ...stagedLanguages]));
+        stagedLanguages.length = 0;
+    }
 
     try {
         // Save only the selected coach
@@ -296,6 +311,7 @@ function clearForm() {
     document.querySelector('#profile-description-input').value = '';
     document.querySelector('#profile-role-input').value = '';
     document.querySelector('#profile-greeting-input').value = '';
+    renderLanguageTags([]);
 }
 
 function updateFormWithCoach(coach) {
@@ -316,6 +332,210 @@ function setupFormChangeTracking() {
                 hasUnsavedChanges = true;
             }
         });
+    });
+}
+
+// --- Language tags helper ---
+// List of supported languages (ISO 639-1 code and display name)
+const ISO_SUGGESTIONS = [
+    { code: 'en', name: 'English' },
+    { code: 'de', name: 'German' },
+    { code: 'uk', name: 'Ukrainian' },
+    { code: 'sv', name: 'Swedish' },
+    { code: 'ro', name: 'Romanian' },
+    { code: 'fr', name: 'French' },
+    { code: 'es', name: 'Spanish' },
+    { code: 'it', name: 'Italian' },
+    { code: 'nl', name: 'Dutch' },
+    { code: 'pl', name: 'Polish' },
+    { code: 'pt', name: 'Portuguese' },
+    { code: 'ja', name: 'Japanese' },
+    { code: 'ko', name: 'Korean' },
+    { code: 'zh', name: 'Chinese' }
+];
+
+function getNameForCode(code) {
+    if (!code) return '';
+    const found = ISO_SUGGESTIONS.find(o => o.code === code.toLowerCase());
+    return found ? found.name : code;
+}
+
+// Return a relative path to the flag icon for a given ISO code.
+// Uses the project's flag-icons assets folder; file may 404 if not present but that's acceptable.
+function getFlagPath(code) {
+    if (!code) return '';
+    // flag-icons uses country codes; language codes may match country codes for many cases
+    // Use the 1x1 SVGs under css/assets/flag-icons/flags/1x1
+    return `css/assets/flag-icons/flags/1x1/${code.toLowerCase()}.svg`;
+}
+
+function findCodeForInput(input) {
+    if (!input) return null;
+    const v = input.trim().toLowerCase();
+    // direct code match
+    const byCode = ISO_SUGGESTIONS.find(o => o.code === v);
+    if (byCode) return byCode.code;
+    // name startsWith
+    const byNameStart = ISO_SUGGESTIONS.find(o => o.name.toLowerCase().startsWith(v));
+    if (byNameStart) return byNameStart.code;
+    // name contains
+    const byNameContains = ISO_SUGGESTIONS.find(o => o.name.toLowerCase().includes(v));
+    if (byNameContains) return byNameContains.code;
+    return null;
+}
+
+function renderLanguageTags(tags) {
+    const container = document.getElementById('profile-languages-tags');
+    if (!container) return;
+    container.innerHTML = '';
+    tags.forEach(code => {
+        const el = document.createElement('span');
+        el.className = 'badge bg-secondary me-1 mb-1';
+        // show friendly name with flag icon, but keep code in data-lang
+    // Use CSS background flag helper (flag-icons) when available
+    const flagSpan = document.createElement('span');
+    flagSpan.className = `fi fi-${code.toLowerCase()}`;
+    // ensure visual size matches previous layout
+    flagSpan.style.width = '18px';
+    flagSpan.style.height = '12px';
+    flagSpan.style.display = 'inline-block';
+    flagSpan.style.verticalAlign = 'middle';
+    flagSpan.style.marginRight = '6px';
+    el.appendChild(flagSpan);
+    const text = document.createTextNode(`${getNameForCode(code)} (${code})`);
+    el.appendChild(text);
+        el.setAttribute('data-lang', code);
+    const close = document.createElement('button');
+    close.type = 'button';
+    // Use a visible textual close button so it's always readable on custom badges
+    close.className = 'btn btn-sm btn-light btn-close-text ms-2';
+    close.setAttribute('aria-label', `Remove ${code}`);
+    close.textContent = '×';
+    // subtle styling to fit inside the badge
+    close.style.padding = '0 6px';
+    close.style.lineHeight = '1';
+    close.style.fontSize = '0.85rem';
+    close.style.opacity = '0.9';
+    close.addEventListener('click', () => removeLanguageTag(code));
+        el.appendChild(close);
+        container.appendChild(el);
+    });
+}
+
+function addLanguageTag(input) {
+    if (!input) return;
+    // Allow adding tags even if no coach is currently selected (staged)
+    // Allow either code or full name input
+    let code = findCodeForInput(input);
+    if (!code) {
+        const candidate = input.trim().toLowerCase();
+        if (/^[a-z]{2}$/.test(candidate)) code = candidate; // accept unknown 2-letter code
+    }
+    if (!code) return; // couldn't resolve
+    if (selectedCoach) {
+        selectedCoach.languages = selectedCoach.languages || [];
+        if (!selectedCoach.languages.includes(code)) {
+            selectedCoach.languages.push(code);
+            hasUnsavedChanges = true;
+            renderLanguageTags(selectedCoach.languages);
+        }
+    } else {
+        // stage the language for later when a coach is selected
+        if (!stagedLanguages.includes(code)) {
+            stagedLanguages.push(code);
+            renderLanguageTags(stagedLanguages);
+        }
+    }
+}
+
+function removeLanguageTag(code) {
+    if (selectedCoach && selectedCoach.languages) {
+        const idx = selectedCoach.languages.indexOf(code);
+        if (idx > -1) {
+            selectedCoach.languages.splice(idx, 1);
+            hasUnsavedChanges = true;
+            renderLanguageTags(selectedCoach.languages);
+        }
+    } else {
+        const idx = stagedLanguages.indexOf(code);
+        if (idx > -1) {
+            stagedLanguages.splice(idx, 1);
+            renderLanguageTags(stagedLanguages);
+        }
+    }
+}
+
+function setupLanguageInput() {
+    const input = document.getElementById('profile-languages-input');
+    const suggestions = document.getElementById('profile-languages-suggestions');
+    if (!input) return;
+
+    // Ensure suggestions element exists; create if missing
+    let sugEl = suggestions;
+    if (!sugEl) {
+        sugEl = document.createElement('div');
+        sugEl.id = 'profile-languages-suggestions';
+        // basic classes to match expected styling
+        sugEl.className = 'list-group position-absolute w-100 d-none';
+        if (input.parentNode) input.parentNode.insertBefore(sugEl, input.nextSibling);
+    }
+
+    input.addEventListener('input', () => {
+        const v = input.value.trim().toLowerCase();
+        if (!v) { if (sugEl) sugEl.classList.add('d-none'); return; }
+        // match by code or name (objects in ISO_SUGGESTIONS)
+        const matches = ISO_SUGGESTIONS.filter(s => {
+            const codeMatch = s.code.startsWith(v);
+            const nameMatch = s.name.toLowerCase().startsWith(v) || s.name.toLowerCase().includes(v);
+            const already = selectedCoach && selectedCoach.languages && selectedCoach.languages.includes(s.code);
+            return (codeMatch || nameMatch) && !already;
+        });
+        if (!sugEl) return;
+        sugEl.innerHTML = '';
+        if (matches.length === 0) { sugEl.classList.add('d-none'); return; }
+        matches.forEach(m => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action d-flex align-items-center';
+            // flag span
+            const f = document.createElement('span');
+            f.className = `fi fi-${m.code}`;
+            f.style.width = '18px';
+            f.style.height = '12px';
+            f.style.display = 'inline-block';
+            f.style.marginRight = '8px';
+            item.appendChild(f);
+            // text
+            const t = document.createTextNode(`${m.name} (${m.code})`);
+            item.appendChild(t);
+            item.addEventListener('click', () => {
+                // pass ISO code to addLanguageTag
+                addLanguageTag(m.code);
+                input.value = '';
+                sugEl.classList.add('d-none');
+            });
+            sugEl.appendChild(item);
+        });
+        sugEl.classList.remove('d-none');
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addLanguageTag(input.value);
+            input.value = '';
+            if (sugEl) sugEl.classList.add('d-none');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        try {
+            if (sugEl && !sugEl.contains(e.target) && e.target !== input) {
+                sugEl.classList.add('d-none');
+            }
+        } catch (err) {
+            // defensive: ignore any DOM errors
+        }
     });
 }
 
@@ -380,4 +600,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             hasUnsavedChanges = true;
         }
     });
+
+    // Initialize language autocomplete input
+    try {
+        setupLanguageInput();
+    } catch (err) {
+        console.error('Failed to initialize language input', err);
+    }
 });
