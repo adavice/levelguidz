@@ -84,7 +84,7 @@ export const translations = {
     "Refund Policy": "Refund Policy",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
   },
-  sv: {
+  se: {
     "Leading Coaching Platform": "Ledande coachningsplattform",
     "Become a better gamer! Get coaching to raise to Top tier!": "Bli en bättre spelare! Få coaching för att nå toppnivå!",
     "Choose your game": "Välj ditt spel",

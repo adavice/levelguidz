@@ -338,10 +338,10 @@ function setupFormChangeTracking() {
 // --- Language tags helper ---
 // List of supported languages (ISO 639-1 code and display name)
 const ISO_SUGGESTIONS = [
-    { code: 'en', name: 'English' },
+    { code: 'gb', name: 'English' },
     { code: 'de', name: 'German' },
-    { code: 'uk', name: 'Ukrainian' },
-    { code: 'sv', name: 'Swedish' },
+    { code: 'ua', name: 'Ukrainian' },
+    { code: 'se', name: 'Swedish' },
     { code: 'ro', name: 'Romanian' },
     { code: 'fr', name: 'French' },
     { code: 'es', name: 'Spanish' },
@@ -349,9 +349,9 @@ const ISO_SUGGESTIONS = [
     { code: 'nl', name: 'Dutch' },
     { code: 'pl', name: 'Polish' },
     { code: 'pt', name: 'Portuguese' },
-    { code: 'ja', name: 'Japanese' },
-    { code: 'ko', name: 'Korean' },
-    { code: 'zh', name: 'Chinese' }
+    { code: 'jp', name: 'Japanese' },
+    { code: 'kr', name: 'Korean' },
+    { code: 'cn', name: 'Chinese' }
 ];
 
 function getNameForCode(code) {
@@ -392,22 +392,17 @@ function renderLanguageTags(tags) {
         const el = document.createElement('span');
         el.className = 'badge bg-secondary me-1 mb-1';
         // show friendly name with flag icon, but keep code in data-lang
-    // Use CSS background flag helper (flag-icons) when available
-    const flagSpan = document.createElement('span');
-    flagSpan.className = `fi fi-${code.toLowerCase()}`;
-    // ensure visual size matches previous layout
-    flagSpan.style.width = '18px';
-    flagSpan.style.height = '12px';
-    flagSpan.style.display = 'inline-block';
-    flagSpan.style.verticalAlign = 'middle';
-    flagSpan.style.marginRight = '6px';
-    el.appendChild(flagSpan);
-    const text = document.createTextNode(`${getNameForCode(code)} (${code})`);
-    el.appendChild(text);
+        // Use custom flag classes for better alignment
+        const flagSpan = document.createElement('span');
+        flagSpan.className = `custom-flag custom-flag-${code.toLowerCase()}`;
+        flagSpan.style.marginRight = '6px';
+        el.appendChild(flagSpan);
+        const text = document.createTextNode(`${getNameForCode(code)} (${code})`);
+        el.appendChild(text);
         el.setAttribute('data-lang', code);
-    const close = document.createElement('button');
-    close.type = 'button';
-    // Use a visible textual close button so it's always readable on custom badges
+        const close = document.createElement('button');
+        close.type = 'button';
+        // Use a visible textual close button so it's always readable on custom badges
     close.className = 'btn btn-sm btn-light btn-close-text ms-2';
     close.setAttribute('aria-label', `Remove ${code}`);
     close.textContent = '×';
@@ -499,10 +494,7 @@ function setupLanguageInput() {
             item.className = 'list-group-item list-group-item-action d-flex align-items-center';
             // flag span
             const f = document.createElement('span');
-            f.className = `fi fi-${m.code}`;
-            f.style.width = '18px';
-            f.style.height = '12px';
-            f.style.display = 'inline-block';
+            f.className = `custom-flag custom-flag-${m.code.toLowerCase()}`;
             f.style.marginRight = '8px';
             item.appendChild(f);
             // text

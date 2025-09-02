@@ -139,6 +139,7 @@ async function renderCoachesInModal(gameKey) {
                     <img src="${coach.avatar || 'img/default-avatar.png'}" alt="${coach.name}" width="60" height="60" class="rounded-circle">
                     <div>
                         <h6 class="mb-1">${coach.name}</h6>
+                        <div class="flags"></div>
                         <small class="text-muted">${coach.role || ''}${coach.role ? ' ' + expertLabel : ''}</small>
                         <div class="mt-1">
                             <span class="badge bg-primary">${statusLabel}</span>
@@ -148,6 +149,28 @@ async function renderCoachesInModal(gameKey) {
             </div>
         `;
         }).join('');
+        // Render language flags for each coach (if provided)
+        try {
+            coachesList.querySelectorAll('.coach-selectable').forEach(card => {
+                const coachId = card.getAttribute('data-coach-id');
+                const coach = filtered.find(c => String(c.id) === String(coachId));
+                const flagsContainer = card.querySelector('.flags');
+                if (!flagsContainer) return;
+                if (coach && Array.isArray(coach.languages) && coach.languages.length) {
+                    // Use the 4x3 svg flags shipped in css/assets/flag-icons/flags/4x3
+                    flagsContainer.innerHTML = coach.languages.map(code => {
+                        const safeCode = String(code || '').toLowerCase();
+                        const imgPath = `css/assets/flag-icons/flags/4x3/${encodeURIComponent(safeCode)}.svg`;
+                        return `<img src="${imgPath}" alt="${safeCode}" title="${safeCode}" width="24" height="18" class="me-1 rounded">`;
+                    }).join('');
+                } else {
+                    flagsContainer.innerHTML = '';
+                }
+            });
+        } catch (e) {
+            // non-fatal: if DOM operations fail, leave flags empty
+            console.error('Failed to render flags for coaches', e);
+        }
         coachesList.querySelectorAll('.coach-selectable').forEach(card => {
             card.addEventListener('click', function() {
                 const coachId = this.getAttribute('data-coach-id');

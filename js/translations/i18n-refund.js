@@ -13,7 +13,7 @@ export const translations = {
     "refund.refund.p1": "To request a refund for purchases or recurring fees, please contact our customer support team. Refunds or credits will not be issued for partially used memberships. You may cancel any future recurring payments as outlined in the \"Cancellation\" section. Levelguidz may approve refunds or credits for purchases at its sole discretion.",
     "refund.assist.p1": "Please review our FAQ page for common questions. For further assistance, contact our support team at support@levelguidz.com."
   },
-  sv: {
+  se: {
   "refund.summary_intro": "Information om uppsägning av medlemskap och återbetalningar.",
   "Cancellation of Membership": "Uppsägning av medlemskap",
   "refund.summary_cancel": "Avsluta när som helst; medlemskapet förnyas automatiskt om du inte säger upp det minst 2 dagar före periodens slut.",

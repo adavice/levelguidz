@@ -8,7 +8,7 @@ const ADMIN_ROUTES = ['admin_panel.html'];
  * Checks if the server recognizes the user's session as valid
  * @returns {Promise<boolean>} - True if server authentication is valid
  */
-async function verifyServerAuthentication() {
+export async function verifyServerAuthentication() {
     try {
         // Get current auth state
         const state = authService.getAuthState();
@@ -41,33 +41,3 @@ async function verifyServerAuthentication() {
         return false;
     }
 }
-
-// export async function initAuthGuard() {
-//     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    
-//     // Check if the current page requires login or admin access
-//     if (PROTECTED_ROUTES.includes(currentPage) || ADMIN_ROUTES.includes(currentPage)) {
-//         // Check if user is logged in locally
-//         if (!authService.isLoggedIn()) {
-//             window.location.href = '/index.html#login';
-//             return;
-//         }
-        
-//         // Verify server session for protected pages
-//         const serverAuthValid = await verifyServerAuthentication();
-//         if (!serverAuthValid) {
-//             // Show notification if possible
-//             if (window.showToast) {
-//                 window.showToast('session.expired');
-//             }
-//             window.location.href = '/index.html#login';
-//             return;
-//         }
-
-//         // Additional admin check for admin routes
-//         if (ADMIN_ROUTES.includes(currentPage) && !authService.isAdmin()) {
-//             window.location.href = '/index.html#login';
-//             return;
-//         }
-//     }
-// }

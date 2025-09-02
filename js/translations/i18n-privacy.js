@@ -63,7 +63,7 @@ export const translations = {
     "Privacy.Questions.Title": "Questions?",
     "Privacy.Questions.P1": "For questions or concerns, contact us at: support@levelguidz.com"
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",

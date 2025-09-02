@@ -36,7 +36,7 @@ export const translations = {
   "How do I contact support?": "How do I contact support?",
   "You can reach us by emailing support@levelguidz.com. We aim to respond within 24 hours.": "You can reach us by emailing support@levelguidz.com. We aim to respond within 24 hours."
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",

@@ -19,7 +19,7 @@ window.updateAuthUI = updateAuthUI;
 import { getCurrentUser, loadCoaches } from './clientApi.js';
 import { authService } from './authService.js';
 import { setupCoachSelectorTriggers } from './coachSelector.js';
-import { initAuthGuard } from './authGuard.js';
+import { verifyServerAuthentication } from './authGuard.js';
 import { translations as toastTranslations } from './translations/i18n-toasts.js';
 import { registerTranslations, t } from './translate.js';
 
@@ -163,32 +163,14 @@ export function showToast(messageOrKey, success = false) {
   }
 }
 
-/**
- * Verify server session if user is logged in locally
- */
-async function verifyAuthentication() {
-  if (authService.isLoggedIn()) {
-    try {
-      // Use loadCoaches as a way to verify the auth status with the server
-      const result = await loadCoaches();
-      
-      // If the response contains an authentication error, the loadCoaches function 
-      // will have already handled the logout process
-    } catch (error) {
-      console.error('Error verifying authentication:', error);
-    }
-  }
-}
-
 document.addEventListener('DOMContentLoaded', async function() {
   // Make showToast available globally
   window.showToast = showToast;
   
   // Verify authentication with the server if logged in
-  await verifyAuthentication();
+  await verifyServerAuthentication();
   
-  // Initialize the auth guard
-  await initAuthGuard();
+  // auth guard removed: server-side cookie-based protection handled on backend
   
   // Update UI and setup other components
   updateAuthUI();

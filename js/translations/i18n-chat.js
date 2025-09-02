@@ -19,7 +19,7 @@ export const translations = {
   "LevelGuidz Chat": "LevelGuidz Chat",
   "Coach List": "Coach List"
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",

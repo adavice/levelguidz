@@ -52,15 +52,14 @@
                             </div>
                         </div>
                         <!-- Language Selector in header -->
-                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:120px; min-width:48px; padding-left:2.2rem; padding-right:0.5rem; background-position:left 0.5rem center; background-repeat:no-repeat;">
-                            <option value="en" data-flag="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'><rect width='60' height='30' fill='%23012169'/><polygon points='0,0 8,0 60,22 60,30 52,30 0,8' fill='%23ffffff'/><polygon points='60,0 52,0 0,22 0,30 8,30 60,8' fill='%23ffffff'/><polygon points='0,0 5,0 60,20 60,30 55,30 0,10' fill='%23cf142b'/><polygon points='60,0 55,0 0,20 0,30 5,30 60,10' fill='%23cf142b'/><rect x='24' width='12' height='30' fill='%23ffffff'/><rect y='9' width='60' height='12' fill='%23ffffff'/><rect x='27' width='6' height='30' fill='%23cf142b'/><rect y='12' width='60' height='6' fill='%23cf142b'/></svg>" title="English" aria-label="English">&nbsp;</option>
-                            <option value="sv" data-flag="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='44'><rect width='100%25' height='100%25' fill='%23006aa7'/><rect x='0' y='16' width='100%25' height='12' fill='%23fecc00'/><rect x='24' y='0' width='16' height='100%25' fill='%23fecc00'/></svg>" title="Svenska" aria-label="Svenska">&nbsp;</option>
-                            <option value="ro" data-flag="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='44'><rect width='33%25' height='100%25' x='0' fill='%230f52ba'/><rect width='34%25' height='100%25' x='33%25' fill='%23fcd116'/><rect width='33%25' height='100%25' x='67%25' fill='%23ce1126'/></svg>" title="Română" aria-label="Română">&nbsp;</option>
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:120px; min-width:48px; padding-left:2.2rem; padding-right:0.5rem; background-image:url('css/assets/flag-icons/flags/4x3/gb.svg'); background-position:left 6px center; background-repeat:no-repeat; background-size:20px 14px;">
+                            <!-- Options will be generated dynamically by translate.js with flag images -->
                         </select>
                     </div>
         </div>
       </div>
     </nav>
+
 <section class="py-5" style="margin-top: 60px !important;">
     <div class="container">
         <div class="row justify-content-center">
@@ -133,7 +132,7 @@
                     <a href="#" class="footer-brand d-inline-block">
                         <img src="img/logo_dark.svg" alt="Logo" height="30">
                     </a>
-                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <span data-i18n="All rights reserved"></span>LevelGuidz. All rights reserved.</span></p>
+                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <span data-i18n="All rights reserved">All rights reserved</span> LevelGuidz.</p>
                 </div>
                 
                 <div class="col-lg-8 footer-links">
@@ -155,11 +154,11 @@
                         </div>
                     </div>
                 </div>
-                    <div class="row footer-disclaimer">
-                <div class="col-12">
-                    <p class="text-muted small text-center px-lg-5" data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
+                <div class="row footer-disclaimer">
+                    <div class="col-12">
+                        <p class="text-muted small text-center px-lg-5" data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </footer>
@@ -174,6 +173,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./js/main.js"></script>
+    <script type="module">
+        // Load translations first, then setup
+        import { translations } from './js/translations/i18n-contact.js';
+        import { setupTranslation } from './js/translate.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Setting up translations with:', translations);
+            setupTranslation(translations);
+        });
+    </script>
     <script type="module">
         import { sendContactForm } from './js/clientApi.js';
 
@@ -233,14 +242,6 @@
             });
         });
     </script>
-    <script type="module">
-        import { translations } from './js/translations/i18n-contact.js';
-        import { setupTranslation } from './js/translate.js';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupTranslation(translations);
-        });
-    </script>
     <script>
         function closeModal() {
             const modal = document.getElementById('successModal');
@@ -250,4 +251,8 @@
         }
     </script>
 </body>
+</html>
+    </script>
+</body>
+</html>
 </html>

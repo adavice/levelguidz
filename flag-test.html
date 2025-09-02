@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Flag Icons Test</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        .flag-demo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+        .badge-demo {
+            background: #6c757d !important;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-dark text-white">
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Custom Flag Icons Test</h1>
+        
+        <div class="test-section">
+            <h2>Basic Flag Sizes</h2>
+            <div class="flag-demo">
+                <span class="custom-flag custom-flag-sm custom-flag-en"></span>
+                <span>Small English flag (16x12)</span>
+            </div>
+            <div class="flag-demo">
+                <span class="custom-flag custom-flag-en"></span>
+                <span>Default English flag (20x14)</span>
+            </div>
+            <div class="flag-demo">
+                <span class="custom-flag custom-flag-lg custom-flag-en"></span>
+                <span>Large English flag (28x18)</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Language Flag Collection</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-en"></span>
+                        <span>English (GB)</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-us"></span>
+                        <span>English (US)</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-de"></span>
+                        <span>German</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-fr"></span>
+                        <span>French</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-es"></span>
+                        <span>Spanish</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-it"></span>
+                        <span>Italian</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-pt"></span>
+                        <span>Portuguese</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-ru"></span>
+                        <span>Russian</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-pl"></span>
+                        <span>Polish</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-nl"></span>
+                        <span>Dutch</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-tr"></span>
+                        <span>Turkish</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-jp"></span>
+                        <span>Japanese</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-kr"></span>
+                        <span>Korean</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-cn"></span>
+                        <span>Chinese</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-ua"></span>
+                        <span>Ukrainian</span>
+                    </div>
+                    <div class="flag-demo">
+                        <span class="custom-flag custom-flag-br"></span>
+                        <span>Brazilian</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Badge Examples (as used in admin panel)</h2>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge-demo">
+                    <span class="custom-flag custom-flag-en"></span>
+                    English (en)
+                </span>
+                <span class="badge-demo">
+                    <span class="custom-flag custom-flag-de"></span>
+                    German (de)
+                </span>
+                <span class="badge-demo">
+                    <span class="custom-flag custom-flag-fr"></span>
+                    French (fr)
+                </span>
+                <span class="badge-demo">
+                    <span class="custom-flag custom-flag-es"></span>
+                    Spanish (es)
+                </span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Inline Text Alignment</h2>
+            <p>This is a paragraph with inline flags: 
+                <span class="custom-flag custom-flag-en"></span> English, 
+                <span class="custom-flag custom-flag-de"></span> German, 
+                <span class="custom-flag custom-flag-fr"></span> French, and 
+                <span class="custom-flag custom-flag-es"></span> Spanish languages.
+            </p>
+        </div>
+
+        <div class="alert alert-info">
+            <h5>Testing Instructions:</h5>
+            <ol>
+                <li>Open browser DevTools → Network tab</li>
+                <li>Refresh this page</li>
+                <li>Check that SVG files load successfully (200 status)</li>
+                <li>Verify flags are properly aligned with text</li>
+                <li>Test on mobile for responsive behavior</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

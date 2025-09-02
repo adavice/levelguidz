@@ -26,7 +26,7 @@ export const translations = {
     "game.fifa23.name": "FIFA 23",
     "game.fifa23.genre": "Sports"
   },
-  sv: {
+  se: {
     "modal.title": "Välj spel och coach",
     "pleaseLogin.message": "Logga in för att se listan över tillgängliga coacher.",
     "login.button": "Gå till inloggning",

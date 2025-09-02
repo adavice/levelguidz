@@ -43,7 +43,7 @@ export const translations = {
   "Failed to send reset link": "Failed to send reset link",
   "Passwords do not match": "Passwords do not match"
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",

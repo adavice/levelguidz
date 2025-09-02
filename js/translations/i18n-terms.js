@@ -48,7 +48,7 @@ export const translations = {
     "Terms.Contact.Phone": "Phone: [Phone Number]",
     "Terms.Contact.Address": "Address: [Address]"
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",

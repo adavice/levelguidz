@@ -14,7 +14,7 @@ export const translations = {
   ,
   "invalid.credentials": "Invalid credentials. Please check your email and password."
   },
-  sv: {
+  se: {
     "session.expired": "Din session har gått ut. Logga in igen.",
     "login.success": "Inloggning lyckades!",
     "login.success.redirect": "Inloggning lyckades! Omdirigerar...",

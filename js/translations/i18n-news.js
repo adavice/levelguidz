@@ -19,7 +19,7 @@ export const translations = {
   ,
   "Read More": "Read More"
   },
-  sv: {
+  se: {
     "News": "Nyheter",
     "Coaching": "Coachning",
     "Guides": "Guider",
