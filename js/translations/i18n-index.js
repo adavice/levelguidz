@@ -85,7 +85,7 @@ export const translations = {
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
   },
   se: {
-    "Leading Coaching Platform": "Ledande coachningsplattform",
+    "Leading Coaching Platform": "Ledande plattform för coaching",
     "Become a better gamer! Get coaching to raise to Top tier!": "Bli en bättre spelare! Få coaching för att nå toppnivå!",
     "Choose your game": "Välj ditt spel",
     "Find your coach": "Hitta din coach",
