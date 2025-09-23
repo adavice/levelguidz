@@ -23,10 +23,8 @@ function generateLanguageOptions(translations, selector) {
         option.setAttribute("data-flag-image", config.flag);
         option.title = config.name;
         option.setAttribute("aria-label", config.name);
-
         // Add a data attribute to identify which flag image to show
         option.setAttribute("data-flag-src", config.flag);
-
         selector.appendChild(option);
       }
     }
