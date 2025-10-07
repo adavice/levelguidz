@@ -36,16 +36,16 @@ async function renderFeaturedCoaches() {
 
   try {
     // Load coaches from API
-    const coachesResponse = await loadCoaches();
+    const coaches = await loadCoaches();
     
     // If loading failed or user is not authenticated, keep static coaches
-    if (coachesResponse.status === 'error' || !coachesResponse.coaches) {
+    if (!coaches || !Array.isArray(coaches)) {
       console.log('Could not load coaches, keeping static content');
       return;
     }
 
     // Filter for featured coaches
-    const featuredCoaches = coachesResponse.coaches.filter(coach => coach.featured === true);
+    const featuredCoaches = coaches.filter(coach => coach.featured === true);
     
     if (featuredCoaches.length === 0) {
       console.log('No featured coaches found, keeping static content');
