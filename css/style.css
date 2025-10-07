@@ -974,7 +974,7 @@ hr {
   width: 100%;
   height: 240px;
   object-fit: cover;
-  object-position: center;
+  object-position: top center;
 }
 
 .auth-form {
@@ -1328,18 +1328,6 @@ textarea::placeholder {
 .coach-item.active {
   background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
   border-left: 4px solid var(--primary-color);
-}
-
-.avatar-upload {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  margin-bottom: 2rem;
-  border: 2px solid var(--primary-color);
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .coach-item-avatar {
@@ -1784,7 +1772,7 @@ textarea::placeholder {
   position: relative;
   width: 180px;
   height: 180px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border: 2px solid var(--primary-color);
   border-radius: 50%;
   background-size: cover;

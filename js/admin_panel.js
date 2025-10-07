@@ -61,6 +61,7 @@ function selectCoach(id) {
 
     // Update form fields with selected coach details
     const avatarUpload = document.querySelector(".avatar-upload");
+    const featuredInput = document.querySelector('#profile-featured-input');
     const nameInput = document.querySelector('#profile-name-input');
     const personaInput = document.querySelector('#profile-description-input');
     const roleInput = document.querySelector('#profile-role-input');
@@ -138,6 +139,7 @@ function addCoach() {
       renderCoaches();
       // Update form fields directly
       document.querySelector(".avatar-upload").style.backgroundImage = "";
+      document.querySelector('#profile-featured-input').value = newCoach.featured;
       document.querySelector('#profile-name-input').value = newCoach.name;
       document.querySelector('#profile-description-input').value = newCoach.persona;
       document.querySelector('#profile-role-input').value = newCoach.role;
@@ -188,6 +190,7 @@ async function handleSaveCoach() {
 
     // Update coach data from form
     selectedCoach.name = document.querySelector('#profile-name-input').value;
+    selectedCoach.featured = document.querySelector('#profile-featured-input').checked;
     selectedCoach.persona = document.querySelector('#profile-description-input').value;
     selectedCoach.role = document.querySelector('#profile-role-input').value;
     selectedCoach.greeting = document.querySelector('#profile-greeting-input').value;
@@ -240,6 +243,7 @@ async function confirmDelete() {
               renderCoaches();
               // Clear form
               document.querySelector(".avatar-upload").style.backgroundImage = "";
+              document.querySelector('#profile-featured-input').checked = false;
               document.querySelector('#profile-name-input').value = "";
               document.querySelector('#profile-description-input').value = "";
               document.querySelector('#profile-role-input').value = "";
@@ -307,6 +311,7 @@ async function resetFormToSelectedCoach() {
 
 function clearForm() {
     document.querySelector(".avatar-upload").style.backgroundImage = "";
+    document.querySelector('#profile-featured-input').checked = false;
     document.querySelector('#profile-name-input').value = '';
     document.querySelector('#profile-description-input').value = '';
     document.querySelector('#profile-role-input').value = '';
@@ -316,6 +321,7 @@ function clearForm() {
 
 function updateFormWithCoach(coach) {
     document.querySelector(".avatar-upload").style.backgroundImage = `url('${coach.avatar || DEFAULT_AVATAR}')`;
+    document.querySelector('#profile-featured-input').checked = !!coach.featured;
     document.querySelector('#profile-name-input').value = coach.name || '';
     document.querySelector('#profile-description-input').value = coach.persona || '';
     document.querySelector('#profile-role-input').value = coach.role || '';
@@ -325,7 +331,7 @@ function updateFormWithCoach(coach) {
 // Track form changes
 function setupFormChangeTracking() {
     // Track input fields and textarea
-    const inputs = document.querySelectorAll('#profile-name-input, #profile-role-input, #profile-description-input, #profile-greeting-input');
+    const inputs = document.querySelectorAll('#profile-name-input, #profile-featured-input, #profile-role-input, #profile-description-input, #profile-greeting-input');
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             if (selectedCoach) {

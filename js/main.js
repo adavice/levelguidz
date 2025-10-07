@@ -23,6 +23,72 @@ import { verifyServerAuthentication } from './authGuard.js';
 import { translations as toastTranslations } from './translations/i18n-toasts.js';
 import { registerTranslations, t } from './translate.js';
 
+/**
+ * Renders featured coaches in the locomotive carousel if available
+ * Only replaces coach names and profile pictures, keeps the rest of the HTML structure
+ */
+async function renderFeaturedCoaches() {
+  // Check if we're on a page that has the locomotive track
+  const locomotiveTrack = document.querySelector('.locomotive-track');
+  if (!locomotiveTrack) {
+    return; // No carousel on this page, exit silently
+  }
+
+  try {
+    // Load coaches from API
+    const coachesResponse = await loadCoaches();
+    
+    // If loading failed or user is not authenticated, keep static coaches
+    if (coachesResponse.status === 'error' || !coachesResponse.coaches) {
+      console.log('Could not load coaches, keeping static content');
+      return;
+    }
+
+    // Filter for featured coaches
+    const featuredCoaches = coachesResponse.coaches.filter(coach => coach.featured === true);
+    
+    if (featuredCoaches.length === 0) {
+      console.log('No featured coaches found, keeping static content');
+      return;
+    }
+
+    // Get existing coach cards
+    const existingCards = locomotiveTrack.querySelectorAll('.coach-card');
+    
+    // Replace each existing card with featured coach data (up to the number of existing cards)
+    existingCards.forEach((card, index) => {
+      if (index < featuredCoaches.length) {
+        const coach = featuredCoaches[index];
+        
+        // Update profile image
+        const coachImage = card.querySelector('.coach-image');
+        if (coachImage && coach.avatar) {
+          coachImage.src = coach.avatar;
+          coachImage.alt = coach.name || 'Coach Name';
+        }
+        
+        // Update coach name
+        const coachNameElement = card.querySelector('.coach-info .coach-name');
+        if (coachNameElement && coach.name) {
+          coachNameElement.textContent = coach.name;
+        }
+        
+        // Optionally update role/badge if available
+        const badgeElement = card.querySelector('.badge');
+        if (badgeElement && coach.role) {
+          badgeElement.textContent = coach.role;
+        }
+      }
+    });
+
+    console.log(`Successfully updated ${Math.min(existingCards.length, featuredCoaches.length)} featured coaches`);
+    
+  } catch (error) {
+    console.error('Error rendering featured coaches:', error);
+    // Keep static coaches if there's any error
+  }
+}
+
 // Register toast translations so the central translator can be used elsewhere
 registerTranslations('toasts', toastTranslations);
 
@@ -176,6 +242,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   updateAuthUI();
   setupAuthUIEvents();
   setupCoachSelectorTriggers();
+  
+  // Render featured coaches if available (only on pages with locomotive carousel)
+  await renderFeaturedCoaches();
   
   const navbar = document.querySelector('.navbar');
   window.addEventListener('scroll', function() {
