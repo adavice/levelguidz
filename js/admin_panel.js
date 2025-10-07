@@ -59,26 +59,14 @@ function selectCoach(id) {
       item.classList.toggle('active', item.dataset.id === id);
     });
 
-    // Update form fields with selected coach details
-    const avatarUpload = document.querySelector(".avatar-upload");
-    const featuredInput = document.querySelector('#profile-featured-input');
-    const nameInput = document.querySelector('#profile-name-input');
-    const personaInput = document.querySelector('#profile-description-input');
-    const roleInput = document.querySelector('#profile-role-input');
-    const greetingInput = document.querySelector('#profile-greeting-input');
-
-    if (avatarUpload) avatarUpload.style.backgroundImage = `url('${selectedCoach.avatar || DEFAULT_AVATAR}')`;
-    if (nameInput) nameInput.value = selectedCoach.name || '';
-    if (personaInput) personaInput.value = selectedCoach.persona || '';
-    if (roleInput) roleInput.value = selectedCoach.role || '';
-    if (greetingInput) greetingInput.value = selectedCoach.greeting || '';
     // If there were staged languages (added before selecting a coach), merge them
     if ((!selectedCoach.languages || selectedCoach.languages.length === 0) && stagedLanguages.length > 0) {
-        selectedCoach.languages = Array.from(new Set([...(selectedCoach.languages || []), ...stagedLanguages]));
-        stagedLanguages.length = 0;
+        mergeStagedLanguages(selectedCoach);
+        hasUnsavedChanges = true; // Mark as changed since we merged staged languages
     }
-    // Render language tags for the selected coach (or staged if empty)
-    renderLanguageTags(selectedCoach.languages || stagedLanguages);
+    
+    // Update form with selected coach details
+    updateFormWithCoach(selectedCoach);
 
     hasUnsavedChanges = false; // Reset unsaved changes flag
   } else {
@@ -131,19 +119,24 @@ function addCoach() {
           persona: "Untitled",
           role: "undefined",
           avatar: "",
-              greeting: "",
-              languages: stagedLanguages.length ? Array.from(new Set(stagedLanguages)) : []
+          greeting: "",
+          languages: [],
+          featured: false
       };
       coaches.push(newCoach);
       selectedCoach = newCoach;
+      
       renderCoaches();
-      // Update form fields directly
-      document.querySelector(".avatar-upload").style.backgroundImage = "";
-      document.querySelector('#profile-featured-input').value = newCoach.featured;
-      document.querySelector('#profile-name-input').value = newCoach.name;
-      document.querySelector('#profile-description-input').value = newCoach.persona;
-      document.querySelector('#profile-role-input').value = newCoach.role;
-      document.querySelector('#profile-greeting-input').value = newCoach.greeting;
+      // Clear form and update with new coach data
+      clearForm();
+      updateFormWithCoach(newCoach);
+      
+      // Merge any staged languages into the new coach AFTER form update
+      if (stagedLanguages.length > 0) {
+          mergeStagedLanguages(selectedCoach);
+          renderLanguageTags(selectedCoach.languages || []); // Re-render tags after merging
+      }
+      
       hasUnsavedChanges = true; // Mark as unsaved when creating new coach
   };
 
@@ -171,7 +164,7 @@ function handleDeleteCoach() {
 async function loadCoachesFromServer() {
     try {
         const serverCoaches = await loadCoaches();
-        if (Array.isArray(serverCoaches) && serverCoaches.length > 0) {
+        if (Array.isArray(serverCoaches)) {
             coaches.length = 0;
             serverCoaches.forEach(c => coaches.push(c));
             return true;
@@ -196,18 +189,18 @@ async function handleSaveCoach() {
     selectedCoach.greeting = document.querySelector('#profile-greeting-input').value;
 
     // Merge any staged languages into the selected coach before saving
-    if (stagedLanguages.length) {
-        selectedCoach.languages = Array.from(new Set([...(selectedCoach.languages || []), ...stagedLanguages]));
-        stagedLanguages.length = 0;
-    }
+    mergeStagedLanguages(selectedCoach);
 
     try {
         // Save only the selected coach
         const savedCoach = await saveCoach(selectedCoach);
-        // Optionally update local array with returned coach (if backend returns updated coach)
+        // Update local array with returned coach (if backend returns updated coach)
         if (savedCoach && savedCoach.id) {
             const idx = coaches.findIndex(c => c.id === savedCoach.id);
-            if (idx > -1) coaches[idx] = savedCoach;
+            if (idx > -1) {
+                coaches[idx] = savedCoach;
+                selectedCoach = savedCoach; // Update selectedCoach reference to saved version
+            }
         }
         hasUnsavedChanges = false;
         renderCoaches();
@@ -220,14 +213,15 @@ async function handleSaveCoach() {
             action();
         }
     } catch (error) {
-        alert("Error saving coach data");
+        showError("Error saving coach data");
     }
 }
 
 async function confirmDelete() {
+  const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+  
   if (document.getElementById('confirmDelete').textContent === 'Save') {
       // Handle save confirmation
-      const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
       modal.hide();
       handleSaveCoach();
   } else {
@@ -242,18 +236,12 @@ async function confirmDelete() {
               hasUnsavedChanges = false;
               renderCoaches();
               // Clear form
-              document.querySelector(".avatar-upload").style.backgroundImage = "";
-              document.querySelector('#profile-featured-input').checked = false;
-              document.querySelector('#profile-name-input').value = "";
-              document.querySelector('#profile-description-input').value = "";
-              document.querySelector('#profile-role-input').value = "";
-              document.querySelector('#profile-greeting-input').value = "";
+              clearForm();
               showModal(); // Show success message
           } catch (error) {
-              alert("Error deleting coach");
+              showError("Error deleting coach");
           }
       }
-      const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
       modal.hide();
   }
 }
@@ -297,11 +285,19 @@ async function resetFormToSelectedCoach() {
             selectCoach(coaches[0].id);
         }
     } else {
+        const originalId = selectedCoach.id;
         await loadCoachesFromServer(); // Just load the data, no need to store result
-        const originalCoach = coaches.find(c => c.id === selectedCoach.id);
+        const originalCoach = coaches.find(c => c.id === originalId);
         if (originalCoach) {
             selectedCoach = originalCoach;
             updateFormWithCoach(originalCoach);
+        } else {
+            // Coach was deleted from server, clear selection
+            selectedCoach = null;
+            clearForm();
+            if (coaches.length > 0) {
+                selectCoach(coaches[0].id);
+            }
         }
     }
 
@@ -319,19 +315,41 @@ function clearForm() {
     renderLanguageTags([]);
 }
 
+// Helper function to merge staged languages
+function mergeStagedLanguages(coach) {
+    if (stagedLanguages.length) {
+        coach.languages = Array.from(new Set([...(coach.languages || []), ...stagedLanguages]));
+        stagedLanguages.length = 0;
+        return true;
+    }
+    return false;
+}
+
+// Helper function for error handling
+function showError(message) {
+    console.error(message);
+    alert(message);
+}
+
 function updateFormWithCoach(coach) {
+    if (!coach) {
+        clearForm();
+        return;
+    }
+    
     document.querySelector(".avatar-upload").style.backgroundImage = `url('${coach.avatar || DEFAULT_AVATAR}')`;
     document.querySelector('#profile-featured-input').checked = !!coach.featured;
     document.querySelector('#profile-name-input').value = coach.name || '';
     document.querySelector('#profile-description-input').value = coach.persona || '';
     document.querySelector('#profile-role-input').value = coach.role || '';
     document.querySelector('#profile-greeting-input').value = coach.greeting || '';
+    renderLanguageTags(coach.languages || []);
 }
 
 // Track form changes
 function setupFormChangeTracking() {
     // Track input fields and textarea
-    const inputs = document.querySelectorAll('#profile-name-input, #profile-featured-input, #profile-role-input, #profile-description-input, #profile-greeting-input');
+    const inputs = document.querySelectorAll('#profile-name-input, #profile-role-input, #profile-description-input, #profile-greeting-input');
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             if (selectedCoach) {
@@ -339,6 +357,16 @@ function setupFormChangeTracking() {
             }
         });
     });
+    
+    // Track checkbox separately (uses 'change' event, not 'input')
+    const featuredCheckbox = document.querySelector('#profile-featured-input');
+    if (featuredCheckbox) {
+        featuredCheckbox.addEventListener('change', () => {
+            if (selectedCoach) {
+                hasUnsavedChanges = true;
+            }
+        });
+    }
 }
 
 // --- Language tags helper ---
@@ -488,8 +516,9 @@ function setupLanguageInput() {
         const matches = ISO_SUGGESTIONS.filter(s => {
             const codeMatch = s.code.startsWith(v);
             const nameMatch = s.name.toLowerCase().startsWith(v) || s.name.toLowerCase().includes(v);
-            const already = selectedCoach && selectedCoach.languages && selectedCoach.languages.includes(s.code);
-            return (codeMatch || nameMatch) && !already;
+            const alreadyInCoach = selectedCoach && selectedCoach.languages && selectedCoach.languages.includes(s.code);
+            const alreadyStaged = stagedLanguages.includes(s.code);
+            return (codeMatch || nameMatch) && !alreadyInCoach && !alreadyStaged;
         });
         if (!sugEl) return;
         sugEl.innerHTML = '';
@@ -596,6 +625,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (selectedCoach) {
             selectedCoach.role = this.value;
             hasUnsavedChanges = true;
+            renderCoaches(); // Re-render to update coach list display
         }
     });
 
@@ -605,4 +635,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
         console.error('Failed to initialize language input', err);
     }
+    
+    // Setup form change tracking
+    setupFormChangeTracking();
 });
