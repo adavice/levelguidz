@@ -74,10 +74,10 @@ async function renderFeaturedCoaches() {
         }
         
         // Optionally update role/badge if available
-        const badgeElement = card.querySelector('.badge');
-        if (badgeElement && coach.role) {
-          badgeElement.textContent = coach.role;
-        }
+        // const badgeElement = card.querySelector('.badge');
+        // if (badgeElement && coach.role) {
+        //   badgeElement.textContent = coach.role;
+        // }
       }
     });
 
