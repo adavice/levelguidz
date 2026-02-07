@@ -72,7 +72,8 @@ async function renderCoachesInModal(gameKey) {
     const coachesList = document.getElementById('coachesList');
     if (!coachesList) return;
     const user = getCurrentUser();
-    if (!user || !user.username) {
+    // Check if user is logged in (has either username or id)
+    if (!user || (!user.username && !user.id)) {
         const lang = getPreferredLanguage(coachTranslations);
         const pleaseLogin = (coachTranslations[lang] && coachTranslations[lang]['pleaseLogin.message']) || 'Please log in to view the list of available coaches.';
         const loginBtnText = (coachTranslations[lang] && coachTranslations[lang]['login.button']) || 'Go to Login';
