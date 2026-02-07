@@ -115,7 +115,7 @@ export function updateAuthUI() {
     if (userDropdown && usernamePlaceholder) {
       userDropdown.classList.remove('d-none');
       // Display username if available, otherwise show 'User'
-      usernamePlaceholder.textContent = authState.user.username || '';
+      usernamePlaceholder.textContent = authState.user.username || 'User';
     }
     if (authState.isAdmin) {
       if (!adminLink) {
