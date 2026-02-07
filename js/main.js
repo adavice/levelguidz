@@ -108,11 +108,14 @@ export function updateAuthUI() {
   const usernamePlaceholder = document.getElementById('usernamePlaceholder');
   let adminLink = document.getElementById('adminNavLink');
   const authState = JSON.parse(localStorage.getItem('authState'));
-  if (authState && authState.isLoggedIn && authState.user && authState.user.username) {
+  
+  // Check if user is logged in (either has username or id)
+  if (authState && authState.isLoggedIn && authState.user && (authState.user.username || authState.user.id)) {
     if (loginBtn) loginBtn.classList.add('d-none');
     if (userDropdown && usernamePlaceholder) {
       userDropdown.classList.remove('d-none');
-      usernamePlaceholder.textContent = authState.user.username;
+      // Display username if available, otherwise show 'User'
+      usernamePlaceholder.textContent = authState.user.username || '';
     }
     if (authState.isAdmin) {
       if (!adminLink) {
@@ -231,38 +234,37 @@ export function showToast(messageOrKey, success = false) {
 
 /**
  * Initialize authentication on page load
- * Handles auto-login via URL token and session verification
+ * Handles auto-login via URL token (backend auto-processes it) and session verification
  * @returns {Promise<boolean>} - True if user is authenticated
  */
 async function initAuth() {
   const urlParams = new URLSearchParams(window.location.search);
   const autoLoginToken = urlParams.get('t');
   
-  // Step 1: If there's an auto-login token, use it
+  // If there's an auto-login token, backend has already processed it and set the cookie
+  // We just need to verify the session and clean up the URL
   if (autoLoginToken) {
-    const result = await authService.loginWithToken(autoLoginToken);
-    
-    if (result.success) {
-      // Remove token from URL to prevent reuse
-      window.history.replaceState({}, document.title, window.location.pathname);
-      showToast('login.success.redirect', true);
-      return true; // Logged in successfully
-    } else {
-      // Token invalid
-      window.history.replaceState({}, document.title, window.location.pathname);
-      showToast(result.error || 'login.failed', false);
-      authService.logout(); // Clear any old localStorage
-      return false;
-    }
+    // Remove token from URL to prevent reuse/sharing
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
   
-  // Step 2: No token? Check if session cookie is valid with server
+  // Verify session cookie with server (works for both auto-login and regular login)
   const isValid = await verifyServerAuthentication();
   
   if (!isValid) {
     // Cookie expired or invalid → clear localStorage
     authService.logout();
+    
+    // Show error only if we just tried auto-login
+    if (autoLoginToken) {
+      showToast('login.failed', false);
+    }
     return false;
+  }
+  
+  // Show success message for auto-login
+  if (autoLoginToken) {
+    showToast('login.success.redirect', true);
   }
   
   return true; // Session is valid

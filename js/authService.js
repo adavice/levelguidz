@@ -23,43 +23,6 @@ class AuthService {
         // No longer set 'user' key; use only 'authState' for all logic
     }
 
-    /**
-     * Auto-login with URL token
-     * Server will set the session cookie and return user data
-     * @param {string} urlToken - The token from the URL parameter
-     * @returns {Promise<{success: boolean, error?: string}>}
-     */
-    async loginWithToken(urlToken) {
-        try {
-            // Import API_BASE_URL dynamically if needed
-            const { API_BASE_URL } = await import('./config.js');
-            
-            const response = await fetch(`${API_BASE_URL}?action=login_with_token`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include', // Server will set the cookie
-                body: JSON.stringify({ token: urlToken })
-            });
-            
-            const data = await response.json();
-            
-            if (data.status === 'ok' && data.user) {
-                // Cookie is set by server, save user info locally
-                this.saveAuthState({
-                    isLoggedIn: true,
-                    isAdmin: !!data.user.isAdmin,
-                    user: data.user
-                });
-                return { success: true };
-            }
-            
-            return { success: false, error: data.error || 'Invalid token' };
-        } catch (error) {
-            console.error('Token login error:', error);
-            return { success: false, error: error.message };
-        }
-    }
-
     logout() {
         localStorage.removeItem('authState');
         this.authState = null;
@@ -71,7 +34,7 @@ class AuthService {
     }
 
     isLoggedIn() {
-        return !!(this.authState && this.authState.user && this.authState.user.username);
+        return !!(this.authState && this.authState.user && (this.authState.user.username || this.authState.user.id));
     }
 
     isAdmin() {
