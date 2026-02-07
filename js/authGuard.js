@@ -6,38 +6,42 @@ const ADMIN_ROUTES = ['admin_panel.html'];
 
 /**
  * Checks if the server recognizes the user's session as valid
+ * If valid, syncs user data to localStorage
+ * If invalid, clears localStorage
  * @returns {Promise<boolean>} - True if server authentication is valid
  */
 export async function verifyServerAuthentication() {
     try {
-        // Get current auth state
-        const state = authService.getAuthState();
-        if (!state || !state.token) return false;
-        
-        // Make a verification request to the server
+        // Ask server: is my cookie valid?
         const response = await fetch(`${API_BASE_URL}?action=verify_session`, {
             method: 'GET',
+            credentials: 'include', // Send the levelguidz_session cookie
             headers: {
-                'Authorization': `Bearer ${state.token}`,
                 'Accept': 'application/json'
             }
         });
         
         const data = await response.json();
         
-        // Check if authentication failed on the server
-        if (data.error === "Authentication required" || 
-            data.error === "Authentication failed" ||
-            data.error === "Invalid token" ||
-            data.error === "Session expired") {
-            console.log('Server session invalid. Logging out...');
-            authService.logout();
-            return false;
+        // Server says session is valid
+        if (data.status === 'ok' && data.user) {
+            // Sync user data to localStorage for UI
+            authService.saveAuthState({
+                isLoggedIn: true,
+                isAdmin: !!data.user.isAdmin,
+                user: data.user
+            });
+            return true;
         }
         
-        return data.status === 'ok';
+        // Server says session is invalid/expired
+        console.log('Server session invalid or expired');
+        authService.logout(); // Clear localStorage
+        return false;
+        
     } catch (error) {
         console.error('Error verifying server authentication:', error);
+        authService.logout(); // Clear localStorage on error
         return false;
     }
 }

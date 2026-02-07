@@ -229,12 +229,51 @@ export function showToast(messageOrKey, success = false) {
   }
 }
 
+/**
+ * Initialize authentication on page load
+ * Handles auto-login via URL token and session verification
+ * @returns {Promise<boolean>} - True if user is authenticated
+ */
+async function initAuth() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const autoLoginToken = urlParams.get('t');
+  
+  // Step 1: If there's an auto-login token, use it
+  if (autoLoginToken) {
+    const result = await authService.loginWithToken(autoLoginToken);
+    
+    if (result.success) {
+      // Remove token from URL to prevent reuse
+      window.history.replaceState({}, document.title, window.location.pathname);
+      showToast('login.success.redirect', true);
+      return true; // Logged in successfully
+    } else {
+      // Token invalid
+      window.history.replaceState({}, document.title, window.location.pathname);
+      showToast(result.error || 'login.failed', false);
+      authService.logout(); // Clear any old localStorage
+      return false;
+    }
+  }
+  
+  // Step 2: No token? Check if session cookie is valid with server
+  const isValid = await verifyServerAuthentication();
+  
+  if (!isValid) {
+    // Cookie expired or invalid → clear localStorage
+    authService.logout();
+    return false;
+  }
+  
+  return true; // Session is valid
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
   // Make showToast available globally
   window.showToast = showToast;
   
-  // Verify authentication with the server if logged in
-  await verifyServerAuthentication();
+  // Initialize authentication (handles auto-login and session verification)
+  await initAuth();
   
   // auth guard removed: server-side cookie-based protection handled on backend
   
