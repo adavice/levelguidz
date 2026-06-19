@@ -12,7 +12,7 @@ export const translations = {
      "Cancel": "Cancel your subscription using our online cancellation service. Please use the form below or send SMS with text STOP to the short number (from which you receive SMS with content). After sending STOP, you will receive a free of charge notification that your subscriptio has been stopped.",
     "Question": "If you still have any questions, please contact us: <span style="color: var(--bright)">withdrawal.ro@silverlines.info.</span>.<br/> One of our agents will get back to you as soon as possible – this usually takes 24 hours (except on weekends and public holidays).<br/> Our support center operates Mondays through Fridays, between 7 am and 4 pm GMT timezone.",
     "Subscription": "To cancel your subscription please:",
-    "Enter": "Enter your mobile number, which serves as your username, and your email*."
+    "Enter": "Enter your mobile number, which serves as your username, and your email*.",
 "Request": "*We request your email address to verify your subscription and confirm subscription cancellation.",
   "Mobile": "Mobile number",
   "Email": "Email",
@@ -33,7 +33,7 @@ export const translations = {
     "Cancel subscription": "Avsluta prenumerationen",
     "Login": "Logga in",
     "Logout": "Logga ut",
-    "Automatic Membership Cancellation": "Automatisk uppsägning av medlemskap"
+    "Automatic Membership Cancellation": "Automatisk uppsägning av medlemskap",
     "Loading...": "Laddar...",
    "Cancel": "Avsluta din prenumeration med vår online-avbokningstjänst. Använd formuläret nedan eller skicka SMS med texten STOP till kortnumret (från vilket du får SMS med innehåll). Efter att du skickat STOP får du ett kostnadsfritt meddelande om att din prenumeration har avslutats.",
     "Question": "Om du fortfarande har några frågor, vänligen kontakta oss: <span style="color: var(--bright)">withdrawal.ro@silverlines.info.</span>.<br/> En av våra agenter kommer att kontakta dig så snart som möjligt – detta tar vanligtvis 24 timmar (förutom på helger och helgdagar).<br/> Vårt supportcenter är öppet måndag till fredag, mellan 07:00 och 16:00 GMT.",
