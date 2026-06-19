@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - LevelGuidz</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+   <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="./index.html">
+          <img src="img/logo_dark.svg" alt="Logo" height="30" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+                <div class="collapse navbar-collapse text-center" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./news.html" data-i18n="News">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="coachingNavLink" data-i18n="Coaching">Coaching</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="./cancel.html" data-i18n="Contact">Cancel subscription</a>
+                        </li>
+          </ul>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="user-section">
+                            <!-- Login button shown when logged out -->
+                            <a class="btn btn-outline-light" href="./index.html#login" id="loginButton" data-i18n="Login">Login</a>
+                            <!-- Username dropdown shown when logged in -->
+                            <div class="dropdown d-none" id="userDropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <span id="usernamePlaceholder"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="./index.html#login" id="logoutBtn" data-i18n="Logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Language Selector in header -->
+                        <select id="languageSelector" class="form-select form-select-sm ms-2" style="width:auto; display:inline-block; max-width:120px; min-width:48px; padding-left:2.2rem; padding-right:0.5rem; background-image:url('css/assets/flag-icons/flags/4x3/gb.svg'); background-position:left 6px center; background-repeat:no-repeat; background-size:20px 14px;">
+                            <!-- Options will be generated dynamically by translate.js with flag images -->
+                        </select>
+                    </div>
+        </div>
+      </div>
+    </nav>
+
+<section class="py-5" style="margin-top: 60px !important;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="feature-card">
+                    <div class="decorative-dots"></div>
+                    <div class="decorative-circle"></div>
+                    
+                    <h1 class="text-center mb-2" data-i18n="Contact Us">Automatic Membership Cancellation</h1>
+                    <p>
+        Cancel your subscription using our online cancellation service.<br />
+        Please use the form below or send SMS with text STOP to the short number (from which you receive SMS
+        with content). After sending STOP, you will receive a free of charge notification that your subscription
+        has been stopped.
+      </p>
+      <p>
+        If you still have any questions, please contact us: <span
+          style="color: var(--bright)">support@wowcontents.com</span>.<br/>
+        One of our agents will get back to you as soon as possible – this usually takes 24 hours (except on
+        weekends and public holidays).<br/>
+        Our support center operates Mondays through Fridays, between 7 am and 4 pm GMT timezone.
+      </p>
+      <h3 style="margin: 50px auto 30px">To cancel your subscription please:</h3>
+      <div class="col-md-12 contact-right-ltpwr framed" style="max-width: 720px; margin: auto; float: none">
+        <p class="form_descr" style="color: var(--bright); text-align: center">Enter your mobile number, which serves as your username, and your email*.</p>
+        <p class="form_descr" style="font-size: 11px;">*We request your email address to verify your subscription and confirm subscription cancellation.</p>
+                    <form id="contactForm" class="needs-validation" novalidate>
+                        <div class="row">
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label for="home-option1-phone-input">Mobile number</label>
+                <div>
+                  <input type="tel" class="form-control required input form-input"
+                    name="home-option1-phone-input" id="home-option1-phone-input"
+                    placeholder="Mobile number" required="">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-4">
+                <label for="home-option1-email-input">Email</label>
+                <div>
+                  <input type="email" class="form-control required input form-input"
+                    name="home-option1-email-input" id="home-option1-email-input"
+                    placeholder="Email" required="">
+                </div>
+              </div>
+
+              <div class="form-group col-sm-4">
+                <div class=" form-group-submit-btn">
+                  <button id="home-option1-submit-btn" type="submit" class="btn btn-primary button">
+                    Cancel subscription
+                  </button>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</section>
+    <!-- hidden i18n helpers used by JS for dynamic text -->
+    <span id="i18n-Send" data-i18n="Send Message" style="display:none">Send Message</span>
+    <span id="i18n-Sending" data-i18n="Sending..." style="display:none">Sending...</span>
+    <footer class="footer py-5 mt-auto">
+        <div class="container">
+            <div class="row footer-main">
+                <div class="col-lg-4 footer-branding">
+                    <a href="#" class="footer-brand d-inline-block">
+                        <img src="img/logo_dark.svg" alt="Logo" height="30">
+                    </a>
+                    <p class="text-muted small mt-2 mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <span data-i18n="All rights reserved">All rights reserved</span> LevelGuidz.</p>
+                </div>
+                
+                <div class="col-lg-8 footer-links">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="text-white mb-3" data-i18n="Company">Company</h5>
+                            <ul class="nav flex-column footer-nav">
+                                <li class="nav-item"><a class="nav-link" href="./contact.html" data-i18n="Contact">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./faq.html" data-i18n="F.A.Q.">F.A.Q.</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="text-white mb-3" data-i18n="Legal">Legal</h5>
+                            <ul class="nav flex-column footer-nav">
+                                <li class="nav-item"><a class="nav-link" href="./terms.html" data-i18n="Privacy Policy">Privacy Policy</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./terms.html" data-i18n="Terms of Service">Terms of Service</a></li>
+                                <li class="nav-item"><a class="nav-link" href="./refund.html" data-i18n="Refund Policy">Refund Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row footer-disclaimer">
+                    <div class="col-12">
+                        <p class="text-muted small text-center px-lg-5" data-i18n="All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.">All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="contactToast" class="toast" role="alert" data-bs-delay="3000">
+            <div class="toast-body feature-card border-0">
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module">
+        // Load translations first, then setup
+        import { translations } from './js/translations/i18n-contact.js';
+        import { setupTranslation } from './js/translate.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Setting up translations with:', translations);
+            setupTranslation(translations);
+        });
+    </script>
+    <script type="module">
+        import { sendContactForm } from './js/clientApi.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successModal = document.getElementById('successModal');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!form.checkValidity()) {
+                    e.stopPropagation();
+                    form.classList.add('was-validated');
+                    return;
+                }
+
+                // Disable button and show loading state using translated text
+                const sendingText = document.getElementById('i18n-Sending')?.textContent || 'Sending...';
+                const sendText = document.getElementById('i18n-Send')?.textContent || 'Send Message';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>${sendingText}`;
+
+                try {
+                    const formData = {
+                        firstName: form.querySelector('#firstName').value,
+                        lastName: form.querySelector('#lastName').value,
+                        email: form.querySelector('#email').value,
+                        phone: form.querySelector('#phone').value,
+                        message: form.querySelector('#message').value
+                    };
+
+                    const response = await sendContactForm(formData);
+                    if (response.status === 'ok') {
+                        // Show success modal
+                        successModal.style.display = 'flex';
+                        // Force reflow
+                        successModal.offsetHeight;
+                        successModal.style.opacity = '1';
+                        
+                        // Reset form
+                        form.reset();
+                        form.classList.remove('was-validated');
+                    } else {
+                        throw new Error(response.error || 'Failed to send message');
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('toastMessage').textContent = error.message;
+                    bootstrap.Toast.getOrCreateInstance(document.getElementById('contactToast')).show();
+                } finally {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `${sendText} <i class="bi bi-send-fill ms-2"></i>`;
+                }
+            });
+        });
+    </script>
+    <script>
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('show');
+            // Add a small delay before hiding the modal completely
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+    </script>
+</body>
+</html>
+    </script>
+</body>
+</html>
+</html>
