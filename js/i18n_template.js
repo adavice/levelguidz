@@ -10,7 +10,7 @@ export const translations = {
     "Automatic Membership Cancellation": "Automatic Membership Cancellation",
     "Loading...": "Loading...",
      "Cancel": "Cancel your subscription using our online cancellation service. Please use the form below or send SMS with text STOP to the short number (from which you receive SMS with content). After sending STOP, you will receive a free of charge notification that your subscriptio has been stopped.",
-    "Question": "If you still have any questions, please contact us: withdrawal.ro@silverlines.info. One of our agents will get back to you as soon as possible – this usually takes 24 hours (except on weekends and public holidays).<br/> Our support center operates Mondays through Fridays, between 7 am and 4 pm GMT timezone.",
+    "Question": "One of our agents will get back to you as soon as possible – this usually takes 24 hours (except on weekends and public holidays).<br/> Our support center operates Mondays through Fridays, between 7 am and 4 pm GMT timezone.",
     "Subscription": "To cancel your subscription please:",
     "Enter": "Enter your mobile number, which serves as your username, and your email*.",
 "Request": "*We request your email address to verify your subscription and confirm subscription cancellation.",
