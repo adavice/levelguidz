@@ -43,5 +43,20 @@ export const translations = {
     "failed.load.news": "Încărcarea știrilor a eșuat. Încearcă din nou mai târziu."
   ,
   "invalid.credentials": "Date de autentificare incorecte. Verifică adresa de email și parola."
+  },
+  fr: {
+    "session.expired": "Votre session a expiré. Veuillez vous reconnecter.",
+    "login.success": "Connexion réussie!",
+    "login.success.redirect": "Connexion réussie ! Redirection en cours...",
+    "login.failed": "La connexion a échoué",
+    "passwords.mismatch": "Les mots de passe ne correspondent pas.",
+    "account.created": "Compte créé avec succès ! Veuillez vous connecter.",
+    "password.reset.sent": "Un lien de réinitialisation du mot de passe a été envoyé.",
+    "please.login.chat": "Veuillez vous connecter pour charger votre historique de discussion.",
+    "failed.load.coaches": "Échec du chargement des coachs. Veuillez essayer d'actualiser la page.",
+    "failed.load.coaches.simple": "Échec du chargement des entraîneurs.",
+    "failed.load.news": "Impossible de charger les actualités. Veuillez réessayer plus tard."
+  ,
+  "invalid.credentials": "Identifiants invalides. Veuillez vérifier votre adresse e-mail et votre mot de passe."
   }
 };
