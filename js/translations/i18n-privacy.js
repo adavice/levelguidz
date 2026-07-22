@@ -190,7 +190,7 @@ export const translations = {
     "Privacy.Changes.P1": "Putem actualiza această politică de confidențialitate. Orice modificări vor fi afișate aici și utilizarea continuă implică acceptarea lor.",
     "Privacy.Questions.Title": "Întrebări?",
     "Privacy.Questions.P1": "Pentru întrebări sau preocupări, contactează-ne la: support@levelguidz.com"
-  }
+  },
    fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
