@@ -258,7 +258,7 @@ export const translations = {
     "Refund Policy": "Politica de Rambursare",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toate denumirile de marcă, mărci (înregistrate), imagini și descrieri de produse sunt proprietatea deținătorilor lor legali și nu sunt nici sponsorii, nici partenerii acestei promoții.",
     "All rights reserved.": "Toate drepturile rezervate.",
-}
+},
   fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
