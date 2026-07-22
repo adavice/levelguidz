@@ -42,4 +42,18 @@ export const translations = {
   "refund.assist.p1": "Consultă pagina noastră FAQ pentru întrebări frecvente. Pentru asistență suplimentară, contactează echipa noastră de suport la support@levelguidz.com."
 
   }
+  fr: {
+    "refund.summary_intro": "Principes de base de l'annulation d'abonnement et du remboursement.",
+    "Cancellation of Membership": "Annulation de l'adhésion",
+    "refund.summary_cancel": "Annulation possible à tout moment ; renouvellement automatique sauf annulation 2 jours avant la fin de la période.",
+    "refund.cancel.contact": "support@levelguidz.com",
+    "refund.summary_refund": "Demandez les remboursements via le support ; les approbations sont laissées à notre discrétion.",
+    "refund.summary_assist": "Consultez la FAQ ou contactez support@levelguidz.com.",
+    "Need Assistance?": "Besoin d'aide?",
+    "refund.cancellation.p1": "En vous abonnant ou en vous inscrivant sur ce site web, en accédant à des sections protégées par mot de passe, en utilisant des ressources réservées aux membres ou en acceptant les présentes conditions par tout moyen valide, vous confirmez votre engagement contraignant à l'égard de toutes les dispositions, conditions, obligations et responsabilités énoncées dans le présent accord. Cela inclut le fait de donner votre consentement et d'assumer l'entière responsabilité financière de tous les frais décrits aux présentes.",
+    "refund.cancellation.p2": "Vous pouvez résilier votre adhésion à tout moment. Toutefois, veuillez noter que si vous n'informez pas la Société de votre intention de résilier au moins deux (2) jours avant la fin de votre période d'adhésion en cours, votre adhésion sera automatiquement renouvelée sans préavis supplémentaire.",
+    "refund.cancellation.p3": "Levelguidz.com se réserve le droit de refuser tout remboursement ou de suspendre/annuler des paiements en cas de détection d'activités frauduleuses, abusives, illégales ou manipulatrices. Si vous choisissez d'annuler votre abonnement avant la fin de la période en cours, aucun remboursement au prorata ni remboursement partiel ne sera effectué. Pour procéder à l'annulation, veuillez contacter ",
+    "refund.refund.p1": "Pour demander un remboursement concernant des achats ou des frais récurrents, veuillez contacter notre service client. Aucun remboursement ni crédit ne sera accordé pour les abonnements partiellement utilisés. Vous pouvez annuler tout paiement récurrent futur en suivant les indications de la section « Annulation ». Levelguidz se réserve le droit d'accorder des remboursements ou des crédits pour des achats, à sa seule discrétion.",
+    "refund.assist.p1": "Veuillez consulter notre page FAQ pour les questions fréquentes. Pour toute assistance supplémentaire, contactez notre équipe d'assistance à l'adresse support@levelguidz.com."
+  }
 };
