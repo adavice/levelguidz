@@ -78,4 +78,31 @@ export const translations = {
     "game.fifa23.name": "FIFA 23",
     "game.fifa23.genre": "Sport"
   }
+  fr: {
+    "modal.title": "Sélectionner le match et l'entraîneur",
+    "pleaseLogin.message": "Veuillez vous connecter pour consulter la liste des coachs disponibles.",
+    "login.button": "Aller à la connexion",
+    "loading.coaches": "Chargement des autocars...",
+    "no.coaches": "Aucun entraîneur trouvé pour ce match.",
+    "failed.load": "Échec du chargement des entraîneurs.",
+    "expert": "expert",
+    "status.online": "en ligne",
+    // game names and genres (fallback to values in code if missing)
+    "game.tft.name": "Teamfight Tactics",
+    "game.tft.genre": "Auto Battler",
+    "game.lol.name": "League of Legends",
+    "game.lol.genre": "MOBA",
+    "game.valorant.name": "Valorant",
+    "game.valorant.genre": "Tactical Shooter",
+    "game.fifa24.name": "EA Sports FC 24",
+    "game.fifa24.genre": "Sports",
+    "game.dota2.name": "Dota 2",
+    "game.dota2.genre": "MOBA",
+    "game.cs2.name": "Counter-Strike 2",
+    "game.cs2.genre": "Tactical Shooter",
+    "game.apex.name": "Apex Legends",
+    "game.apex.genre": "Battle Royale",
+    "game.fifa23.name": "FIFA 23",
+    "game.fifa23.genre": "Sports"
+  },
 };
