@@ -109,7 +109,7 @@ export const translations = {
   "That depends on your consistency and goals - but many players see noticeable improvement after just one or two sessions.": "Depinde de consistența și obiectivele tale - dar mulți jucători observă îmbunătățiri vizibile după doar una sau două sesiuni.",
   "How do I contact support?": "Cum pot contacta suportul?",
   "You can reach us by emailing support@levelguidz.com. We aim to respond within 24 hours.": "Ne poți contacta prin e-mail la support@levelguidz.com. Ne propunem să răspundem în 24 de ore."
-  }
+  },
    fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
