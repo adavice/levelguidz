@@ -127,7 +127,7 @@ export const translations = {
     "Close": "Închide",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toate numele comerciale, mărcile (înregistrate), imaginile și descrierile produselor sunt proprietatea deținătorilor lor legali și nu sunt sponsori sau parteneri ai acestei promoții.",
     
-  }
+  },
   fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
