@@ -110,4 +110,40 @@ export const translations = {
   "How do I contact support?": "Cum pot contacta suportul?",
   "You can reach us by emailing support@levelguidz.com. We aim to respond within 24 hours.": "Ne poți contacta prin e-mail la support@levelguidz.com. Ne propunem să răspundem în 24 de ore."
   }
+   fr: {
+    "News": "Nouvelles",
+    "Coaching": "Entraînement",
+    "Guides": "Guides",
+    "Contact": "Contact",
+    "Login": "Se connecter",
+    "Logout": "Déconnexion",
+    "Loading...": "Chargement...",
+    "Company": "Entreprise",
+    "F.A.Q.": "F.A.Q.",
+    "Legal": "Légal",
+    "Privacy Policy": "Politique de confidentialité",
+    "Terms of Service": "Conditions d'utilisation",
+    "Refund Policy": "Politique de remboursement",
+    "All rights reserved.": "Tous droits réservés",
+    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toutes les marques, marques déposées, images et descriptions de produits sont la propriété de leurs détenteurs légaux respectifs et ne sont ni sponsors ni partenaires de cette promotion."
+  "Frequently Asked Questions": "Foire aux questions",
+  "What is this platform and how does it work?": "Qu'est-ce que cette plateforme et comment fonctionne-t-elle?",
+  "We provide expert game guidelines and personalized 1-on-1 coaching sessions for top games like Fortnite, League of Legends, Valorant, and more. Just choose your game, pick a coach, and book a session tailored to your skill level and goals.": "Nous proposons des conseils d'experts et des séances de coaching individuel personnalisées pour des jeux incontournables tels que Fortnite, League of Legends, Valorant et bien d'autres. Il vous suffit de choisir votre jeu et votre coach, puis de réserver une séance adaptée à votre niveau et à vos objectifs.",
+  "Can I choose my own coach?": "Puis-je choisir mon propre coach?",
+  "Yes! You can browse available coaches by game, role, or style and pick the one that fits your needs best.": "Oui ! Vous pouvez parcourir les coachs disponibles par jeu, rôle ou style et choisir celui qui correspond le mieux à vos besoins.",
+  "Do you coach both beginners and experienced players?": "Entraînez-vous aussi bien les débutants que les joueurs expérimentés?",
+  "Absolutely. Whether you're just starting or grinding toward high-ranked competitive play, we tailor each session to your level.": "Absolument. Que vous débutiez ou que vous visiez les hauts niveaux de la compétition, nous adaptons chaque séance à votre niveau.",
+  "What happens during a 1-on-1 coaching session?": "Que se passe-t-il lors d'une séance de coaching individuel?",
+  "Your coach will answer questions, walk you through strategies, and provide actionable tips to improve.": "Votre coach répondra à vos questions, vous présentera des stratégies et vous donnera des conseils concrets pour progresser.",
+  "Where do the sessions take place?": "Où se déroulent les séances?",
+  "Most sessions are conducted via Internal chatroom.": "La plupart des séances se déroulent via le salon de discussion interne.",
+  "Premium Membership": "Abonnement Premium",
+  "After the successful sign-up, you will receive a weekly Premium Membership. You can enjoy several additional benefits and features that a Free user cannot access. You'll see all pricing upfront before you subscribe - no hidden fees. A Premium Membership may be terminated at any time. If the membership is not terminated within the prepaid period, it will automatically be renewed.": "Une fois votre inscription validée, vous bénéficierez d'un abonnement Premium hebdomadaire. Vous profiterez d'avantages et de fonctionnalités supplémentaires inaccessibles aux utilisateurs de la version gratuite. Tous les tarifs sont indiqués clairement avant la souscription ; il n'y a aucun frais caché. L'abonnement Premium peut être résilié à tout moment. À défaut de résiliation avant la fin de la période prépayée, l'abonnement sera automatiquement renouvelé.",
+  "Are my chat sessions or data shared with others?": "Mes sessions de chat ou mes données sont-elles partagées avec des tiers?",
+  "No. Your coaching sessions and data are private. We do not share, post, or use them without your explicit permission.": "Non. Vos séances de coaching et vos données sont confidentielles. Nous ne les partageons pas, ne les publions pas et ne les utilisons pas sans votre autorisation explicite.",
+  "How fast will I see improvement?": "À quelle vitesse constaterai-je une amélioration?",
+  "That depends on your consistency and goals - but many players see noticeable improvement after just one or two sessions.": "Cela dépend de votre régularité et de vos objectifs, mais de nombreux joueurs constatent une amélioration notable après seulement une ou deux séances.",
+  "How do I contact support?": "Comment contacter le support?",
+  "You can reach us by emailing support@levelguidz.com. We aim to respond within 24 hours.": "Vous pouvez nous contacter par e-mail à l'adresse support@levelguidz.com. Nous nous efforçons de répondre dans un délai de 24 heures."
+  }
 };
