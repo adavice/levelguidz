@@ -77,7 +77,7 @@ export const translations = {
     "game.apex.genre": "Battle Royale",
     "game.fifa23.name": "FIFA 23",
     "game.fifa23.genre": "Sport"
-  }
+  },
   fr: {
     "modal.title": "Sélectionner le match et l'entraîneur",
     "pleaseLogin.message": "Veuillez vous connecter pour consulter la liste des coachs disponibles.",
