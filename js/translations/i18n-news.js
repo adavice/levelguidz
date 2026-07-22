@@ -59,4 +59,23 @@ export const translations = {
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toate denumirile comerciale, mărcile înregistrate, imaginile și descrierile produselor sunt proprietatea deținătorilor lor legali și nu sunt sponsori sau parteneri ai acestei promoții.",
     "Read More": "Citește mai mult"
   }
+  fr: {
+    "News": "Nouvelles",
+    "Coaching": "Entraînement",
+    "Guides": "Guides",
+    "Contact": "Contact",
+    "Login": "Se connecter",
+    "Logout": "Déconnexion",
+    "Latest Gaming News": "Dernières actualités du jeu vidéo",
+    "Loading...": "Chargement...",
+    "Company": "Entreprise",
+    "F.A.Q.": "F.A.Q.",
+    "Legal": "Légal",
+    "Privacy Policy": "Politique de confidentialité",
+    "Terms of Service": "Conditions d'utilisation",
+    "Refund Policy": "Politique de remboursement",
+    "All rights reserved.": "Tous droits réservés",
+    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toutes les marques, marques déposées, images et descriptions de produits sont la propriété de leurs détenteurs légaux respectifs et ne sont ni sponsors ni partenaires de cette promotion."
+  "Read More": "En savoir plus"
+  }
 };
