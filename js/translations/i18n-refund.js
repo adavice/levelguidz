@@ -41,7 +41,7 @@ export const translations = {
   "refund.refund.p1": "Pentru a solicita o rambursare pentru achiziții sau taxe recurente, contactează echipa noastră de suport. Rambursările sau creditele nu vor fi emise pentru abonamente utilizate parțial. Poți anula plăți recurente viitoare conform secțiunii 'Anulare'. Levelguidz poate aproba rambursări sau credite pentru achiziții la discreția sa.",
   "refund.assist.p1": "Consultă pagina noastră FAQ pentru întrebări frecvente. Pentru asistență suplimentară, contactează echipa noastră de suport la support@levelguidz.com."
 
-  }
+  },
   fr: {
     "refund.summary_intro": "Principes de base de l'annulation d'abonnement et du remboursement.",
     "Cancellation of Membership": "Annulation de l'adhésion",
