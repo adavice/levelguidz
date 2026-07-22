@@ -59,7 +59,7 @@ export const translations = {
   ,
   "LevelGuidz Chat": "LevelGuidz Chat",
   "Coach List": "Lista coach-ilor"
-  }
+  },
   fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
@@ -79,5 +79,5 @@ export const translations = {
   ,
   "LevelGuidz Chat": "LevelGuidz Chat",
   "Coach List": "Liste des entraîneurs"
-  },
+  }
 };
