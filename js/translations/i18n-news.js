@@ -58,7 +58,7 @@ export const translations = {
     "All rights reserved.": "Toate drepturile rezervate",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toate denumirile comerciale, mărcile înregistrate, imaginile și descrierile produselor sunt proprietatea deținătorilor lor legali și nu sunt sponsori sau parteneri ai acestei promoții.",
     "Read More": "Citește mai mult"
-  }
+  },
   fr: {
     "News": "Nouvelles",
     "Coaching": "Entraînement",
