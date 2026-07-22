@@ -60,4 +60,24 @@ export const translations = {
   "LevelGuidz Chat": "LevelGuidz Chat",
   "Coach List": "Lista coach-ilor"
   }
+  fr: {
+    "News": "Nouvelles",
+    "Coaching": "Entraînement",
+    "Guides": "Guides",
+    "Contact": "Contact",
+    "Login": "Se connecter",
+    "Logout": "Déconnexion",
+    "Loading...": "Chargement...",
+    "Company": "Entreprise",
+    "F.A.Q.": "F.A.Q.",
+    "Legal": "Légal",
+    "Privacy Policy": "Politique de confidentialité",
+    "Terms of Service": "Conditions d'utilisation",
+    "Refund Policy": "Politique de remboursement",
+    "All rights reserved.": "Tous droits réservés",
+    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toutes les marques, marques déposées, images et descriptions de produits sont la propriété de leurs détenteurs légaux respectifs et ne sont ni sponsors ni partenaires de cette promotion."
+  ,
+  "LevelGuidz Chat": "LevelGuidz Chat",
+  "Coach List": "Liste des entraîneurs"
+  },
 };
