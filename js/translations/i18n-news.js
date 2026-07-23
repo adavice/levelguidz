@@ -15,7 +15,7 @@ export const translations = {
     "Terms of Service": "Terms of Service",
     "Refund Policy": "Refund Policy",
     "All rights reserved.": "All rights reserved",
-    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion."
+    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.",
   ,
   "Read More": "Read More"
   },
@@ -35,8 +35,7 @@ export const translations = {
     "Terms of Service": "Användarvillkor",
     "Refund Policy": "Återbetalningspolicy",
     "All rights reserved.": "Alla rättigheter förbehållna.",
-    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.":"Alla varumärken, (registrerade) varumärken, bilder och produktbeskrivningar tillhör sina rättmätiga ägare och är varken sponsorer eller partner till denna kampanj."
-  ,
+    "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.":"Alla varumärken, (registrerade) varumärken, bilder och produktbeskrivningar tillhör sina rättmätiga ägare och är varken sponsorer eller partner till denna kampanj.",
   "Read More": "Läs mer"
   },
   ro: {
