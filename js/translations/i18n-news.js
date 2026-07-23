@@ -38,8 +38,7 @@ export const translations = {
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.":"Alla varumärken, (registrerade) varumärken, bilder och produktbeskrivningar tillhör sina rättmätiga ägare och är varken sponsorer eller partner till denna kampanj."
   ,
   "Read More": "Läs mer"
-  }
-  ,
+  },
   ro: {
     "News": "Știri",
     "Coaching": "Coaching",
