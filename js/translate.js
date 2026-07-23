@@ -12,7 +12,7 @@ function generateLanguageOptions(translations, selector) {
   selector.innerHTML = "";
 
   // Only render options for en, ro, se if they have translations
-  const allowedLanguages = ["en", "ro", "se"];
+  const allowedLanguages = ["en", "ro", "se", "fr"];
 
   allowedLanguages.forEach((langCode) => {
     if (translations[langCode]) {
@@ -98,7 +98,7 @@ function createCustomLanguageSelector(translations, originalSelector) {
   const dropdown = document.createElement('div');
   dropdown.className = 'custom-lang-dropdown d-none';
 
-  const allowedLanguages = ["en", "ro", "se"];
+  const allowedLanguages = ["en", "ro", "se", "fr"];
   let selectedLang = getPreferredLanguage(translations);
 
   // Build dropdown items from the existing languageConfig (only for available translations)
