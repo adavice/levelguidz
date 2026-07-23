@@ -2,7 +2,7 @@ export const languageConfig = {
   en: { name: "English", flag: "css/assets/flag-icons/flags/4x3/gb.svg" },
   ro: { name: "Română", flag: "css/assets/flag-icons/flags/4x3/ro.svg" },
   se: { name: "Svenska", flag: "css/assets/flag-icons/flags/4x3/se.svg" },
-  fr: { name: "Français", flag: "css/assets/flag-icons/flags/4x3/se.svg" },
+  fr: { name: "Français", flag: "css/assets/flag-icons/flags/4x3/fr.svg" },
 };
 
 function generateLanguageOptions(translations, selector) {
