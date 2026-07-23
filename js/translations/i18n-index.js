@@ -345,3 +345,5 @@ export const translations = {
     "All rights reserved.": "Tous droits réservés",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "Toutes les marques, marques déposées, images et descriptions de produits sont la propriété de leurs détenteurs légaux respectifs et ne sont ni sponsors ni partenaires de cette promotion."
   ,
+  }
+}
