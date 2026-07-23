@@ -16,7 +16,6 @@ export const translations = {
     "Refund Policy": "Refund Policy",
     "All rights reserved.": "All rights reserved",
     "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.": "All brand names, (registered) trademarks, images and product descriptions are the property of their legal owners and are neither sponsor nor partner of this promotion.",
-  ,
   "Read More": "Read More"
   },
   se: {
